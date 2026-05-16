@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Customer Flow — ServiceHub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+<link rel="stylesheet" href="assets/styles.css">
+<style>
+  body { background: #0F172A; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 40px 20px 100px; }
+  .stage { text-align: center; }
+  .stage-title { color: rgba(255,255,255,0.6); font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+  .stage-name { color: white; font-size: 28px; font-weight: 700; margin: 0 0 32px; }
+
+  /* Screen 1: Lock screen */
+  .lock-screen { background: linear-gradient(135deg, #1E293B 0%, #0F172A 50%, #312E81 100%); height: 100%; position: relative; color: white; padding-top: 60px; }
+  .lock-time { text-align: center; font-size: 80px; font-weight: 200; margin-top: 30px; letter-spacing: -2px; }
+  .lock-date { text-align: center; font-size: 18px; font-weight: 500; opacity: 0.9; margin-bottom: 50px; }
+  .notification { background: rgba(255,255,255,0.12); backdrop-filter: blur(20px); margin: 0 16px 12px; border-radius: 14px; padding: 14px; display: flex; gap: 12px; border: 1px solid rgba(255,255,255,0.1); }
+  .notif-icon { width: 36px; height: 36px; border-radius: 8px; background: #EF4444; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .notif-body { flex: 1; min-width: 0; }
+  .notif-title { font-weight: 600; font-size: 13px; display: flex; justify-content: space-between; }
+  .notif-time { font-size: 11px; opacity: 0.7; font-weight: 400; }
+  .notif-text { font-size: 13px; opacity: 0.9; line-height: 1.4; margin-top: 2px; }
+  .lock-cta { position: absolute; bottom: 50px; left: 50%; transform: translateX(-50%); color: rgba(255,255,255,0.5); font-size: 13px; }
+
+  /* Screen 2: SMS */
+  .sms-header { background: #F2F2F7; padding: 50px 16px 12px; border-bottom: 1px solid #E5E7EB; text-align: center; }
+  .sms-back { position: absolute; left: 16px; top: 56px; color: #007AFF; font-size: 15px; display: flex; align-items: center; gap: 4px; }
+  .sms-avatar-row { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+  .sms-avatar-big { width: 50px; height: 50px; border-radius: 999px; background: linear-gradient(135deg, #6366F1, #4F46E5); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; }
+  .sms-name { font-size: 12px; font-weight: 600; }
+  .sms-thread { background: #fff; padding: 16px; min-height: 600px; }
+  .sms-date { text-align: center; font-size: 11px; color: #8E8E93; margin: 8px 0 16px; font-weight: 600; }
+  .sms-bubble { background: #E9E9EB; padding: 10px 14px; border-radius: 18px; max-width: 78%; margin-bottom: 4px; font-size: 14px; line-height: 1.4; }
+  .sms-link { color: #007AFF; text-decoration: underline; font-weight: 500; }
+  .sms-meta { font-size: 11px; color: #8E8E93; margin-top: 6px; margin-left: 4px; }
+
+  /* Screen 3: Form */
+  .browser-bar { background: #F2F2F7; padding: 50px 16px 8px; border-bottom: 1px solid #E5E7EB; }
+  .url-pill { background: #fff; border-radius: 999px; padding: 6px 14px; font-size: 12px; color: #6B7280; display: flex; align-items: center; gap: 6px; }
+  .form-hero { background: linear-gradient(135deg, #4F46E5, #6366F1); color: white; padding: 24px 20px; }
+  .form-hero h2 { font-size: 22px; margin: 0 0 6px; font-weight: 700; }
+  .form-hero p { margin: 0; font-size: 13px; opacity: 0.9; }
+  .form-wrap { padding: 20px; }
+
+  /* Screen 4: Confirmation */
+  .success-screen { background: linear-gradient(135deg, #ECFDF5 0%, #fff 100%); height: 100%; padding: 80px 24px 24px; text-align: center; }
+  .success-circle { width: 100px; height: 100px; border-radius: 999px; background: #10B981; display: inline-flex; align-items: center; justify-content: center; color: white; margin-bottom: 24px; box-shadow: 0 20px 40px -10px rgba(16,185,129,0.5); animation: pop 0.5s ease; }
+  @keyframes pop { from { transform: scale(0); } to { transform: scale(1); } }
+  .ticket-id { display: inline-block; padding: 6px 14px; background: white; border-radius: 999px; font-weight: 700; color: #065F46; font-size: 13px; margin-bottom: 16px; border: 1px solid #D1FAE5; }
+  .success-h { font-size: 24px; font-weight: 700; margin: 0 0 12px; }
+  .success-p { color: #4B5563; font-size: 14px; line-height: 1.5; margin-bottom: 32px; }
+  .info-card { background: #fff; border-radius: 14px; padding: 16px; text-align: left; box-shadow: 0 4px 12px rgba(0,0,0,0.04); border: 1px solid #E5E7EB; margin-bottom: 12px; }
+  .info-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; font-size: 13px; }
+  .info-row:not(:last-child) { border-bottom: 1px solid #F3F4F6; }
+  .info-label { color: #6B7280; }
+  .info-value { font-weight: 600; }
+</style>
+</head>
+<body>
+
+<div class="stage">
+  <div class="stage-title">Customer Journey</div>
+  <h2 class="stage-name" id="stageName">1. Missed Call Notification</h2>
+
+  <div class="phone-frame">
+    <div class="phone-notch"></div>
+    <div class="phone-screen">
+
+      <!-- Screen 1: Lock screen with missed call -->
+      <div class="screen active" data-name="1. Missed Call Notification">
+        <div class="lock-screen">
+          <div class="lock-time">10:42</div>
+          <div class="lock-date">Tuesday, May 12</div>
+
+          <div class="notification">
+            <div class="notif-icon"><i data-lucide="phone-missed" style="width:18px;height:18px;color:white;"></i></div>
+            <div class="notif-body">
+              <div class="notif-title">Missed call <span class="notif-time">2 min ago</span></div>
+              <div class="notif-text">ServiceHub Support<br>+91 80 4567 1234</div>
+            </div>
+          </div>
+
+          <div class="notification">
+            <div class="notif-icon" style="background:#10B981;"><i data-lucide="message-square" style="width:18px;height:18px;color:white;"></i></div>
+            <div class="notif-body">
+              <div class="notif-title">Messages <span class="notif-time">just now</span></div>
+              <div class="notif-text">ServiceHub: Hi! We missed your call...</div>
+            </div>
+          </div>
+
+          <div class="lock-cta">Swipe up to open</div>
+        </div>
+      </div>
+
+      <!-- Screen 2: SMS -->
+      <div class="screen" data-name="2. SMS with Auto-Link">
+        <div style="position:relative;">
+          <div class="sms-header">
+            <div class="sms-back">
+              <i data-lucide="chevron-left" style="width:18px;height:18px;"></i>
+              Messages
+            </div>
+            <div class="sms-avatar-row">
+              <div class="sms-avatar-big">SH</div>
+              <div class="sms-name">ServiceHub <i data-lucide="chevron-right" style="width:10px;height:10px;display:inline;"></i></div>
+            </div>
+          </div>
+          <div class="sms-thread">
+            <div class="sms-date">Today 10:43 AM</div>
+            <div class="sms-bubble">
+              Hi! We missed your call. Please share your issue here so we can help you fast:
+              <br><br>
+              <span class="sms-link" onclick="goNext()">servicehub.in/r/AX42K</span>
+              <br><br>
+              — Team ServiceHub
+            </div>
+            <div class="sms-meta">Delivered</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Screen 3: Service Request Form -->
+      <div class="screen" data-name="3. Service Request Form">
+        <div class="browser-bar">
+          <div class="url-pill">
+            <i data-lucide="lock" style="width:11px;height:11px;color:#10B981;"></i>
+            servicehub.in/r/AX42K
+          </div>
+        </div>
+        <div style="overflow-y:auto; flex:1;">
+          <div class="form-hero">
+            <h2>Tell us what's wrong</h2>
+            <p>Fill in a few details and our team will reach out within 2 hours.</p>
+          </div>
+          <div class="form-wrap">
+            <div class="field">
+              <label class="label">Full Name</label>
+              <input type="text" class="input" value="Rajesh Nair">
+            </div>
+            <div class="field">
+              <label class="label">Phone Number</label>
+              <input type="text" class="input" value="+91 98470 12345">
+            </div>
+            <div class="field">
+              <label class="label">Cost Center / Location</label>
+              <select class="select">
+                <option>Calicut</option>
+                <option selected>Kollam</option>
+                <option>Ernakulam (EKM)</option>
+              </select>
+            </div>
+            <div class="field">
+              <label class="label">Issue Type</label>
+              <select class="select">
+                <option selected>Service Request</option>
+                <option>New Project</option>
+                <option>Not sure</option>
+              </select>
+            </div>
+            <div class="field">
+              <label class="label">Describe the issue</label>
+              <textarea class="textarea" rows="3" style="resize:none;">AC unit in our showroom is not cooling. Started this morning, customers complaining.</textarea>
+            </div>
+            <div class="field">
+              <label class="label">Upload Photo (optional)</label>
+              <div style="border:1.5px dashed #D1D5DB; padding: 14px; border-radius: 10px; text-align:center; color:#6B7280; font-size:13px;">
+                <i data-lucide="camera" style="width:18px;height:18px;"></i>
+                Tap to add photo
+              </div>
+            </div>
+            <button class="btn btn-primary btn-block btn-lg" onclick="goNext()">
+              Submit Request
+              <i data-lucide="arrow-right" style="width:16px;height:16px;"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Screen 4: Confirmation -->
+      <div class="screen" data-name="4. Ticket Created">
+        <div class="success-screen">
+          <div class="success-circle"><i data-lucide="check" style="width:48px;height:48px;stroke-width:3;"></i></div>
+          <div class="ticket-id">Ticket #SR-2451</div>
+          <h2 class="success-h">Request received!</h2>
+          <p class="success-p">Our team will review and contact you within 2 hours.</p>
+
+          <div class="info-card">
+            <div class="info-row"><span class="info-label">Customer</span><span class="info-value">Rajesh Nair</span></div>
+            <div class="info-row"><span class="info-label">Cost Center</span><span class="info-value">Kollam</span></div>
+            <div class="info-row"><span class="info-label">Issue Type</span><span class="info-value">Service Request</span></div>
+            <div class="info-row"><span class="info-label">Priority</span><span class="info-value" style="color:#F59E0B;">Urgent</span></div>
+            <div class="info-row"><span class="info-label">Status</span><span class="info-value" style="color:#1E40AF;">New</span></div>
+          </div>
+
+          <button class="btn btn-secondary btn-block">
+            <i data-lucide="external-link" style="width:14px;height:14px;"></i>
+            Track Status
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="demo-bar">
+  <a href="index.html" class="home-link"><i data-lucide="home" style="width:14px;height:14px;display:inline;vertical-align:middle;"></i> Home</a>
+  <button onclick="goPrev()">← Prev</button>
+  <span class="step-indicator" id="stepInd">1 / 4</span>
+  <button onclick="goNext()">Next →</button>
+</div>
+
+<script>
+lucide.createIcons();
+let current = 0;
+const screens = document.querySelectorAll('.screen');
+const total = screens.length;
+
+function show(i) {
+  screens.forEach((s, idx) => s.classList.toggle('active', idx === i));
+  document.getElementById('stageName').textContent = screens[i].dataset.name;
+  document.getElementById('stepInd').textContent = `${i+1} / ${total}`;
+  current = i;
+}
+function goNext() { if (current < total - 1) show(current + 1); }
+function goPrev() { if (current > 0) show(current - 1); }
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight') goNext();
+  if (e.key === 'ArrowLeft') goPrev();
+});
+</script>
+</body>
+</html>

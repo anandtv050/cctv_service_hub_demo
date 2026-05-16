@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Technician App — ServiceHub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+<link rel="stylesheet" href="assets/styles.css">
+<style>
+  body { background: #0F172A; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 40px 20px 100px; }
+  .stage { text-align: center; }
+  .stage-title { color: rgba(255,255,255,0.6); font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+  .stage-name { color: white; font-size: 28px; font-weight: 700; margin: 0 0 32px; }
+
+  /* Login */
+  .login-screen { background: linear-gradient(160deg, #4F46E5 0%, #6366F1 100%); height: 100%; color: white; padding: 80px 24px 24px; display: flex; flex-direction: column; }
+  .login-logo { width: 64px; height: 64px; background: rgba(255,255,255,0.15); border-radius: 16px; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(10px); margin-bottom: 24px; }
+  .login-h { font-size: 28px; font-weight: 700; margin: 0 0 6px; }
+  .login-sub { opacity: 0.85; font-size: 14px; margin-bottom: 36px; }
+  .login-card { background: white; border-radius: 18px; padding: 24px; color: #111827; margin-top: auto; }
+
+  /* Home greeting */
+  .home-header { padding: 24px 20px 16px; }
+  .home-greet { font-size: 22px; font-weight: 700; margin: 0; }
+  .home-sub { color: #6B7280; font-size: 13px; margin-top: 2px; }
+
+  /* Stat row */
+  .stat-row { display: flex; gap: 8px; padding: 0 20px 16px; }
+  .stat-card { flex: 1; background: #fff; border-radius: 12px; padding: 12px; border: 1px solid #F3F4F6; }
+  .stat-num { font-size: 22px; font-weight: 700; margin-bottom: 2px; }
+  .stat-label { font-size: 11px; color: #6B7280; font-weight: 500; }
+
+  /* Task card */
+  .task-card { background: #fff; border-radius: 12px; padding: 14px; border: 1px solid #F3F4F6; margin-bottom: 10px; }
+  .task-card .top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+  .task-title { font-weight: 600; font-size: 14px; line-height: 1.3; }
+  .task-meta { display: flex; flex-wrap: wrap; gap: 6px; font-size: 11px; color: #6B7280; align-items: center; }
+  .task-cust { color: #111; font-weight: 600; font-size: 13px; }
+
+  /* Section title */
+  .sec-title { padding: 4px 20px 8px; display: flex; justify-content: space-between; align-items: center; }
+  .sec-title h3 { font-size: 15px; font-weight: 700; margin: 0; }
+  .sec-title a { font-size: 12px; color: #4F46E5; font-weight: 600; }
+
+  /* Task detail */
+  .detail-header { background: white; padding: 50px 20px 16px; border-bottom: 1px solid #F3F4F6; display: flex; align-items: center; gap: 12px; }
+  .back-btn { width: 36px; height: 36px; border-radius: 10px; background: #F3F4F6; display: flex; align-items: center; justify-content: center; }
+  .detail-title { font-size: 17px; font-weight: 700; }
+  .detail-body { padding: 16px 20px; }
+  .section-block { background: white; border-radius: 12px; padding: 14px; margin-bottom: 12px; border: 1px solid #F3F4F6; }
+  .section-block h4 { font-size: 12px; font-weight: 700; color: #6B7280; text-transform: uppercase; letter-spacing: 0.5px; margin: 0 0 10px; }
+  .row-icon { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 10px; }
+  .row-icon:last-child { margin-bottom: 0; }
+  .row-icon .ico { width: 32px; height: 32px; border-radius: 8px; background: #EEF2FF; color: #4F46E5; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .row-icon .txt strong { display: block; font-size: 14px; }
+  .row-icon .txt span { font-size: 12px; color: #6B7280; }
+
+  /* Action bar */
+  .action-bar { padding: 12px 20px 24px; background: white; border-top: 1px solid #F3F4F6; display: flex; gap: 10px; }
+
+  /* In progress */
+  .timer { background: linear-gradient(135deg, #F59E0B, #EF4444); color: white; padding: 20px; border-radius: 14px; text-align: center; margin-bottom: 16px; }
+  .timer-time { font-size: 36px; font-weight: 700; letter-spacing: 1px; font-variant-numeric: tabular-nums; }
+  .timer-label { font-size: 12px; opacity: 0.9; margin-top: 4px; }
+
+  /* Proof upload slots */
+  .upload-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .upload-slot { aspect-ratio: 1; border: 2px dashed #D1D5DB; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; color: #6B7280; font-size: 11px; }
+  .upload-slot.filled { border: none; background-size: cover; background-position: center; position: relative; overflow: hidden; }
+  .upload-slot.filled::after { content: '✓'; position: absolute; top: 6px; right: 6px; background: #10B981; color: white; width: 22px; height: 22px; border-radius: 999px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; }
+  .filled-1 { background: linear-gradient(135deg, #6EE7B7, #10B981); }
+  .filled-2 { background: linear-gradient(135deg, #93C5FD, #3B82F6); }
+
+  /* Complete */
+  .complete-screen { background: linear-gradient(180deg, #ECFDF5 0%, #fff 100%); height: 100%; padding: 80px 24px 24px; text-align: center; display: flex; flex-direction: column; }
+  .complete-circle { width: 110px; height: 110px; border-radius: 999px; background: #10B981; display: inline-flex; align-items: center; justify-content: center; margin: 0 auto 24px; box-shadow: 0 20px 40px -10px rgba(16,185,129,0.5); animation: pop 0.5s ease; }
+  @keyframes pop { from { transform: scale(0); } to { transform: scale(1); } }
+  .rating { display: inline-flex; gap: 4px; margin: 16px 0; }
+</style>
+</head>
+<body>
+
+<div class="stage">
+  <div class="stage-title">Technician App · Sajeev T.</div>
+  <h2 class="stage-name" id="stageName">1. Login</h2>
+
+  <div class="phone-frame">
+    <div class="phone-notch"></div>
+    <div class="phone-screen">
+
+      <!-- 1. LOGIN -->
+      <div class="screen active" data-name="1. Login">
+        <div class="login-screen">
+          <div class="login-logo"><i data-lucide="layers" style="width:32px;height:32px;color:white;"></i></div>
+          <h2 class="login-h">ServiceHub</h2>
+          <div class="login-sub">Technician Portal</div>
+
+          <div class="login-card">
+            <div class="field">
+              <label class="label">Phone Number</label>
+              <input type="text" class="input" value="+91 98470 11122">
+            </div>
+            <div class="field">
+              <label class="label">OTP</label>
+              <div style="display:flex; gap:8px;">
+                <input class="input" style="text-align:center;font-weight:700;" value="4" maxlength="1">
+                <input class="input" style="text-align:center;font-weight:700;" value="8" maxlength="1">
+                <input class="input" style="text-align:center;font-weight:700;" value="2" maxlength="1">
+                <input class="input" style="text-align:center;font-weight:700;" value="1" maxlength="1">
+              </div>
+            </div>
+            <button class="btn btn-primary btn-block btn-lg" onclick="goNext()">
+              Sign In
+              <i data-lucide="arrow-right" style="width:16px;height:16px;"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. HOME / TODAY -->
+      <div class="screen" data-name="2. Home — Today's Tasks">
+        <div style="flex:1; overflow-y:auto; padding-top:40px;">
+          <div class="home-header">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <div>
+                <h2 class="home-greet">Hi, Sajeev 👋</h2>
+                <div class="home-sub">Tuesday, May 12 · 4 tasks today</div>
+              </div>
+              <div class="avatar avatar-lg">ST</div>
+            </div>
+          </div>
+
+          <div class="stat-row">
+            <div class="stat-card">
+              <div class="stat-num" style="color:#F59E0B;">3</div>
+              <div class="stat-label">In Progress</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-num" style="color:#4F46E5;">5</div>
+              <div class="stat-label">Upcoming</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-num" style="color:#10B981;">12</div>
+              <div class="stat-label">Done · Week</div>
+            </div>
+          </div>
+
+          <div class="sec-title"><h3>Today's tasks</h3><a>See all</a></div>
+
+          <div style="padding:0 20px 12px;">
+            <div class="task-card card-hover" onclick="show(3)">
+              <div class="top">
+                <div class="task-cust">Rajesh Nair</div>
+                <span class="pill pill-red">Urgent</span>
+              </div>
+              <div class="task-title">AC not cooling — Showroom</div>
+              <div class="task-meta" style="margin-top:6px;">
+                <span class="cc-pill"><i data-lucide="map-pin" style="width:10px;height:10px;display:inline;"></i> Kollam</span>
+                <span>·</span>
+                <span><i data-lucide="clock" style="width:11px;height:11px;display:inline;vertical-align:middle;"></i> 11:00 AM</span>
+              </div>
+            </div>
+
+            <div class="task-card">
+              <div class="top">
+                <div class="task-cust">Priya Menon</div>
+                <span class="pill pill-amber">Medium</span>
+              </div>
+              <div class="task-title">Network cable replacement</div>
+              <div class="task-meta" style="margin-top:6px;">
+                <span class="cc-pill"><i data-lucide="map-pin" style="width:10px;height:10px;display:inline;"></i> Kollam</span>
+                <span>·</span>
+                <span><i data-lucide="clock" style="width:11px;height:11px;display:inline;vertical-align:middle;"></i> 2:00 PM</span>
+              </div>
+            </div>
+
+            <div class="task-card">
+              <div class="top">
+                <div class="task-cust">Anoop Kumar</div>
+                <span class="pill pill-indigo">Service</span>
+              </div>
+              <div class="task-title">CCTV camera focus issue</div>
+              <div class="task-meta" style="margin-top:6px;">
+                <span class="cc-pill"><i data-lucide="map-pin" style="width:10px;height:10px;display:inline;"></i> Kollam</span>
+                <span>·</span>
+                <span><i data-lucide="clock" style="width:11px;height:11px;display:inline;vertical-align:middle;"></i> 4:30 PM</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bottom-nav">
+          <div class="bottom-nav-item active">
+            <i data-lucide="home" style="width:20px;height:20px;"></i>
+            <span>Home</span>
+          </div>
+          <div class="bottom-nav-item" onclick="show(2)">
+            <i data-lucide="list-checks" style="width:20px;height:20px;"></i>
+            <span>Tasks</span>
+          </div>
+          <div class="bottom-nav-item">
+            <i data-lucide="bell" style="width:20px;height:20px;"></i>
+            <span>Alerts</span>
+          </div>
+          <div class="bottom-nav-item">
+            <i data-lucide="user" style="width:20px;height:20px;"></i>
+            <span>Profile</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. TASK LIST (with tabs) -->
+      <div class="screen" data-name="3. Task List · Tabs">
+        <div style="flex:1; overflow-y:auto; padding-top:40px;">
+          <div class="home-header">
+            <h2 class="home-greet" style="font-size:20px;">My Tasks</h2>
+          </div>
+          <div class="tabs" style="padding: 0 20px; margin-bottom:12px;">
+            <div class="tab active">Today (4)</div>
+            <div class="tab">Upcoming (5)</div>
+            <div class="tab">Done</div>
+          </div>
+          <div style="padding:0 20px 8px; display:flex; gap:6px; overflow-x:auto;">
+            <span class="chip active">All</span>
+            <span class="chip">Service</span>
+            <span class="chip">Project</span>
+            <span class="chip">Urgent</span>
+          </div>
+
+          <div style="padding:8px 20px 12px;">
+            <div class="task-card card-hover" onclick="show(3)">
+              <div class="top">
+                <div class="task-cust">Rajesh Nair</div>
+                <span class="pill pill-red">Urgent</span>
+              </div>
+              <div class="task-title">AC not cooling — Showroom</div>
+              <div class="task-meta" style="margin-top:6px;">
+                <span class="cc-pill">Kollam</span>
+                <span>·</span>
+                <span>11:00 AM</span>
+                <span>·</span>
+                <span class="pill pill-indigo">Service</span>
+              </div>
+            </div>
+
+            <div class="task-card">
+              <div class="top">
+                <div class="task-cust">Hotel Sea View</div>
+                <span class="pill pill-amber">High</span>
+              </div>
+              <div class="task-title">CCTV installation — 12 cameras</div>
+              <div class="task-meta" style="margin-top:6px;">
+                <span class="cc-pill">Kollam</span>
+                <span>·</span>
+                <span>1:30 PM</span>
+                <span>·</span>
+                <span class="pill pill-emerald">Project</span>
+              </div>
+            </div>
+
+            <div class="task-card">
+              <div class="top">
+                <div class="task-cust">Priya Menon</div>
+                <span class="pill pill-amber">Medium</span>
+              </div>
+              <div class="task-title">Network cable replacement</div>
+              <div class="task-meta" style="margin-top:6px;">
+                <span class="cc-pill">Kollam</span>
+                <span>·</span>
+                <span>2:00 PM</span>
+              </div>
+            </div>
+
+            <div class="task-card">
+              <div class="top">
+                <div class="task-cust">Anoop Kumar</div>
+                <span class="pill pill-gray">Low</span>
+              </div>
+              <div class="task-title">CCTV camera focus issue</div>
+              <div class="task-meta" style="margin-top:6px;">
+                <span class="cc-pill">Kollam</span>
+                <span>·</span>
+                <span>4:30 PM</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="bottom-nav">
+          <div class="bottom-nav-item" onclick="show(1)">
+            <i data-lucide="home" style="width:20px;height:20px;"></i><span>Home</span>
+          </div>
+          <div class="bottom-nav-item active">
+            <i data-lucide="list-checks" style="width:20px;height:20px;"></i><span>Tasks</span>
+          </div>
+          <div class="bottom-nav-item">
+            <i data-lucide="bell" style="width:20px;height:20px;"></i><span>Alerts</span>
+          </div>
+          <div class="bottom-nav-item">
+            <i data-lucide="user" style="width:20px;height:20px;"></i><span>Profile</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. TASK DETAIL -->
+      <div class="screen" data-name="4. Task Detail">
+        <div style="flex:1; overflow-y:auto;">
+          <div class="detail-header">
+            <div class="back-btn" onclick="show(2)"><i data-lucide="chevron-left" style="width:20px;height:20px;"></i></div>
+            <div>
+              <div style="font-size:11px;color:#6B7280;font-weight:600;">TICKET #SR-2451</div>
+              <div class="detail-title">AC not cooling</div>
+            </div>
+          </div>
+
+          <div class="detail-body">
+            <div style="display:flex; gap:6px; margin-bottom:12px;">
+              <span class="pill pill-red">Urgent</span>
+              <span class="pill pill-indigo">Service</span>
+              <span class="pill" style="background:#DBEAFE;color:#1E40AF;">Assigned</span>
+            </div>
+
+            <div class="section-block">
+              <h4>Customer</h4>
+              <div class="row-icon">
+                <div class="ico"><i data-lucide="user" style="width:16px;height:16px;"></i></div>
+                <div class="txt"><strong>Rajesh Nair</strong><span>Showroom owner</span></div>
+              </div>
+              <div class="row-icon">
+                <div class="ico"><i data-lucide="phone" style="width:16px;height:16px;"></i></div>
+                <div class="txt"><strong>+91 98470 12345</strong><span>Tap to call</span></div>
+              </div>
+              <div class="row-icon">
+                <div class="ico"><i data-lucide="map-pin" style="width:16px;height:16px;"></i></div>
+                <div class="txt"><strong>Sky Plaza, Kollam</strong><span>3.2 km away</span></div>
+              </div>
+            </div>
+
+            <div class="section-block">
+              <h4>Issue</h4>
+              <p style="font-size:13px; margin:0; color:#374151; line-height:1.5;">AC unit in our showroom is not cooling. Started this morning, customers complaining.</p>
+              <div style="display:flex; gap:6px; margin-top:10px;">
+                <div style="width:60px;height:60px;border-radius:8px;background:linear-gradient(135deg,#FCA5A5,#EF4444);"></div>
+                <div style="width:60px;height:60px;border-radius:8px;background:linear-gradient(135deg,#FCD34D,#F59E0B);"></div>
+              </div>
+            </div>
+
+            <div class="section-block">
+              <h4>Schedule</h4>
+              <div class="row-icon">
+                <div class="ico"><i data-lucide="calendar" style="width:16px;height:16px;"></i></div>
+                <div class="txt"><strong>Today · 11:00 AM</strong><span>SLA: 4 hours</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="action-bar">
+          <button class="btn btn-secondary" style="flex:1;"><i data-lucide="phone" style="width:14px;height:14px;"></i>Call</button>
+          <button class="btn btn-primary" style="flex:2;" onclick="goNext()">
+            Start Task
+            <i data-lucide="play" style="width:14px;height:14px;"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- 5. IN PROGRESS -->
+      <div class="screen" data-name="5. Task In Progress">
+        <div style="flex:1; overflow-y:auto;">
+          <div class="detail-header">
+            <div class="back-btn"><i data-lucide="chevron-left" style="width:20px;height:20px;"></i></div>
+            <div>
+              <div style="font-size:11px;color:#6B7280;font-weight:600;">TICKET #SR-2451</div>
+              <div class="detail-title">AC not cooling</div>
+            </div>
+          </div>
+          <div class="detail-body">
+            <div class="timer">
+              <div class="timer-time">00:24:18</div>
+              <div class="timer-label">In Progress · Started 11:02 AM</div>
+            </div>
+
+            <div class="section-block">
+              <h4>Work Note</h4>
+              <textarea class="textarea" rows="3" style="resize:none;" placeholder="Add notes about what you're doing...">Diagnosed compressor fault. Replacing capacitor and refilling refrigerant.</textarea>
+            </div>
+
+            <div class="section-block">
+              <h4>Proof Photos</h4>
+              <div class="upload-grid">
+                <div class="upload-slot filled filled-1"></div>
+                <div class="upload-slot filled filled-2"></div>
+                <div class="upload-slot">
+                  <i data-lucide="camera" style="width:24px;height:24px;"></i>
+                  <span>Add photo</span>
+                </div>
+                <div class="upload-slot">
+                  <i data-lucide="image-plus" style="width:24px;height:24px;"></i>
+                  <span>From gallery</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="action-bar">
+          <button class="btn btn-secondary" style="flex:1;">Pause</button>
+          <button class="btn btn-success" style="flex:2;" onclick="goNext()">
+            <i data-lucide="check" style="width:14px;height:14px;"></i>
+            Mark as Done
+          </button>
+        </div>
+      </div>
+
+      <!-- 6. COMPLETION FORM / PROOF -->
+      <div class="screen" data-name="6. Submit Proof">
+        <div style="flex:1; overflow-y:auto;">
+          <div class="detail-header">
+            <div class="back-btn"><i data-lucide="chevron-left" style="width:20px;height:20px;"></i></div>
+            <div>
+              <div style="font-size:11px;color:#6B7280;font-weight:600;">FINAL SUBMISSION</div>
+              <div class="detail-title">Close Ticket</div>
+            </div>
+          </div>
+          <div class="detail-body">
+            <div class="section-block">
+              <h4>Work Summary</h4>
+              <textarea class="textarea" rows="3" style="resize:none;">Replaced faulty capacitor, refilled refrigerant. AC cooling normally. Customer verified.</textarea>
+            </div>
+
+            <div class="section-block">
+              <h4>Parts Used</h4>
+              <div style="display:flex; justify-content:space-between; padding:6px 0; font-size:13px; border-bottom:1px solid #F3F4F6;">
+                <span>Capacitor 45µF</span>
+                <span style="font-weight:600;">₹850</span>
+              </div>
+              <div style="display:flex; justify-content:space-between; padding:6px 0; font-size:13px;">
+                <span>Refrigerant (R-410A)</span>
+                <span style="font-weight:600;">₹1,200</span>
+              </div>
+            </div>
+
+            <div class="section-block">
+              <h4>Customer Signature</h4>
+              <div style="height:80px; border:1.5px dashed #D1D5DB; border-radius:10px; display:flex; align-items:center; justify-content:center;">
+                <svg viewBox="0 0 200 60" style="width:80%; height:100%;">
+                  <path d="M10,40 Q30,10 50,30 T90,30 Q110,50 130,25 T180,30" stroke="#4F46E5" stroke-width="2" fill="none"/>
+                </svg>
+              </div>
+            </div>
+
+            <div class="section-block">
+              <h4>Customer Rating</h4>
+              <div class="rating">
+                <i data-lucide="star" style="width:24px;height:24px;color:#F59E0B;fill:#F59E0B;"></i>
+                <i data-lucide="star" style="width:24px;height:24px;color:#F59E0B;fill:#F59E0B;"></i>
+                <i data-lucide="star" style="width:24px;height:24px;color:#F59E0B;fill:#F59E0B;"></i>
+                <i data-lucide="star" style="width:24px;height:24px;color:#F59E0B;fill:#F59E0B;"></i>
+                <i data-lucide="star" style="width:24px;height:24px;color:#F59E0B;fill:#F59E0B;"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="action-bar">
+          <button class="btn btn-success btn-block btn-lg" onclick="goNext()">
+            <i data-lucide="check-circle-2" style="width:16px;height:16px;"></i>
+            Submit & Close Ticket
+          </button>
+        </div>
+      </div>
+
+      <!-- 7. COMPLETE -->
+      <div class="screen" data-name="7. Task Complete">
+        <div class="complete-screen">
+          <div class="complete-circle"><i data-lucide="check" style="width:56px;height:56px;color:white;stroke-width:3;"></i></div>
+          <h2 style="font-size:24px; font-weight:700; margin:0 0 8px;">Great work!</h2>
+          <p style="color:#4B5563; font-size:14px; margin:0 0 8px;">Ticket #SR-2451 closed</p>
+          <div style="font-size:13px; color:#10B981; font-weight:600;">⭐ 5/5 from Rajesh Nair</div>
+
+          <div class="info-card" style="margin-top:32px; text-align:left;">
+            <div style="display:flex; justify-content:space-between; padding:8px 0; font-size:13px; border-bottom:1px solid #F3F4F6;">
+              <span style="color:#6B7280;">Time taken</span>
+              <span style="font-weight:600;">42 minutes</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; padding:8px 0; font-size:13px; border-bottom:1px solid #F3F4F6;">
+              <span style="color:#6B7280;">Parts cost</span>
+              <span style="font-weight:600;">₹2,050</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; padding:8px 0; font-size:13px;">
+              <span style="color:#6B7280;">Points earned</span>
+              <span style="font-weight:600; color:#10B981;">+50 ⚡</span>
+            </div>
+          </div>
+
+          <button class="btn btn-primary btn-block btn-lg" style="margin-top:24px;" onclick="show(1)">
+            Back to Home
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="demo-bar">
+  <a href="index.html" class="home-link"><i data-lucide="home" style="width:14px;height:14px;display:inline;vertical-align:middle;"></i> Home</a>
+  <button onclick="goPrev()">← Prev</button>
+  <span class="step-indicator" id="stepInd">1 / 7</span>
+  <button onclick="goNext()">Next →</button>
+</div>
+
+<script>
+lucide.createIcons();
+let current = 0;
+const screens = document.querySelectorAll('.screen');
+const total = screens.length;
+
+function show(i) {
+  if (i < 0 || i >= total) return;
+  screens.forEach((s, idx) => s.classList.toggle('active', idx === i));
+  document.getElementById('stageName').textContent = screens[i].dataset.name;
+  document.getElementById('stepInd').textContent = `${i+1} / ${total}`;
+  current = i;
+  lucide.createIcons();
+}
+function goNext() { if (current < total - 1) show(current + 1); }
+function goPrev() { if (current > 0) show(current - 1); }
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight') goNext();
+  if (e.key === 'ArrowLeft') goPrev();
+});
+</script>
+</body>
+</html>

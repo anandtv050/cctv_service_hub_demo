@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ServiceHub — Demo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+<link rel="stylesheet" href="assets/styles.css">
+<style>
+  body { background: linear-gradient(135deg, #EEF2FF 0%, #F9FAFB 50%, #ECFDF5 100%); min-height: 100vh; }
+  .hero { max-width: 1100px; margin: 0 auto; padding: 80px 24px 40px; text-align: center; }
+  .logo-mark { width: 64px; height: 64px; background: linear-gradient(135deg, #6366F1, #4F46E5); border-radius: 18px; display: inline-flex; align-items: center; justify-content: center; color: white; box-shadow: 0 10px 30px -10px rgba(79,70,229,0.5); margin-bottom: 24px; }
+  .eyebrow { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; background: rgba(79,70,229,0.1); color: #4F46E5; border-radius: 999px; font-size: 13px; font-weight: 600; margin-bottom: 20px; }
+  h1.title { font-size: 52px; font-weight: 800; letter-spacing: -1.5px; margin: 0 0 16px; line-height: 1.1; }
+  h1.title span { background: linear-gradient(135deg, #4F46E5, #10B981); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .subtitle { font-size: 18px; color: #4B5563; max-width: 640px; margin: 0 auto 40px; line-height: 1.6; }
+  .persona-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; max-width: 1100px; margin: 0 auto; padding: 0 24px 60px; }
+  .persona-card { background: #fff; border-radius: 20px; padding: 28px 24px; border: 1px solid #E5E7EB; cursor: pointer; transition: all 0.25s; text-decoration: none; color: inherit; display: block; position: relative; overflow: hidden; }
+  .persona-card:hover { transform: translateY(-6px); box-shadow: 0 25px 50px -15px rgba(0,0,0,0.15); border-color: #4F46E5; }
+  .persona-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: var(--accent); }
+  .persona-card[data-color="indigo"] { --accent: #4F46E5; }
+  .persona-card[data-color="emerald"] { --accent: #10B981; }
+  .persona-card[data-color="amber"] { --accent: #F59E0B; }
+  .persona-card[data-color="rose"] { --accent: #F43F5E; }
+  .persona-icon { width: 48px; height: 48px; border-radius: 12px; display: inline-flex; align-items: center; justify-content: center; color: white; margin-bottom: 16px; }
+  .persona-card[data-color="indigo"] .persona-icon { background: #4F46E5; }
+  .persona-card[data-color="emerald"] .persona-icon { background: #10B981; }
+  .persona-card[data-color="amber"] .persona-icon { background: #F59E0B; }
+  .persona-card[data-color="rose"] .persona-icon { background: #F43F5E; }
+  .persona-name { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
+  .persona-desc { font-size: 13px; color: #6B7280; line-height: 1.5; margin-bottom: 16px; }
+  .persona-platform { display: inline-flex; gap: 6px; }
+  .platform-tag { font-size: 11px; padding: 3px 8px; border-radius: 6px; background: #F3F4F6; color: #6B7280; font-weight: 600; }
+  .flow-section { background: #fff; padding: 60px 24px; border-top: 1px solid #E5E7EB; }
+  .flow-inner { max-width: 1100px; margin: 0 auto; }
+  .flow-title { text-align: center; font-size: 28px; font-weight: 700; margin: 0 0 8px; }
+  .flow-sub { text-align: center; color: #6B7280; margin-bottom: 40px; }
+  .flow-steps { display: flex; justify-content: space-between; align-items: stretch; gap: 12px; overflow-x: auto; padding: 8px 4px; }
+  .flow-step { flex: 1; min-width: 160px; background: #F9FAFB; border-radius: 14px; padding: 20px; text-align: center; border: 1px solid #E5E7EB; position: relative; }
+  .flow-step-num { width: 28px; height: 28px; border-radius: 999px; background: #4F46E5; color: #fff; font-size: 12px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 12px; }
+  .flow-step-icon { color: #4F46E5; margin-bottom: 8px; }
+  .flow-step-title { font-weight: 600; font-size: 14px; margin-bottom: 4px; }
+  .flow-step-desc { font-size: 12px; color: #6B7280; line-height: 1.4; }
+  .flow-arrow { display: flex; align-items: center; color: #D1D5DB; }
+  .footer { text-align: center; padding: 40px 24px; color: #9CA3AF; font-size: 13px; }
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="logo-mark">
+    <i data-lucide="layers" style="width:32px;height:32px;"></i>
+  </div>
+  <div class="eyebrow">
+    <i data-lucide="sparkles" style="width:14px;height:14px;"></i>
+    Interactive Prototype Demo
+  </div>
+  <h1 class="title">ServiceHub<br><span>Service & Project Management</span></h1>
+  <p class="subtitle">A unified platform connecting customers, technicians, project managers, and admins across all your cost centers — from missed call to job done.</p>
+</section>
+
+<div class="persona-grid">
+
+  <a href="customer.html" class="persona-card" data-color="indigo">
+    <div class="persona-icon"><i data-lucide="user" style="width:24px;height:24px;"></i></div>
+    <div class="persona-name">Customer</div>
+    <div class="persona-desc">Reports an issue via missed call, fills the auto-link form, gets a ticket.</div>
+    <div class="persona-platform">
+      <span class="platform-tag">📱 Mobile</span>
+    </div>
+  </a>
+
+  <a href="technician.html" class="persona-card" data-color="emerald">
+    <div class="persona-icon"><i data-lucide="wrench" style="width:24px;height:24px;"></i></div>
+    <div class="persona-name">Technician</div>
+    <div class="persona-desc">Sees assigned tasks, updates status, uploads proof, closes tickets.</div>
+    <div class="persona-platform">
+      <span class="platform-tag">📱 Mobile App</span>
+    </div>
+  </a>
+
+  <a href="pm.html" class="persona-card" data-color="amber">
+    <div class="persona-icon"><i data-lucide="briefcase" style="width:24px;height:24px;"></i></div>
+    <div class="persona-name">Project Manager</div>
+    <div class="persona-desc">Tracks projects, approves proofs, manages team and timelines.</div>
+    <div class="persona-platform">
+      <span class="platform-tag">💻 Web</span>
+      <span class="platform-tag">📱 Mobile</span>
+    </div>
+  </a>
+
+  <a href="admin.html" class="persona-card" data-color="rose">
+    <div class="persona-icon"><i data-lucide="shield-check" style="width:24px;height:24px;"></i></div>
+    <div class="persona-name">Admin</div>
+    <div class="persona-desc">Full control: all cost centers, tickets, projects, reports.</div>
+    <div class="persona-platform">
+      <span class="platform-tag">💻 Web</span>
+      <span class="platform-tag">📱 Mobile</span>
+    </div>
+  </a>
+
+</div>
+
+<section class="flow-section">
+  <div class="flow-inner">
+    <h2 class="flow-title">How a service request flows</h2>
+    <p class="flow-sub">From a missed call to a closed ticket — fully tracked.</p>
+
+    <div class="flow-steps">
+      <div class="flow-step">
+        <div class="flow-step-num">1</div>
+        <i data-lucide="phone-missed" class="flow-step-icon"></i>
+        <div class="flow-step-title">Missed Call</div>
+        <div class="flow-step-desc">Customer rings the support line</div>
+      </div>
+      <div class="flow-arrow"><i data-lucide="arrow-right"></i></div>
+      <div class="flow-step">
+        <div class="flow-step-num">2</div>
+        <i data-lucide="message-square" class="flow-step-icon"></i>
+        <div class="flow-step-title">SMS Link</div>
+        <div class="flow-step-desc">Auto-link sent to customer</div>
+      </div>
+      <div class="flow-arrow"><i data-lucide="arrow-right"></i></div>
+      <div class="flow-step">
+        <div class="flow-step-num">3</div>
+        <i data-lucide="clipboard-list" class="flow-step-icon"></i>
+        <div class="flow-step-title">Form Fill</div>
+        <div class="flow-step-desc">Customer describes the issue</div>
+      </div>
+      <div class="flow-arrow"><i data-lucide="arrow-right"></i></div>
+      <div class="flow-step">
+        <div class="flow-step-num">4</div>
+        <i data-lucide="ticket" class="flow-step-icon"></i>
+        <div class="flow-step-title">Ticket Created</div>
+        <div class="flow-step-desc">Routed to right team</div>
+      </div>
+      <div class="flow-arrow"><i data-lucide="arrow-right"></i></div>
+      <div class="flow-step">
+        <div class="flow-step-num">5</div>
+        <i data-lucide="git-branch" class="flow-step-icon"></i>
+        <div class="flow-step-title">Service or Project</div>
+        <div class="flow-step-desc">Classified by admin/PM</div>
+      </div>
+      <div class="flow-arrow"><i data-lucide="arrow-right"></i></div>
+      <div class="flow-step">
+        <div class="flow-step-num">6</div>
+        <i data-lucide="user-check" class="flow-step-icon"></i>
+        <div class="flow-step-title">Assigned</div>
+        <div class="flow-step-desc">Technician picks it up</div>
+      </div>
+      <div class="flow-arrow"><i data-lucide="arrow-right"></i></div>
+      <div class="flow-step">
+        <div class="flow-step-num">7</div>
+        <i data-lucide="check-circle-2" class="flow-step-icon"></i>
+        <div class="flow-step-title">Done</div>
+        <div class="flow-step-desc">Proof uploaded & closed</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="footer">
+  ServiceHub Prototype • Built for live demo • Click any persona above to begin
+</div>
+
+<script>lucide.createIcons();</script>
+</body>
+</html>
