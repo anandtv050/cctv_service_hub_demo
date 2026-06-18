@@ -150,7 +150,6 @@
   <div class="sidebar-section">Team</div>
   <a class="sidebar-link" onclick="showView('technicians', this)"><i data-lucide="users"></i> My Technicians</a>
   <a class="sidebar-link" onclick="showView('availability', this)"><i data-lucide="gauge"></i> Availability <span id="freeBadge" style="margin-left:auto; background:#10B981; color:white; font-size:10px; padding:2px 6px; border-radius:999px;">0</span></a>
-  <a class="sidebar-link" onclick="showView('schedule', this)"><i data-lucide="calendar"></i> Schedule</a>
 
   <div class="sidebar-section">More</div>
   <a class="sidebar-link" onclick="showView('messages', this)"><i data-lucide="message-circle"></i> Messages</a>
@@ -386,63 +385,6 @@
             </div>
           </div>
         </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ============ SCHEDULE VIEW ============ -->
-  <div class="view" id="view-schedule">
-    <div style="margin-bottom:20px;">
-      <h1 style="font-size:24px; font-weight:700; margin:0;">Schedule</h1>
-      <p style="color:#6B7280; margin:4px 0 0; font-size:14px;">Week of May 12 – May 18, 2026</p>
-    </div>
-
-    <div class="chart-card">
-      <div style="display:grid; grid-template-columns: 120px repeat(7, 1fr); gap:8px;">
-        <div></div>
-        <div style="text-align:center; font-size:12px; font-weight:700; padding:8px;">Mon 12</div>
-        <div style="text-align:center; font-size:12px; font-weight:700; padding:8px; color:#4F46E5;">Tue 13</div>
-        <div style="text-align:center; font-size:12px; font-weight:700; padding:8px;">Wed 14</div>
-        <div style="text-align:center; font-size:12px; font-weight:700; padding:8px;">Thu 15</div>
-        <div style="text-align:center; font-size:12px; font-weight:700; padding:8px;">Fri 16</div>
-        <div style="text-align:center; font-size:12px; font-weight:700; padding:8px; color:#9CA3AF;">Sat 17</div>
-        <div style="text-align:center; font-size:12px; font-weight:700; padding:8px; color:#9CA3AF;">Sun 18</div>
-
-        <div style="font-size:13px; font-weight:600; display:flex; align-items:center; gap:8px; padding:10px 0;"><div class="avatar avatar-sm" style="background:linear-gradient(135deg,#FCA5A5,#EF4444);">ST</div>Sajeev T.</div>
-        <div style="background:#FEE2E2; border-radius:6px; padding:6px 8px; font-size:11px; color:#991B1B; font-weight:600;">AC Repair</div>
-        <div style="background:#EEF2FF; border-radius:6px; padding:6px 8px; font-size:11px; color:#4F46E5; font-weight:600;">CCTV Mount</div>
-        <div style="background:#EEF2FF; border-radius:6px; padding:6px 8px; font-size:11px; color:#4F46E5; font-weight:600;">CCTV Mount</div>
-        <div style="background:#D1FAE5; border-radius:6px; padding:6px 8px; font-size:11px; color:#065F46; font-weight:600;">Service x2</div>
-        <div style="background:#EEF2FF; border-radius:6px; padding:6px 8px; font-size:11px; color:#4F46E5; font-weight:600;">CCTV Test</div>
-        <div></div>
-        <div></div>
-
-        <div style="font-size:13px; font-weight:600; display:flex; align-items:center; gap:8px; padding:10px 0;"><div class="avatar avatar-sm" style="background:linear-gradient(135deg,#6EE7B7,#10B981);">VR</div>Vishnu R.</div>
-        <div style="background:#EEF2FF; border-radius:6px; padding:6px 8px; font-size:11px; color:#4F46E5; font-weight:600;">Wiring</div>
-        <div style="background:#EEF2FF; border-radius:6px; padding:6px 8px; font-size:11px; color:#4F46E5; font-weight:600;">Wiring</div>
-        <div style="background:#FEF3C7; border-radius:6px; padding:6px 8px; font-size:11px; color:#92400E; font-weight:600;">Network</div>
-        <div style="background:#FEF3C7; border-radius:6px; padding:6px 8px; font-size:11px; color:#92400E; font-weight:600;">Network</div>
-        <div style="background:#D1FAE5; border-radius:6px; padding:6px 8px; font-size:11px; color:#065F46; font-weight:600;">Service</div>
-        <div></div>
-        <div></div>
-
-        <div style="font-size:13px; font-weight:600; display:flex; align-items:center; gap:8px; padding:10px 0;"><div class="avatar avatar-sm" style="background:linear-gradient(135deg,#A78BFA,#7C3AED);">HM</div>Hareesh M.</div>
-        <div style="background:#FEF3C7; border-radius:6px; padding:6px 8px; font-size:11px; color:#92400E; font-weight:600;">Smart Lock</div>
-        <div style="background:#FEF3C7; border-radius:6px; padding:6px 8px; font-size:11px; color:#92400E; font-weight:600;">Smart Lock</div>
-        <div style="background:#FEF3C7; border-radius:6px; padding:6px 8px; font-size:11px; color:#92400E; font-weight:600;">Smart Lock</div>
-        <div></div>
-        <div style="background:#D1FAE5; border-radius:6px; padding:6px 8px; font-size:11px; color:#065F46; font-weight:600;">Service</div>
-        <div></div>
-        <div></div>
-
-        <div style="font-size:13px; font-weight:600; display:flex; align-items:center; gap:8px; padding:10px 0;"><div class="avatar avatar-sm" style="background:linear-gradient(135deg,#93C5FD,#3B82F6);">AS</div>Anjali S.</div>
-        <div style="background:#F3F4F6; border-radius:6px; padding:6px 8px; font-size:11px; color:#6B7280; font-weight:600;">Leave</div>
-        <div style="background:#F3F4F6; border-radius:6px; padding:6px 8px; font-size:11px; color:#6B7280; font-weight:600;">Leave</div>
-        <div></div>
-        <div style="background:#EEF2FF; border-radius:6px; padding:6px 8px; font-size:11px; color:#4F46E5; font-weight:600;">Network</div>
-        <div style="background:#EEF2FF; border-radius:6px; padding:6px 8px; font-size:11px; color:#4F46E5; font-weight:600;">Network</div>
-        <div></div>
-        <div></div>
       </div>
     </div>
   </div>
