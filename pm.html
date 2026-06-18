@@ -33,9 +33,104 @@
   .chart-card { background: white; border-radius: 14px; padding: 20px; border: 1px solid #F3F4F6; }
   .approval-card { display: flex; gap: 12px; padding: 12px; border-radius: 10px; border: 1px solid #F3F4F6; margin-bottom: 8px; }
   .approval-img { width: 60px; height: 60px; border-radius: 10px; flex-shrink: 0; }
+
+  /* Modal */
+  .modal-backdrop { position: fixed; inset: 0; background: rgba(15,23,42,0.5); backdrop-filter: blur(4px); z-index: 100; display: none; align-items: center; justify-content: center; }
+  .modal-backdrop.show { display: flex; }
+  .modal { background: white; border-radius: 18px; width: 560px; max-height: 86vh; overflow-y: auto; padding: 28px; }
+  .modal-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+  .modal-title { font-size: 20px; font-weight: 700; margin: 0; }
+  .close-btn { width: 32px; height: 32px; border-radius: 8px; background: #F3F4F6; display: flex; align-items: center; justify-content: center; cursor: pointer; border: none; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+  /* Form validation */
+  .label.req::after { content:' *'; color:#EF4444; }
+  .input.err, .select.err, .textarea.err { border-color:#EF4444 !important; background:#FEF2F2; }
+  .field-err { color:#EF4444; font-size:11px; margin-top:4px; display:none; }
+  .field-err.show { display:block; }
+
+  /* Login gate */
+  .login-gate { position: fixed; inset: 0; z-index: 200; background: linear-gradient(160deg, #B45309 0%, #F59E0B 100%); display: flex; align-items: center; justify-content: center; padding: 24px; }
+  .login-gate.hide { display: none; }
+  .login-box { background: white; border-radius: 20px; padding: 36px; width: 380px; box-shadow: 0 30px 60px -15px rgba(0,0,0,0.3); }
+  .login-mark { width: 56px; height: 56px; background: linear-gradient(135deg, #F59E0B, #D97706); border-radius: 14px; display: flex; align-items: center; justify-content: center; color: white; margin-bottom: 18px; }
+
+  /* Toast */
+  .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(20px); background: #111827; color: white; padding: 12px 20px; border-radius: 12px; font-size: 14px; font-weight: 500; display: flex; align-items: center; gap: 8px; opacity: 0; pointer-events: none; transition: all 0.3s; z-index: 300; box-shadow: 0 10px 30px -5px rgba(0,0,0,0.4); }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  /* Task / project detail (Jira-style) */
+  .detail-grid { display: grid; grid-template-columns: 1fr 360px; gap: 24px; align-items: start; }
+  .crumb { font-size: 13px; color: #6B7280; margin-bottom: 12px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .crumb a { color: #4F46E5; cursor: pointer; font-weight: 600; }
+  .crumb .sep { color: #D1D5DB; }
+  .detail-h1 { font-size: 26px; font-weight: 800; margin: 0 0 16px; line-height: 1.25; }
+  .detail-actions { display: flex; gap: 10px; margin-bottom: 22px; flex-wrap: wrap; }
+  .det-card { background: #fff; border: 1px solid #E5E7EB; border-radius: 14px; padding: 18px 20px; margin-bottom: 16px; }
+  .det-panel-title { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 15px; margin: 0 0 14px; }
+  .det-row { display: flex; justify-content: space-between; gap: 16px; padding: 11px 0; font-size: 13px; border-bottom: 1px solid #F3F4F6; }
+  .det-row:last-child { border-bottom: none; }
+  .det-row .k { color: #6B7280; }
+  .det-row .v { font-weight: 600; text-align: right; }
+  .tt-wrap { display: flex; align-items: center; gap: 10px; }
+  .tt-bar { height: 8px; background: #E5E7EB; border-radius: 999px; overflow: hidden; flex: 1; }
+  .tt-fill { height: 100%; background: #10B981; border-radius: 999px; }
+  .desc-box { background: #F9FAFB; border: 1px solid #E5E7EB; border-radius: 10px; min-height: 56px; padding: 14px; font-size: 14px; color: #374151; line-height: 1.6; }
+  .act-tabs { display: flex; gap: 10px; margin: 8px 0 14px; flex-wrap: wrap; }
+  .badge-status { display: inline-flex; align-items: center; padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: 700; letter-spacing: 0.4px; }
+
+  /* Quick Filter */
+  .qf-panel { background: linear-gradient(135deg, #EEF2FF, #E0E7FF); border: 1px solid #C7D2FE; border-radius: 14px; padding: 20px; margin-bottom: 20px; display: none; }
+  .qf-panel.show { display: block; }
+  .qf-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px 16px; margin-bottom: 18px; }
+  .qf-field label { display: block; font-size: 11px; font-weight: 700; color: #4338CA; margin-bottom: 5px; }
+  .qf-field .input, .qf-field .select { padding: 9px 12px; font-size: 13px; background: #fff; }
+  .qf-actions { display: flex; gap: 10px; justify-content: flex-end; }
+  .qf-count { background: #4F46E5; color: #fff; font-size: 11px; font-weight: 700; padding: 1px 7px; border-radius: 999px; margin-left: 6px; }
+
+  /* Availability module */
+  .avail-summary { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 22px; }
+  .avail-stat { background: #fff; border: 1px solid #F3F4F6; border-radius: 12px; padding: 14px 16px; }
+  .avail-stat .n { font-size: 26px; font-weight: 800; }
+  .avail-stat .l { font-size: 12px; color: #6B7280; font-weight: 500; }
+  .finder { background: linear-gradient(135deg, #ECFDF5, #D1FAE5); border: 1px solid #A7F3D0; border-radius: 14px; padding: 18px 20px; margin-bottom: 22px; }
+  .finder-grid { display: flex; gap: 12px; flex-wrap: wrap; align-items: flex-end; }
+  .finder-field { flex: 1; min-width: 150px; }
+  .finder-field label { display: block; font-size: 11px; font-weight: 700; color: #065F46; margin-bottom: 5px; }
+  .tech-card { background: #fff; border: 1px solid #E5E7EB; border-radius: 14px; padding: 18px; transition: box-shadow .15s; }
+  .tech-card.best { border-color: #10B981; box-shadow: 0 0 0 3px rgba(16,185,129,0.18); }
+  .avail-badge { font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 999px; white-space: nowrap; }
+  .load-bar { height: 8px; background: #F3F4F6; border-radius: 999px; overflow: hidden; }
+  .load-fill { height: 100%; border-radius: 999px; }
+  .skill-chip { display: inline-block; background: #EEF2FF; color: #4338CA; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 999px; margin: 2px 2px 0 0; }
+  .skill-chip.hit { background: #10B981; color: #fff; }
+  .best-tag { background: #10B981; color: #fff; font-size: 10px; font-weight: 800; padding: 3px 9px; border-radius: 999px; letter-spacing: 0.4px; }
+  .move-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 7px 0; border-top: 1px solid #F3F4F6; font-size: 12px; }
 </style>
 </head>
 <body>
+
+<!-- ============ LOGIN GATE ============ -->
+<div class="login-gate" id="loginGate">
+  <div class="login-box">
+    <div class="login-mark"><i data-lucide="briefcase" style="width:26px;height:26px;"></i></div>
+    <h2 style="margin:0 0 4px; font-size:22px; font-weight:800;">ServiceHub</h2>
+    <p style="margin:0 0 24px; color:#6B7280; font-size:13px;">Project Manager Console</p>
+
+    <div class="field">
+      <label class="label">Email</label>
+      <input class="input" id="loginEmail" value="manoj.p@servicehub.in">
+    </div>
+    <div class="field">
+      <label class="label">Password</label>
+      <input class="input" id="loginPass" type="password" value="demo1234">
+    </div>
+    <button class="btn btn-primary btn-block btn-lg" style="background:linear-gradient(135deg,#F59E0B,#D97706);border:none; margin-top:6px;" onclick="signIn()">
+      Sign In <i data-lucide="arrow-right" style="width:16px;height:16px;"></i>
+    </button>
+    <p style="text-align:center; font-size:12px; color:#9CA3AF; margin:16px 0 0;">Signing in as <strong>Manoj Pillai</strong> · Kollam</p>
+  </div>
+</div>
 
 <div class="sidebar">
   <div class="brand-row">
@@ -48,11 +143,13 @@
 
   <div class="sidebar-section">Overview</div>
   <a class="sidebar-link active" onclick="showView('dashboard', this)"><i data-lucide="layout-dashboard"></i> My Dashboard</a>
+  <a class="sidebar-link" onclick="showView('tasks', this)"><i data-lucide="ticket"></i> Tasks <span id="taskCountBadge" style="margin-left:auto; background:#4F46E5; color:white; font-size:10px; padding:2px 6px; border-radius:999px;">4</span></a>
   <a class="sidebar-link" onclick="showView('projects', this)"><i data-lucide="folder-kanban"></i> My Projects <span style="margin-left:auto; background:#F59E0B; color:white; font-size:10px; padding:2px 6px; border-radius:999px;">5</span></a>
-  <a class="sidebar-link" onclick="showView('approvals', this)"><i data-lucide="check-square"></i> Approvals <span style="margin-left:auto; background:#EF4444; color:white; font-size:10px; padding:2px 6px; border-radius:999px;">3</span></a>
+  <a class="sidebar-link" onclick="showView('approvals', this)"><i data-lucide="check-square"></i> Approvals <span id="apprBadge" style="margin-left:auto; background:#EF4444; color:white; font-size:10px; padding:2px 6px; border-radius:999px;">0</span></a>
 
   <div class="sidebar-section">Team</div>
   <a class="sidebar-link" onclick="showView('technicians', this)"><i data-lucide="users"></i> My Technicians</a>
+  <a class="sidebar-link" onclick="showView('availability', this)"><i data-lucide="gauge"></i> Availability <span id="freeBadge" style="margin-left:auto; background:#10B981; color:white; font-size:10px; padding:2px 6px; border-radius:999px;">0</span></a>
   <a class="sidebar-link" onclick="showView('schedule', this)"><i data-lucide="calendar"></i> Schedule</a>
 
   <div class="sidebar-section">More</div>
@@ -74,6 +171,7 @@
       <input placeholder="Search my projects...">
     </div>
     <div style="display:flex; align-items:center; gap:14px;">
+      <button class="btn btn-primary" style="background:linear-gradient(135deg,#F59E0B,#D97706); border:none;" onclick="openTaskModal()"><i data-lucide="plus" style="width:14px;height:14px;"></i>New Task</button>
       <div class="icon-btn"><i data-lucide="bell" style="width:18px;height:18px;"></i></div>
       <div style="display:flex; align-items:center; gap:10px;">
         <div class="avatar" style="background:linear-gradient(135deg,#FBBF24,#D97706);">MP</div>
@@ -103,112 +201,16 @@
     <div>
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
         <h2 style="font-size:18px; font-weight:700; margin:0;">My Projects</h2>
-        <button class="btn btn-secondary"><i data-lucide="plus" style="width:14px;height:14px;"></i>Add</button>
+        <button class="btn btn-secondary" onclick="openTaskModal()"><i data-lucide="plus" style="width:14px;height:14px;"></i>Add</button>
       </div>
 
-      <div class="proj-grid">
-        <div class="proj-card">
-          <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
-            <span class="cc-pill">Kollam</span>
-            <span class="pill pill-amber">In Progress</span>
-          </div>
-          <h3 style="margin:0 0 4px; font-size:15px;">Hotel Sea View — CCTV</h3>
-          <p style="font-size:12px; color:#6B7280; margin:0 0 14px;">12 cameras · Due May 28</p>
-          <div style="font-size:12px; color:#6B7280; display:flex; justify-content:space-between; margin-bottom:6px;"><span>Progress</span><span style="font-weight:600;">65%</span></div>
-          <div class="progress-bar"><div class="progress-fill" style="width:65%;"></div></div>
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-top:14px;">
-            <div style="display:flex;"><div class="avatar avatar-sm" style="background:linear-gradient(135deg,#FCA5A5,#EF4444);">ST</div><div class="avatar avatar-sm" style="background:linear-gradient(135deg,#6EE7B7,#10B981); margin-left:-8px; border:2px solid white;">VR</div><div class="avatar avatar-sm" style="background:linear-gradient(135deg,#93C5FD,#3B82F6); margin-left:-8px; border:2px solid white;">AS</div></div>
-            <span style="font-size:11px; color:#6B7280;">16 days left</span>
-          </div>
-        </div>
-
-        <div class="proj-card">
-          <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
-            <span class="cc-pill">Kollam</span>
-            <span class="pill pill-red">At Risk</span>
-          </div>
-          <h3 style="margin:0 0 4px; font-size:15px;">Showroom AC Overhaul</h3>
-          <p style="font-size:12px; color:#6B7280; margin:0 0 14px;">Rajesh Nair · Due May 18</p>
-          <div style="font-size:12px; color:#6B7280; display:flex; justify-content:space-between; margin-bottom:6px;"><span>Progress</span><span style="font-weight:600;">20%</span></div>
-          <div class="progress-bar"><div class="progress-fill" style="width:20%; background:linear-gradient(90deg,#EF4444,#F87171);"></div></div>
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-top:14px;">
-            <div style="display:flex;"><div class="avatar avatar-sm" style="background:linear-gradient(135deg,#FCA5A5,#EF4444);">ST</div></div>
-            <span style="font-size:11px; color:#EF4444; font-weight:600;">6 days left ⚠</span>
-          </div>
-        </div>
-
-        <div class="proj-card">
-          <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
-            <span class="cc-pill">Ernakulam</span>
-            <span class="pill pill-emerald">On Track</span>
-          </div>
-          <h3 style="margin:0 0 4px; font-size:15px;">Fathima Beevi — Network</h3>
-          <p style="font-size:12px; color:#6B7280; margin:0 0 14px;">3 floors · Due May 22</p>
-          <div style="font-size:12px; color:#6B7280; display:flex; justify-content:space-between; margin-bottom:6px;"><span>Progress</span><span style="font-weight:600;">85%</span></div>
-          <div class="progress-bar"><div class="progress-fill" style="width:85%;"></div></div>
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-top:14px;">
-            <div style="display:flex;"><div class="avatar avatar-sm" style="background:linear-gradient(135deg,#A78BFA,#7C3AED);">HM</div></div>
-            <span style="font-size:11px; color:#6B7280;">10 days left</span>
-          </div>
-        </div>
-
-        <div class="proj-card">
-          <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
-            <span class="cc-pill">Ernakulam</span>
-            <span class="pill pill-amber">In Progress</span>
-          </div>
-          <h3 style="margin:0 0 4px; font-size:15px;">Smart Lock — Apartment</h3>
-          <p style="font-size:12px; color:#6B7280; margin:0 0 14px;">24 units · Due Jun 10</p>
-          <div style="font-size:12px; color:#6B7280; display:flex; justify-content:space-between; margin-bottom:6px;"><span>Progress</span><span style="font-weight:600;">30%</span></div>
-          <div class="progress-bar"><div class="progress-fill" style="width:30%;"></div></div>
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-top:14px;">
-            <div style="display:flex;"><div class="avatar avatar-sm" style="background:linear-gradient(135deg,#A78BFA,#7C3AED);">HM</div><div class="avatar avatar-sm" style="background:linear-gradient(135deg,#93C5FD,#3B82F6); margin-left:-8px; border:2px solid white;">AS</div></div>
-            <span style="font-size:11px; color:#6B7280;">29 days left</span>
-          </div>
-        </div>
-      </div>
+      <div class="proj-grid" id="dashProjGrid"></div>
     </div>
 
     <div>
       <h2 style="font-size:18px; font-weight:700; margin:0 0 14px;">Pending Approvals</h2>
 
-      <div class="chart-card mb-4">
-        <div class="approval-card">
-          <div class="approval-img" style="background:linear-gradient(135deg,#6EE7B7,#10B981);"></div>
-          <div style="flex:1; min-width:0;">
-            <div style="font-size:13px; font-weight:600;">Camera mount proof</div>
-            <div style="font-size:11px; color:#6B7280; margin: 2px 0 6px;">Sajeev T. · Hotel Sea View · 10 min ago</div>
-            <div style="display:flex; gap:6px;">
-              <button class="btn btn-success" style="padding:5px 10px; font-size:12px;"><i data-lucide="check" style="width:12px;height:12px;"></i>Approve</button>
-              <button class="btn btn-secondary" style="padding:5px 10px; font-size:12px;">Reject</button>
-            </div>
-          </div>
-        </div>
-
-        <div class="approval-card">
-          <div class="approval-img" style="background:linear-gradient(135deg,#93C5FD,#3B82F6);"></div>
-          <div style="flex:1; min-width:0;">
-            <div style="font-size:13px; font-weight:600;">Network rack setup</div>
-            <div style="font-size:11px; color:#6B7280; margin: 2px 0 6px;">Hareesh M. · Fathima Beevi · 1h ago</div>
-            <div style="display:flex; gap:6px;">
-              <button class="btn btn-success" style="padding:5px 10px; font-size:12px;"><i data-lucide="check" style="width:12px;height:12px;"></i>Approve</button>
-              <button class="btn btn-secondary" style="padding:5px 10px; font-size:12px;">Reject</button>
-            </div>
-          </div>
-        </div>
-
-        <div class="approval-card" style="margin-bottom:0;">
-          <div class="approval-img" style="background:linear-gradient(135deg,#FCD34D,#F59E0B);"></div>
-          <div style="flex:1; min-width:0;">
-            <div style="font-size:13px; font-weight:600;">AC compressor replaced</div>
-            <div style="font-size:11px; color:#6B7280; margin: 2px 0 6px;">Sajeev T. · Showroom · 2h ago</div>
-            <div style="display:flex; gap:6px;">
-              <button class="btn btn-success" style="padding:5px 10px; font-size:12px;"><i data-lucide="check" style="width:12px;height:12px;"></i>Approve</button>
-              <button class="btn btn-secondary" style="padding:5px 10px; font-size:12px;">Reject</button>
-            </div>
-          </div>
-        </div>
-      </div>
+      <div class="chart-card mb-4" id="dashApprovalList"></div>
 
       <h2 style="font-size:18px; font-weight:700; margin:24px 0 14px;">Team Activity</h2>
       <div class="chart-card">
@@ -245,143 +247,81 @@
   </div>
   </div><!-- /view-dashboard -->
 
+  <!-- ============ TASKS VIEW ============ -->
+  <div class="view" id="view-tasks">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+      <div>
+        <h1 style="font-size:24px; font-weight:700; margin:0;">Tasks</h1>
+        <p style="color:#6B7280; margin:4px 0 0; font-size:14px;">Tickets you roll out to your technicians</p>
+      </div>
+      <button class="btn btn-primary" style="background:linear-gradient(135deg,#F59E0B,#D97706); border:none;" onclick="openTaskModal()"><i data-lucide="plus" style="width:14px;height:14px;"></i>New Task</button>
+    </div>
+
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+      <button class="btn btn-secondary" onclick="toggleQuickFilter()"><i data-lucide="sliders-horizontal" style="width:14px;height:14px;"></i>Quick Filter<span class="qf-count" id="qfActive" style="display:none;">0</span></button>
+      <div style="font-size:13px; color:#6B7280;"><strong id="taskShown">0</strong> of <span id="taskTotal">0</span> tasks</div>
+    </div>
+
+    <div class="qf-panel" id="qfPanel">
+      <div class="qf-grid">
+        <div class="qf-field"><label>Search</label><input class="input" id="qf_search" placeholder="ID, title or customer" oninput="renderTasks()"></div>
+        <div class="qf-field"><label>Type</label><select class="select" id="qf_type" onchange="renderTasks()"><option value="">All</option><option>Service</option><option>Project</option><option>Other</option></select></div>
+        <div class="qf-field"><label>Status</label><select class="select" id="qf_status" onchange="renderTasks()"><option value="">All</option><option>New</option><option>In Progress</option><option>With PM</option><option>Done</option></select></div>
+        <div class="qf-field"><label>Priority</label><select class="select" id="qf_priority" onchange="renderTasks()"><option value="">All</option><option>Urgent</option><option>High</option><option>Medium</option><option>Low</option></select></div>
+        <div class="qf-field"><label>Cost Center</label><select class="select" id="qf_cc" onchange="renderTasks()"><option value="">All</option><option>Kollam</option><option>Calicut</option><option>Ernakulam</option></select></div>
+        <div class="qf-field"><label>Assignee</label><select class="select" id="qf_tech" onchange="renderTasks()"><option value="">All</option><option>Sajeev T.</option><option>Vishnu Raj</option><option>Hareesh M.</option><option>Anjali S.</option><option value="__none">Unassigned</option></select></div>
+        <div class="qf-field"><label>Customer / Site</label><input class="input" id="qf_customer" placeholder="Customer name" oninput="renderTasks()"></div>
+      </div>
+      <div class="qf-actions">
+        <button class="btn btn-secondary" onclick="resetQuickFilter()"><i data-lucide="rotate-ccw" style="width:14px;height:14px;"></i>Reset</button>
+        <button class="btn btn-primary" onclick="renderTasks()"><i data-lucide="search" style="width:14px;height:14px;"></i>Search</button>
+      </div>
+    </div>
+
+    <div class="chart-card" style="padding:0;">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Task ID</th><th>Customer</th><th>Cost Center</th><th>Type</th>
+            <th>Priority</th><th>Assigned</th><th>Status</th><th>Created</th>
+          </tr>
+        </thead>
+        <tbody id="taskTableBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ============ TASK / PROJECT DETAIL VIEW ============ -->
+  <div class="view" id="view-detail"></div>
+
+  <!-- ============ AVAILABILITY MODULE ============ -->
+  <div class="view" id="view-availability"></div>
+
   <!-- ============ MY PROJECTS VIEW ============ -->
   <div class="view" id="view-projects">
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
       <div>
         <h1 style="font-size:24px; font-weight:700; margin:0;">My Projects</h1>
-        <p style="color:#6B7280; margin:4px 0 0; font-size:14px;">5 active projects assigned to you</p>
+        <p style="color:#6B7280; margin:4px 0 0; font-size:14px;"><span id="projCount">0</span> projects · tasks of type "Project"</p>
       </div>
-      <button class="btn btn-primary"><i data-lucide="plus" style="width:14px;height:14px;"></i>New Project</button>
+      <button class="btn btn-primary" style="background:linear-gradient(135deg,#F59E0B,#D97706); border:none;" onclick="openTaskModal()"><i data-lucide="plus" style="width:14px;height:14px;"></i>New Project Task</button>
     </div>
 
-    <div style="display:flex; gap:8px; margin-bottom:20px;">
-      <span class="chip active">All (5)</span>
-      <span class="chip">On Track (2)</span>
-      <span class="chip">At Risk (1)</span>
-      <span class="chip">In Progress (2)</span>
-    </div>
+    <p style="font-size:12px; color:#9CA3AF; margin:-8px 0 20px;">
+      <i data-lucide="info" style="width:12px;height:12px;display:inline;vertical-align:middle;"></i>
+      A project is a task with type = Project. Create one from “New Task” and it appears here automatically.
+    </p>
 
-    <div class="proj-grid" style="grid-template-columns: repeat(3, 1fr);">
-      <div class="proj-card">
-        <div style="display:flex; justify-content:space-between; margin-bottom:8px;"><span class="cc-pill">Kollam</span><span class="pill pill-amber">In Progress</span></div>
-        <h3 style="margin:0 0 4px; font-size:15px;">Hotel Sea View — CCTV</h3>
-        <p style="font-size:12px; color:#6B7280; margin:0 0 14px;">12 cameras · Due May 28</p>
-        <div style="font-size:12px; color:#6B7280; display:flex; justify-content:space-between; margin-bottom:6px;"><span>Progress</span><span style="font-weight:600;">65%</span></div>
-        <div class="progress-bar"><div class="progress-fill" style="width:65%;"></div></div>
-      </div>
-      <div class="proj-card">
-        <div style="display:flex; justify-content:space-between; margin-bottom:8px;"><span class="cc-pill">Kollam</span><span class="pill pill-red">At Risk</span></div>
-        <h3 style="margin:0 0 4px; font-size:15px;">Showroom AC Overhaul</h3>
-        <p style="font-size:12px; color:#6B7280; margin:0 0 14px;">Rajesh Nair · Due May 18</p>
-        <div style="font-size:12px; color:#6B7280; display:flex; justify-content:space-between; margin-bottom:6px;"><span>Progress</span><span style="font-weight:600;">20%</span></div>
-        <div class="progress-bar"><div class="progress-fill" style="width:20%; background:linear-gradient(90deg,#EF4444,#F87171);"></div></div>
-      </div>
-      <div class="proj-card">
-        <div style="display:flex; justify-content:space-between; margin-bottom:8px;"><span class="cc-pill">Ernakulam</span><span class="pill pill-emerald">On Track</span></div>
-        <h3 style="margin:0 0 4px; font-size:15px;">Fathima Beevi — Network</h3>
-        <p style="font-size:12px; color:#6B7280; margin:0 0 14px;">3 floors · Due May 22</p>
-        <div style="font-size:12px; color:#6B7280; display:flex; justify-content:space-between; margin-bottom:6px;"><span>Progress</span><span style="font-weight:600;">85%</span></div>
-        <div class="progress-bar"><div class="progress-fill" style="width:85%;"></div></div>
-      </div>
-      <div class="proj-card">
-        <div style="display:flex; justify-content:space-between; margin-bottom:8px;"><span class="cc-pill">Ernakulam</span><span class="pill pill-amber">In Progress</span></div>
-        <h3 style="margin:0 0 4px; font-size:15px;">Smart Lock — Apartment</h3>
-        <p style="font-size:12px; color:#6B7280; margin:0 0 14px;">24 units · Due Jun 10</p>
-        <div style="font-size:12px; color:#6B7280; display:flex; justify-content:space-between; margin-bottom:6px;"><span>Progress</span><span style="font-weight:600;">30%</span></div>
-        <div class="progress-bar"><div class="progress-fill" style="width:30%;"></div></div>
-      </div>
-      <div class="proj-card">
-        <div style="display:flex; justify-content:space-between; margin-bottom:8px;"><span class="cc-pill">Kollam</span><span class="pill pill-emerald">On Track</span></div>
-        <h3 style="margin:0 0 4px; font-size:15px;">Solar Panel Setup</h3>
-        <p style="font-size:12px; color:#6B7280; margin:0 0 14px;">8 panels · Due Jun 5</p>
-        <div style="font-size:12px; color:#6B7280; display:flex; justify-content:space-between; margin-bottom:6px;"><span>Progress</span><span style="font-weight:600;">55%</span></div>
-        <div class="progress-bar"><div class="progress-fill" style="width:55%;"></div></div>
-      </div>
-    </div>
+    <div class="proj-grid" id="projGrid" style="grid-template-columns: repeat(3, 1fr);"></div>
   </div>
 
   <!-- ============ APPROVALS VIEW ============ -->
   <div class="view" id="view-approvals">
     <div style="margin-bottom:20px;">
       <h1 style="font-size:24px; font-weight:700; margin:0;">Pending Approvals</h1>
-      <p style="color:#6B7280; margin:4px 0 0; font-size:14px;">3 items waiting for your review</p>
+      <p style="color:#6B7280; margin:4px 0 0; font-size:14px;"><span id="approvalSub">0</span> · technician submissions awaiting your sign-off</p>
     </div>
-
-    <div style="display:flex; gap:8px; margin-bottom:20px;">
-      <span class="chip active">Pending (3)</span>
-      <span class="chip">Approved (24)</span>
-      <span class="chip">Rejected (1)</span>
-    </div>
-
-    <div class="chart-card" style="margin-bottom:14px;">
-      <div style="display:flex; gap:16px;">
-        <div style="width:120px; height:120px; border-radius:12px; background:linear-gradient(135deg,#6EE7B7,#10B981); flex-shrink:0;"></div>
-        <div style="flex:1;">
-          <div style="display:flex; justify-content:space-between; align-items:flex-start;">
-            <div>
-              <h3 style="margin:0 0 4px; font-size:16px;">Camera mount proof — Floor 2</h3>
-              <div style="font-size:12px; color:#6B7280;">Hotel Sea View · Sajeev T. · 10 min ago</div>
-            </div>
-            <span class="pill pill-amber">Pending</span>
-          </div>
-          <p style="font-size:13px; color:#374151; margin:10px 0;">All 6 cameras mounted on Floor 2. Cable routing complete. NVR connection tested — feed active. Ready for inspection.</p>
-          <div style="display:flex; gap:6px; margin-bottom:12px;">
-            <div style="width:48px; height:48px; border-radius:8px; background:linear-gradient(135deg,#93C5FD,#3B82F6);"></div>
-            <div style="width:48px; height:48px; border-radius:8px; background:linear-gradient(135deg,#FCD34D,#F59E0B);"></div>
-            <div style="width:48px; height:48px; border-radius:8px; background:linear-gradient(135deg,#A78BFA,#7C3AED);"></div>
-            <div style="width:48px; height:48px; border-radius:8px; background:#F3F4F6; display:flex; align-items:center; justify-content:center; font-size:11px; color:#6B7280; font-weight:600;">+2</div>
-          </div>
-          <div style="display:flex; gap:8px;">
-            <button class="btn btn-success"><i data-lucide="check" style="width:14px;height:14px;"></i>Approve</button>
-            <button class="btn btn-secondary"><i data-lucide="message-circle" style="width:14px;height:14px;"></i>Request Changes</button>
-            <button class="btn btn-secondary" style="color:#EF4444;">Reject</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="chart-card" style="margin-bottom:14px;">
-      <div style="display:flex; gap:16px;">
-        <div style="width:120px; height:120px; border-radius:12px; background:linear-gradient(135deg,#93C5FD,#3B82F6); flex-shrink:0;"></div>
-        <div style="flex:1;">
-          <div style="display:flex; justify-content:space-between; align-items:flex-start;">
-            <div>
-              <h3 style="margin:0 0 4px; font-size:16px;">Network rack setup</h3>
-              <div style="font-size:12px; color:#6B7280;">Fathima Beevi · Hareesh M. · 1h ago</div>
-            </div>
-            <span class="pill pill-amber">Pending</span>
-          </div>
-          <p style="font-size:13px; color:#374151; margin:10px 0;">24-port switch installed, cables organized and labeled. Tested with all endpoints — 100% uptime so far.</p>
-          <div style="display:flex; gap:8px;">
-            <button class="btn btn-success"><i data-lucide="check" style="width:14px;height:14px;"></i>Approve</button>
-            <button class="btn btn-secondary">Request Changes</button>
-            <button class="btn btn-secondary" style="color:#EF4444;">Reject</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="chart-card">
-      <div style="display:flex; gap:16px;">
-        <div style="width:120px; height:120px; border-radius:12px; background:linear-gradient(135deg,#FCD34D,#F59E0B); flex-shrink:0;"></div>
-        <div style="flex:1;">
-          <div style="display:flex; justify-content:space-between; align-items:flex-start;">
-            <div>
-              <h3 style="margin:0 0 4px; font-size:16px;">AC compressor replaced</h3>
-              <div style="font-size:12px; color:#6B7280;">Showroom AC Overhaul · Sajeev T. · 2h ago</div>
-            </div>
-            <span class="pill pill-amber">Pending</span>
-          </div>
-          <p style="font-size:13px; color:#374151; margin:10px 0;">Old compressor removed and disposed. New compressor (5-ton) installed and refrigerant filled. Customer confirmed cooling restored.</p>
-          <div style="display:flex; gap:8px;">
-            <button class="btn btn-success"><i data-lucide="check" style="width:14px;height:14px;"></i>Approve</button>
-            <button class="btn btn-secondary">Request Changes</button>
-            <button class="btn btn-secondary" style="color:#EF4444;">Reject</button>
-          </div>
-        </div>
-      </div>
-    </div>
+    <div id="approvalList"></div>
   </div>
 
   <!-- ============ TECHNICIANS VIEW ============ -->
@@ -614,6 +554,82 @@
 
 </div>
 
+<!-- ============ NEW TASK MODAL ============ -->
+<div class="modal-backdrop" id="taskModal">
+  <div class="modal">
+    <div class="modal-head">
+      <h2 class="modal-title">Create New Task</h2>
+      <button class="close-btn" onclick="closeTaskModal()"><i data-lucide="x" style="width:16px;height:16px;"></i></button>
+    </div>
+
+    <div class="field">
+      <label class="label req">Task Title</label>
+      <input class="input" id="t_title" placeholder="e.g., CCTV camera focus issue">
+      <div class="field-err" id="t_title_err">Title is required</div>
+    </div>
+
+    <div class="field">
+      <label class="label req">Customer / Site</label>
+      <input class="input" id="t_customer" placeholder="e.g., Rajesh Nair / Sky Plaza">
+      <div class="field-err" id="t_customer_err">Customer is required</div>
+    </div>
+
+    <div class="grid-2">
+      <div class="field">
+        <label class="label">Cost Center</label>
+        <select class="select" id="t_cc"><option>Kollam</option><option>Calicut</option><option>Ernakulam</option></select>
+      </div>
+      <div class="field">
+        <label class="label">Type</label>
+        <select class="select" id="t_type"><option>Service</option><option>Project</option><option>Other</option></select>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="field">
+        <label class="label">Priority</label>
+        <select class="select" id="t_priority"><option>Urgent</option><option>High</option><option selected>Medium</option><option>Low</option></select>
+      </div>
+      <div class="field">
+        <label class="label">Status</label>
+        <select class="select" id="t_status"><option selected>New</option><option>In Progress</option><option>Done</option></select>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="field">
+        <label class="label">Assign Technician</label>
+        <select class="select" id="t_tech">
+          <option value="">— Unassigned —</option>
+          <option data-initials="ST">Sajeev T.</option>
+          <option data-initials="VR">Vishnu Raj</option>
+          <option data-initials="HM">Hareesh M.</option>
+          <option data-initials="AS">Anjali S.</option>
+        </select>
+      </div>
+      <div class="field">
+        <label class="label req">Schedule Date</label>
+        <input class="input" type="date" id="t_date" value="2026-06-17">
+        <div class="field-err" id="t_date_err">Date is required</div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label">Scope / Description</label>
+      <textarea class="textarea" id="t_desc" rows="3" style="resize:none;" placeholder="Describe the work to be done on site..."></textarea>
+    </div>
+
+    <div style="display:flex; gap:10px; margin-top:8px;">
+      <button class="btn btn-secondary" style="flex:1;" onclick="closeTaskModal()">Cancel</button>
+      <button class="btn btn-primary" style="flex:1; background:linear-gradient(135deg,#F59E0B,#D97706); border:none;" onclick="createTask()">
+        <i data-lucide="send" style="width:14px;height:14px;"></i>Create &amp; Assign
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"><i data-lucide="check-circle-2" style="width:16px;height:16px;"></i><span id="toastMsg"></span></div>
+
 <style>
   .view { display: none; }
   .view.active { display: block; animation: fadeIn 0.3s; }
@@ -623,6 +639,582 @@
 <script>
 lucide.createIcons();
 
+/* ----------------------------- LOGIN GATE ----------------------------- */
+function signIn() {
+  document.getElementById('loginGate').classList.add('hide');
+}
+
+/* ----------------------------- TASK DATA ----------------------------- */
+// Tasks the PM rolls out to technicians. New tasks created here are
+// prepended and (when assigned) handed to a technician — the same
+// workflow the technician app consumes.
+const TECH_INITIALS = { 'Sajeev T.':'ST', 'Vishnu Raj':'VR', 'Hareesh M.':'HM', 'Anjali S.':'AS' };
+
+// ONE dataset. A "project" is simply a task whose type === 'Project'.
+// The Tasks view lists everything; My Projects is a lens over type==='Project'.
+let tasks = [
+  { id:'SR-2451', title:'AC not cooling — Showroom', customer:'Rajesh Nair', cc:'Kollam', type:'Service', priority:'Urgent', tech:'Sajeev T.', status:'In Progress', created:'Today, 10:42 AM' },
+  { id:'PR-1180', title:'Hotel Sea View — 12-camera CCTV', customer:'Hotel Sea View', cc:'Kollam', type:'Project', priority:'High', tech:'Sajeev T.', status:'In Progress', created:'Today, 9:15 AM', due:'May 28', progress:65, team:['ST','VR','AS'] },
+  { id:'SR-2452', title:'Network cable replacement', customer:'Priya Menon', cc:'Kollam', type:'Service', priority:'Medium', tech:'Vishnu Raj', status:'In Progress', created:'Today, 8:30 AM' },
+  { id:'PR-1175', title:'Fathima Beevi — Network (3 floors)', customer:'Fathima Beevi', cc:'Ernakulam', type:'Project', priority:'High', tech:'Hareesh M.', status:'In Progress', created:'Yesterday, 4:20 PM', due:'May 22', progress:85, team:['HM'] },
+  { id:'PR-1170', title:'Smart Lock — Apartment (24 units)', customer:'Greenfield Apartments', cc:'Ernakulam', type:'Project', priority:'Medium', tech:'Hareesh M.', status:'In Progress', created:'2 days ago', due:'Jun 10', progress:30, team:['HM','AS'] },
+  { id:'SR-2440', title:'Router configuration', customer:'Suresh Babu', cc:'Kollam', type:'Service', priority:'Medium', tech:'Sajeev T.', status:'With PM', created:'Yesterday, 4:20 PM', desc:'Reset router, set up guest VLAN, tested all devices. Working fine.' },
+  { id:'SR-2447', title:'AC compressor replaced', customer:'Rajesh Nair', cc:'Kollam', type:'Service', priority:'Urgent', tech:'Sajeev T.', status:'With PM', created:'2h ago', desc:'Old compressor removed and disposed. New 5-ton compressor installed and refrigerant filled. Customer confirmed cooling restored.' },
+  { id:'PR-1165', title:'CCTV mount proof — Floor 2', customer:'Megha Stores', cc:'Calicut', type:'Project', priority:'High', tech:'Hareesh M.', status:'With PM', created:'1h ago', due:'May 30', progress:90, team:['HM'], desc:'All 6 cameras mounted on Floor 2. Cable routing complete. NVR connection tested — feed active.' }
+];
+let seq = 2453;
+
+const STATUS_PROGRESS = { 'New':15, 'In Progress':50, 'With PM':90, 'Done':100 };
+function formatDue(iso) {
+  if (!iso) return '';
+  const [y,m,d] = iso.split('-');
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  return `${months[+m-1]} ${+d}`;
+}
+
+const PRIO_CLASS = { Urgent:'pill-red', High:'pill-amber', Medium:'pill-amber', Low:'pill-gray' };
+const TYPE_CLASS = { Service:'pill-indigo', Project:'pill-emerald', Other:'pill-amber' };
+const STATUS_CLASS = { 'New':'status-new', 'In Progress':'status-progress', 'With PM':'status-progress', 'Done':'status-done', 'Overdue':'status-overdue' };
+
+function qv(id) { const el = document.getElementById(id); return el ? el.value.trim() : ''; }
+
+function renderTasks() {
+  const body = document.getElementById('taskTableBody');
+  if (!body) return;
+  const fS = qv('qf_status'), fT = qv('qf_type'), fP = qv('qf_priority');
+  const fCC = qv('qf_cc'), fTech = qv('qf_tech');
+  const fSearch = qv('qf_search').toLowerCase(), fCust = qv('qf_customer').toLowerCase();
+
+  const list = tasks.filter(t =>
+    (!fS || t.status === fS) &&
+    (!fT || t.type === fT) &&
+    (!fP || t.priority === fP) &&
+    (!fCC || t.cc === fCC) &&
+    (!fTech || (fTech === '__none' ? !t.tech : t.tech === fTech)) &&
+    (!fCust || t.customer.toLowerCase().includes(fCust)) &&
+    (!fSearch || `${t.id} ${t.title||''} ${t.customer}`.toLowerCase().includes(fSearch)));
+
+  // active-filter indicator + counts
+  const activeCount = [fS,fT,fP,fCC,fTech,fSearch,fCust].filter(Boolean).length;
+  const badge = document.getElementById('qfActive');
+  if (badge) { badge.textContent = activeCount; badge.style.display = activeCount ? 'inline-block' : 'none'; }
+  const shown = document.getElementById('taskShown'); if (shown) shown.textContent = list.length;
+  const total = document.getElementById('taskTotal'); if (total) total.textContent = tasks.length;
+
+  body.innerHTML = list.length ? list.map(t => {
+    const assigned = t.tech
+      ? `<div style="display:flex; align-items:center; gap:8px;"><div class="avatar avatar-sm">${TECH_INITIALS[t.tech]||'?'}</div>${t.tech}</div>`
+      : '<span style="color:#9CA3AF;">— Unassigned —</span>';
+    return `<tr style="cursor:pointer;" onclick="openDetail('${t.id}','tasks')">
+      <td><strong>#${t.id}</strong></td>
+      <td>${t.customer}</td>
+      <td><span class="cc-pill">${t.cc}</span></td>
+      <td><span class="pill ${TYPE_CLASS[t.type]}">${t.type}</span></td>
+      <td><span class="pill ${PRIO_CLASS[t.priority]}">${t.priority}</span></td>
+      <td>${assigned}</td>
+      <td><span class="pill ${STATUS_CLASS[t.status]}">${t.status}</span></td>
+      <td>${t.created}</td>
+    </tr>`;
+  }).join('') : `<tr><td colspan="8" style="text-align:center; color:#9CA3AF; padding:40px;">No tasks match these filters</td></tr>`;
+
+  document.getElementById('taskCountBadge').textContent = tasks.filter(t => t.status !== 'Done').length;
+  setTimeout(() => lucide.createIcons(), 30);
+}
+
+/* My Projects = lens over tasks where type === 'Project' */
+function projectCard(p) {
+  const prog = p.progress != null ? p.progress : (STATUS_PROGRESS[p.status] || 0);
+  const team = (p.team && p.team.length) ? p.team : [TECH_INITIALS[p.tech]].filter(Boolean);
+  const fill = prog < 35 ? 'background:linear-gradient(90deg,#EF4444,#F87171);' : '';
+  const avatars = team.map((ini,i) =>
+    `<div class="avatar avatar-sm" style="${i>0?'margin-left:-8px; border:2px solid white;':''}">${ini}</div>`).join('');
+  return `<div class="proj-card" onclick="openDetail('${p.id}','projects')">
+    <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+      <span class="cc-pill">${p.cc}</span>
+      <span class="pill ${STATUS_CLASS[p.status]||''}">${p.status}</span>
+    </div>
+    <h3 style="margin:0 0 4px; font-size:15px;">${p.title || p.customer}</h3>
+    <p style="font-size:12px; color:#6B7280; margin:0 0 14px;">${p.customer} · #${p.id}</p>
+    <div style="font-size:12px; color:#6B7280; display:flex; justify-content:space-between; margin-bottom:6px;"><span>Progress</span><span style="font-weight:600;">${prog}%</span></div>
+    <div class="progress-bar"><div class="progress-fill" style="width:${prog}%; ${fill}"></div></div>
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-top:14px;">
+      <div style="display:flex;">${avatars}</div>
+      <span style="font-size:11px; color:#6B7280;">${p.due ? 'Due '+p.due : ''}</span>
+    </div>
+  </div>`;
+}
+
+function renderProjects() {
+  const projs = tasks.filter(t => t.type === 'Project');
+  const full = document.getElementById('projGrid');
+  if (full) full.innerHTML = projs.length
+    ? projs.map(projectCard).join('')
+    : `<div style="color:#9CA3AF; padding:20px; grid-column:1/-1;">No projects yet. Create a task with type "Project".</div>`;
+  const dash = document.getElementById('dashProjGrid');
+  if (dash) dash.innerHTML = projs.slice(0,4).map(projectCard).join('');
+  const count = document.getElementById('projCount');
+  if (count) count.textContent = projs.length;
+  setTimeout(() => lucide.createIcons(), 30);
+}
+
+/* ----------------------------- QUICK FILTER ----------------------------- */
+function toggleQuickFilter() { document.getElementById('qfPanel').classList.toggle('show'); setTimeout(() => lucide.createIcons(), 30); }
+function resetQuickFilter() {
+  ['qf_search','qf_type','qf_status','qf_priority','qf_cc','qf_tech','qf_customer'].forEach(id => {
+    const el = document.getElementById(id); if (el) el.value = '';
+  });
+  renderTasks();
+}
+
+/* ----------------------------- APPROVALS ----------------------------- */
+// An approval = a technician submission awaiting PM sign-off.
+// These are exactly the tasks the technician moved to status "With PM".
+function pendingApprovals() { return tasks.filter(t => t.status === 'With PM'); }
+
+function renderApprovals() {
+  const pend = pendingApprovals();
+
+  // sidebar badge + counts
+  const badge = document.getElementById('apprBadge');
+  if (badge) { badge.textContent = pend.length; badge.style.display = pend.length ? '' : 'none'; }
+  const sub = document.getElementById('approvalSub'); if (sub) sub.textContent = pend.length;
+
+  // full Approvals view
+  const list = document.getElementById('approvalList');
+  if (list) {
+    list.innerHTML = pend.length ? pend.map(t => {
+      const ini = TECH_INITIALS[t.tech] || '?';
+      return `<div class="chart-card" style="margin-bottom:14px;">
+        <div style="display:flex; gap:16px;">
+          <div style="width:110px; height:110px; border-radius:12px; background:linear-gradient(135deg,#6EE7B7,#10B981); flex-shrink:0; display:flex; align-items:center; justify-content:center; color:#fff;"><i data-lucide="image" style="width:32px;height:32px;"></i></div>
+          <div style="flex:1; min-width:0;">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:10px;">
+              <div>
+                <h3 style="margin:0 0 4px; font-size:16px;">${t.title || t.customer}</h3>
+                <div style="font-size:12px; color:#6B7280;">${t.customer} · <span style="display:inline-flex;align-items:center;gap:4px;"><span class="avatar avatar-sm">${ini}</span>${t.tech||'—'}</span> · #${t.id}</div>
+              </div>
+              <span class="pill pill-amber">Pending</span>
+            </div>
+            <p style="font-size:13px; color:#374151; margin:10px 0;">${t.desc ? t.desc : 'Daily Activity Report submitted. Work completed and ready for your review.'}</p>
+            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+              <button class="btn btn-success" onclick="approveTask('${t.id}')"><i data-lucide="check" style="width:14px;height:14px;"></i>Approve & Close</button>
+              <button class="btn btn-secondary" onclick="rejectTask('${t.id}')"><i data-lucide="rotate-ccw" style="width:14px;height:14px;"></i>Request Changes</button>
+              <button class="btn btn-secondary" onclick="openDetail('${t.id}','approvals')">View Detail</button>
+            </div>
+          </div>
+        </div>
+      </div>`;
+    }).join('') : `<div class="chart-card" style="text-align:center; color:#9CA3AF; padding:40px;">
+        <i data-lucide="check-circle-2" style="width:36px;height:36px;"></i>
+        <div style="margin-top:8px;">All caught up — no submissions waiting for approval.</div>
+      </div>`;
+  }
+
+  // dashboard compact list
+  const dash = document.getElementById('dashApprovalList');
+  if (dash) {
+    dash.innerHTML = pend.length ? pend.slice(0,3).map((t,i) => {
+      const ini = TECH_INITIALS[t.tech] || '?';
+      return `<div class="approval-card" ${i===Math.min(pend.length,3)-1?'style="margin-bottom:0;"':''}>
+        <div class="approval-img" style="background:linear-gradient(135deg,#6EE7B7,#10B981);"></div>
+        <div style="flex:1; min-width:0;">
+          <div style="font-size:13px; font-weight:600;">${t.title || t.customer}</div>
+          <div style="font-size:11px; color:#6B7280; margin: 2px 0 6px;">${t.tech||'—'} · ${t.customer} · #${t.id}</div>
+          <div style="display:flex; gap:6px;">
+            <button class="btn btn-success" style="padding:5px 10px; font-size:12px;" onclick="approveTask('${t.id}')"><i data-lucide="check" style="width:12px;height:12px;"></i>Approve</button>
+            <button class="btn btn-secondary" style="padding:5px 10px; font-size:12px;" onclick="rejectTask('${t.id}')">Reject</button>
+          </div>
+        </div>
+      </div>`;
+    }).join('') : `<div style="text-align:center; color:#9CA3AF; padding:20px; font-size:13px;">No pending approvals 🎉</div>`;
+  }
+
+  setTimeout(() => lucide.createIcons(), 30);
+}
+
+function approveTask(id) {
+  const t = getTask(id); if (!t) return;
+  t.status = 'Done';
+  t.dateModified = nowStamp();
+  refreshAll();
+  toast(`#${id} approved & closed`);
+}
+
+function rejectTask(id) {
+  const t = getTask(id); if (!t) return;
+  t.status = 'In Progress';      // bounced back to the technician for rework
+  t.dateModified = nowStamp();
+  refreshAll();
+  toast(`#${id} sent back to ${t.tech || 'technician'} for changes`);
+}
+
+function refreshAll() { renderTasks(); renderProjects(); renderApprovals(); renderAvailability(); }
+
+/* ----------------------------- AVAILABILITY MODULE ----------------------------- */
+// Helps the PM see who is free and place priority work fast.
+// Load is DERIVED from real tasks, so the board reflects actual assignments.
+const TEAM = [
+  { name:'Sajeev T.',  ini:'ST', role:'Senior Technician',  cc:'Kollam',    skills:['CCTV','AC','Network'], capacity:5, status:'active', nextFree:'4:30 PM',  today:['AC Repair','CCTV Mount'], color:'linear-gradient(135deg,#FCA5A5,#EF4444)' },
+  { name:'Vishnu Raj', ini:'VR', role:'Technician',          cc:'Kollam',    skills:['Wiring','Network'],    capacity:5, status:'active', nextFree:'Tomorrow', today:['Wiring','Network'],       color:'linear-gradient(135deg,#6EE7B7,#10B981)' },
+  { name:'Hareesh M.', ini:'HM', role:'Technician',          cc:'Ernakulam', skills:['Smart Lock','CCTV'],    capacity:4, status:'active', nextFree:'Now',      today:['Smart Lock'],             color:'linear-gradient(135deg,#A78BFA,#7C3AED)' },
+  { name:'Anjali S.',  ini:'AS', role:'Network Specialist',  cc:'Kollam',    skills:['Network','CCTV'],      capacity:4, status:'leave',  nextFree:'Back Mon', today:[],                         color:'linear-gradient(135deg,#93C5FD,#3B82F6)' }
+];
+const ALL_SKILLS = ['CCTV','AC','Network','Wiring','Smart Lock'];
+let finder = { skill:'', cc:'', priority:'' };
+
+function techLoad(name)        { return tasks.filter(t => t.tech === name && (t.status === 'New' || t.status === 'In Progress')).length; }
+function techActiveTasks(name) { return tasks.filter(t => t.tech === name && (t.status === 'New' || t.status === 'In Progress')); }
+
+function availInfo(t) {
+  if (t.status === 'leave') return { key:'leave', label:'On Leave', bg:'#F3F4F6', fg:'#6B7280', load:0, rem:0 };
+  const load = techLoad(t.name), rem = t.capacity - load;
+  if (load === 0) return { key:'free', label:'Free now',  bg:'#D1FAE5', fg:'#065F46', load, rem };
+  if (rem <= 0)   return { key:'full', label:'Full',      bg:'#FEE2E2', fg:'#991B1B', load, rem:0 };
+  return { key:'avail', label:`${rem} slot${rem>1?'s':''} open`, bg:'#DBEAFE', fg:'#1E40AF', load, rem };
+}
+
+// Ranking for the priority-job finder
+function matchScore(t) {
+  if (t.status === 'leave') return -1;
+  const rem = t.capacity - techLoad(t.name);
+  let s = rem;
+  if (finder.skill && t.skills.includes(finder.skill)) s += 6;
+  if (finder.cc && t.cc === finder.cc) s += 3;
+  if (techLoad(t.name) === 0) s += 2;
+  return s;
+}
+function finderActive() { return !!(finder.skill || finder.cc); }
+
+function renderAvailability() {
+  // counts
+  const free = TEAM.filter(t => availInfo(t).key === 'free').length;
+  const avail = TEAM.filter(t => availInfo(t).key === 'avail').length;
+  const full = TEAM.filter(t => availInfo(t).key === 'full').length;
+  const leave = TEAM.filter(t => t.status === 'leave').length;
+
+  const fb = document.getElementById('freeBadge');
+  if (fb) { fb.textContent = free + avail; fb.style.display = (free+avail) ? '' : 'none'; }
+
+  const view = document.getElementById('view-availability');
+  if (!view) return;
+
+  // best candidate when finder is active
+  let bestName = null;
+  if (finderActive()) {
+    const ranked = [...TEAM].filter(t => t.status !== 'leave' && (t.capacity - techLoad(t.name)) > 0)
+      .filter(t => !finder.skill || t.skills.includes(finder.skill))
+      .sort((a,b) => matchScore(b) - matchScore(a));
+    if (ranked.length) bestName = ranked[0].name;
+  }
+
+  // sort cards: when finding -> by score; else free-first
+  const order = { free:0, avail:1, full:2, leave:3 };
+  const cards = [...TEAM].sort((a,b) =>
+    finderActive() ? matchScore(b) - matchScore(a)
+                   : order[availInfo(a).key] - order[availInfo(b).key]);
+
+  const freeTechOptions = (exclude) => TEAM
+    .filter(t => t.name !== exclude && t.status !== 'leave' && (t.capacity - techLoad(t.name)) > 0)
+    .map(t => `<option value="${t.name}">${t.name} (${t.capacity - techLoad(t.name)} open)</option>`).join('');
+
+  view.innerHTML = `
+    <div style="margin-bottom:20px;">
+      <h1 style="font-size:24px; font-weight:700; margin:0;">Team Availability</h1>
+      <p style="color:#6B7280; margin:4px 0 0; font-size:14px;">See who's free and place priority work fast.</p>
+    </div>
+
+    <div class="avail-summary">
+      <div class="avail-stat"><div class="n" style="color:#10B981;">${free}</div><div class="l">Free now</div></div>
+      <div class="avail-stat"><div class="n" style="color:#2563EB;">${avail}</div><div class="l">Has capacity</div></div>
+      <div class="avail-stat"><div class="n" style="color:#EF4444;">${full}</div><div class="l">Full</div></div>
+      <div class="avail-stat"><div class="n" style="color:#9CA3AF;">${leave}</div><div class="l">On leave</div></div>
+    </div>
+
+    <div class="finder">
+      <div style="font-weight:700; font-size:15px; margin-bottom:4px; display:flex; align-items:center; gap:8px;">
+        <i data-lucide="zap" style="width:16px;height:16px;"></i> Priority job just came in?
+      </div>
+      <p style="font-size:12px; color:#047857; margin:0 0 14px;">Pick the skill & location — we'll rank who can take it right now.</p>
+      <div class="finder-grid">
+        <div class="finder-field">
+          <label>Skill needed</label>
+          <select class="select" onchange="setFinder('skill', this.value)">
+            <option value="">Any skill</option>
+            ${ALL_SKILLS.map(s => `<option ${finder.skill===s?'selected':''}>${s}</option>`).join('')}
+          </select>
+        </div>
+        <div class="finder-field">
+          <label>Cost Center</label>
+          <select class="select" onchange="setFinder('cc', this.value)">
+            <option value="">Any location</option>
+            ${['Kollam','Calicut','Ernakulam'].map(c => `<option ${finder.cc===c?'selected':''}>${c}</option>`).join('')}
+          </select>
+        </div>
+        <div class="finder-field" style="flex:0 0 auto;">
+          <button class="btn btn-secondary" onclick="clearFinder()"><i data-lucide="rotate-ccw" style="width:14px;height:14px;"></i>Clear</button>
+        </div>
+      </div>
+      ${bestName ? `<div style="margin-top:12px; font-size:13px; color:#065F46;"><strong>Best match:</strong> ${bestName} — free capacity${finder.skill?` + ${finder.skill}`:''}${finder.cc?` in ${finder.cc}`:''}.</div>` : ''}
+    </div>
+
+    <div class="proj-grid" style="grid-template-columns: repeat(2, 1fr);">
+      ${cards.map(t => {
+        const a = availInfo(t);
+        const rem = a.rem, pct = Math.round((a.load / t.capacity) * 100);
+        const fillColor = a.key==='free' ? '#10B981' : a.key==='full' ? '#EF4444' : '#2563EB';
+        const isBest = t.name === bestName;
+        const active = techActiveTasks(t.name);
+        return `<div class="tech-card ${isBest?'best':''}">
+          <div style="display:flex; gap:14px; align-items:flex-start;">
+            <div class="avatar avatar-lg" style="background:${t.color};">${t.ini}</div>
+            <div style="flex:1; min-width:0;">
+              <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:8px;">
+                <div>
+                  <div style="font-weight:700; font-size:15px;">${t.name} ${isBest?'<span class="best-tag">BEST MATCH</span>':''}</div>
+                  <div style="font-size:12px; color:#6B7280;">${t.role} · ${t.cc}</div>
+                </div>
+                <span class="avail-badge" style="background:${a.bg}; color:${a.fg};">${a.label}</span>
+              </div>
+
+              <div style="display:flex; justify-content:space-between; font-size:11px; color:#6B7280; margin:12px 0 5px;">
+                <span>Workload</span><span style="font-weight:600;">${a.load}/${t.capacity} tasks</span>
+              </div>
+              <div class="load-bar"><div class="load-fill" style="width:${pct}%; background:${fillColor};"></div></div>
+
+              <div style="margin-top:10px;">${t.skills.map(s => `<span class="skill-chip ${finder.skill===s?'hit':''}">${s}</span>`).join('')}</div>
+
+              <div style="font-size:12px; color:#6B7280; margin-top:10px; display:flex; gap:14px;">
+                <span><i data-lucide="clock" style="width:12px;height:12px;display:inline;vertical-align:middle;"></i> Next free: <strong style="color:#111;">${t.nextFree}</strong></span>
+              </div>
+
+              <div style="margin-top:12px; display:flex; gap:8px;">
+                <button class="btn ${a.key==='full'||a.key==='leave'?'btn-secondary':'btn-success'}" style="padding:6px 12px; font-size:13px;" ${a.key==='leave'?'disabled':''} onclick="assignTo('${t.name}')">
+                  <i data-lucide="user-plus" style="width:14px;height:14px;"></i>Assign task
+                </button>
+              </div>
+
+              ${active.length ? `<div style="margin-top:12px;">
+                <div style="font-size:11px; font-weight:700; color:#6B7280; text-transform:uppercase; letter-spacing:0.4px;">Current work — switch to free colleague</div>
+                ${active.map(task => `<div class="move-row">
+                  <span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;"><span class="pill ${PRIO_CLASS[task.priority]}" style="font-size:10px;">${task.priority}</span> ${task.title||task.customer}</span>
+                  <select class="select" style="width:auto; padding:5px 8px; font-size:12px;" onchange="reassignTask('${task.id}', this.value)">
+                    <option value="">Move to…</option>
+                    ${freeTechOptions(t.name)}
+                  </select>
+                </div>`).join('')}
+              </div>` : ''}
+            </div>
+          </div>
+        </div>`;
+      }).join('')}
+    </div>`;
+
+  setTimeout(() => lucide.createIcons(), 30);
+}
+
+function setFinder(key, val) { finder[key] = val; renderAvailability(); }
+function clearFinder() { finder = { skill:'', cc:'', priority:'' }; renderAvailability(); }
+
+function assignTo(name) {
+  const t = TEAM.find(x => x.name === name);
+  openTaskModal();
+  if (t) {
+    document.getElementById('t_tech').value = name;
+    document.getElementById('t_cc').value = t.cc;
+    if (finder.priority) document.getElementById('t_priority').value = finder.priority;
+  }
+}
+
+function reassignTask(taskId, toName) {
+  if (!toName) return;
+  const t = getTask(taskId); if (!t) return;
+  const from = t.tech || 'Unassigned';
+  t.tech = toName;
+  if (t.type === 'Project' && t.team) t.team = [TECH_INITIALS[toName]];
+  t.dateModified = nowStamp();
+  refreshAll();
+  toast(`#${taskId} moved from ${from} → ${toName}`);
+}
+
+/* ----------------------------- NEW TASK MODAL ----------------------------- */
+function openTaskModal() { document.getElementById('taskModal').classList.add('show'); setTimeout(() => lucide.createIcons(), 30); }
+function closeTaskModal() {
+  document.getElementById('taskModal').classList.remove('show');
+  ['t_title','t_customer','t_date'].forEach(id => {
+    document.getElementById(id).classList.remove('err');
+    document.getElementById(id + '_err').classList.remove('show');
+  });
+}
+
+function createTask() {
+  let ok = true, firstBad = null;
+  ['t_title','t_customer','t_date'].forEach(id => {
+    const el = document.getElementById(id);
+    const err = document.getElementById(id + '_err');
+    if (!el.value.trim()) { el.classList.add('err'); err.classList.add('show'); ok = false; if (!firstBad) firstBad = el; }
+    else { el.classList.remove('err'); err.classList.remove('show'); }
+  });
+  if (!ok) { firstBad.focus(); return; }
+
+  const type = document.getElementById('t_type').value;
+  const prefix = type === 'Project' ? 'PR' : type === 'Other' ? 'OT' : 'SR';
+  const tech = document.getElementById('t_tech').value;
+  const status = document.getElementById('t_status').value;
+  const id = `${prefix}-${seq++}`;
+
+  const stamp = nowStamp();
+  const task = {
+    id,
+    title: document.getElementById('t_title').value.trim(),
+    customer: document.getElementById('t_customer').value.trim(),
+    cc: document.getElementById('t_cc').value,
+    type,
+    priority: document.getElementById('t_priority').value,
+    tech: tech || '',
+    status,
+    created: 'Just now',
+    desc: document.getElementById('t_desc').value.trim(),
+    schedule: formatDue(document.getElementById('t_date').value),
+    estimate: '1w',
+    remaining: '5d 0h 0m',
+    reporter: 'Manoj Pillai',
+    dateCreated: stamp,
+    dateModified: stamp
+  };
+  if (type === 'Project') {
+    task.progress = STATUS_PROGRESS[status] || 15;
+    task.due = formatDue(document.getElementById('t_date').value);
+    task.team = tech ? [TECH_INITIALS[tech]] : [];
+  }
+  tasks.unshift(task);
+
+  // reset inputs
+  document.getElementById('t_title').value = '';
+  document.getElementById('t_customer').value = '';
+  document.getElementById('t_desc').value = '';
+  document.getElementById('t_tech').value = '';
+
+  closeTaskModal();
+  renderTasks();
+  showView('tasks', document.querySelector('.sidebar-link[onclick*="tasks"]'));
+  toast(tech ? `Task #${id} created & assigned to ${tech}` : `Task #${id} created`);
+}
+
+function toast(msg) {
+  const t = document.getElementById('toast');
+  document.getElementById('toastMsg').textContent = msg;
+  t.classList.add('show');
+  clearTimeout(window.__toastTimer);
+  window.__toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+/* ----------------------------- TASK / PROJECT DETAIL ----------------------------- */
+let detailFrom = 'tasks';
+
+const STATUS_BADGE = {
+  'New':        { label: 'TO DO',       bg: '#FEF3C7', fg: '#92400E' },
+  'In Progress':{ label: 'IN PROGRESS', bg: '#DBEAFE', fg: '#1E40AF' },
+  'With PM':    { label: 'WITH PM',     bg: '#EEF2FF', fg: '#4338CA' },
+  'Done':       { label: 'DONE',        bg: '#D1FAE5', fg: '#065F46' }
+};
+
+function nowStamp() {
+  const d = new Date();
+  const p = n => String(n).padStart(2,'0');
+  return `${p(d.getDate())}/${p(d.getMonth()+1)}/${d.getFullYear()} ${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}`;
+}
+
+function getTask(id) { return tasks.find(t => t.id === id); }
+
+function openDetail(id, from) {
+  detailFrom = from || 'tasks';
+  renderDetail(id);
+  showView('detail', null);
+}
+
+function renderDetail(id) {
+  const t = getTask(id);
+  if (!t) return;
+  const badge = STATUS_BADGE[t.status] || { label: t.status.toUpperCase(), bg:'#F3F4F6', fg:'#374151' };
+  const prog = t.progress != null ? t.progress : (STATUS_PROGRESS[t.status] || 0);
+  const team = (t.team && t.team.length) ? t.team : [TECH_INITIALS[t.tech]].filter(Boolean);
+  const ini = t.tech ? (TECH_INITIALS[t.tech] || '?') : null;
+  const assignee = t.tech
+    ? `<span style="display:inline-flex; align-items:center; gap:8px;"><span class="avatar avatar-sm">${ini}</span>${t.tech}</span>`
+    : '<span style="color:#9CA3AF;">Unassigned</span>';
+  const reporterName = t.reporter || 'Manoj Pillai';
+  const reporterIni = reporterName.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+
+  document.getElementById('view-detail').innerHTML = `
+    <div class="crumb">
+      <a onclick="showView('${detailFrom}', document.querySelector('.sidebar-link[onclick*=&quot;${detailFrom}&quot;]'))">${detailFrom === 'projects' ? 'My Projects' : 'Tasks'}</a>
+      <span class="sep">/</span>
+      <span>${t.type}</span>
+      <span class="sep">/</span>
+      <span style="display:inline-flex; align-items:center; gap:6px;"><i data-lucide="${t.type==='Project'?'folder-kanban':'ticket'}" style="width:14px;height:14px;"></i> #${t.id}</span>
+    </div>
+
+    <div class="detail-grid">
+      <!-- LEFT -->
+      <div>
+        <h1 class="detail-h1">${t.title || t.customer}</h1>
+        <div style="margin-bottom:18px;"><span class="badge-status" style="background:${badge.bg}; color:${badge.fg};">${badge.label}</span></div>
+
+        <div class="detail-actions">
+          <button class="btn btn-primary"><i data-lucide="paperclip" style="width:14px;height:14px;"></i>Attach</button>
+          <button class="btn btn-secondary"><i data-lucide="link" style="width:14px;height:14px;"></i>Linked Issues</button>
+          <button class="icon-btn"><i data-lucide="more-vertical" style="width:16px;height:16px;"></i></button>
+        </div>
+
+        <h3 style="font-size:15px; font-weight:700; margin:0 0 8px;">Description</h3>
+        <div class="desc-box">${t.desc ? t.desc : '<span style="color:#9CA3AF;">No description provided.</span>'}</div>
+
+        <h3 style="font-size:15px; font-weight:700; margin:24px 0 0;">Activity</h3>
+        <div class="act-tabs">
+          <button class="btn btn-secondary" style="padding:6px 12px; font-size:13px;"><i data-lucide="history" style="width:14px;height:14px;"></i>History</button>
+          <button class="btn btn-secondary" style="padding:6px 12px; font-size:13px;"><i data-lucide="message-circle" style="width:14px;height:14px;"></i>Comments</button>
+          <button class="btn btn-secondary" style="padding:6px 12px; font-size:13px;"><i data-lucide="megaphone" style="width:14px;height:14px;"></i>Spill Over Reason</button>
+        </div>
+        <div class="det-card" style="margin-top:4px;">
+          <div style="display:flex; gap:10px; align-items:flex-start; padding:6px 0;">
+            <div class="avatar avatar-sm" style="background:linear-gradient(135deg,#FBBF24,#D97706);">${reporterIni}</div>
+            <div style="font-size:13px;"><strong>${reporterName}</strong> created this ${t.type.toLowerCase()}<div style="color:#6B7280; margin-top:2px;">${t.dateCreated || t.created}</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: Details panel -->
+      <div>
+        <div class="det-card">
+          <h4 class="det-panel-title"><i data-lucide="box" style="width:16px;height:16px;"></i> Details</h4>
+
+          <div class="det-row">
+            <span class="k">Time Tracking</span>
+            <span class="v" style="flex:1; max-width:180px;"><span class="tt-wrap"><span class="tt-bar"><span class="tt-fill" style="width:${prog}%;"></span></span></span></span>
+          </div>
+          <div class="det-row"><span class="k">Remaining Time</span><span class="v">${t.remaining || '3d 5h 30m'}</span></div>
+          <div class="det-row"><span class="k">Assignee</span><span class="v">${assignee}</span></div>
+          <div class="det-row"><span class="k">Type</span><span class="v"><span class="pill ${TYPE_CLASS[t.type]}">${t.type}</span></span></div>
+          <div class="det-row"><span class="k">Priority</span><span class="v"><span class="pill ${PRIO_CLASS[t.priority]}">${t.priority}</span></span></div>
+          <div class="det-row"><span class="k">Cost Center</span><span class="v"><span class="cc-pill">${t.cc}</span></span></div>
+          <div class="det-row"><span class="k">Customer / Site</span><span class="v">${t.customer}</span></div>
+          <div class="det-row"><span class="k">Status</span><span class="v"><span class="pill ${STATUS_CLASS[t.status]||''}">${t.status}</span></span></div>
+          <div class="det-row"><span class="k">Reporter</span><span class="v"><span style="display:inline-flex; align-items:center; gap:8px;"><span class="avatar avatar-sm" style="background:linear-gradient(135deg,#FBBF24,#D97706);">${reporterIni}</span>${reporterName}</span></span></div>
+          <div class="det-row"><span class="k">Original Estimate</span><span class="v">${t.estimate || '1w'}</span></div>
+          ${t.schedule || t.due ? `<div class="det-row"><span class="k">Schedule</span><span class="v">${t.schedule || ('Due ' + t.due)}</span></div>` : ''}
+          <div class="det-row"><span class="k">Watchers</span><span class="v"><select class="select" style="width:auto; padding:6px 10px; font-size:12px;"><option>Select Option</option><option>Manoj Pillai</option>${t.tech?`<option>${t.tech}</option>`:''}</select></span></div>
+        </div>
+
+        <div style="font-size:11px; color:#9CA3AF; padding:0 4px;">
+          <div>Date Modified : ${t.dateModified || t.created}</div>
+          <div>Date Created : ${t.dateCreated || t.created}</div>
+        </div>
+      </div>
+    </div>`;
+  setTimeout(() => lucide.createIcons(), 30);
+}
+
+/* ----------------------------- VIEW SWITCHER ----------------------------- */
 function showView(name, el) {
   document.querySelectorAll('.main > .view').forEach(v => v.classList.remove('active'));
   const view = document.getElementById('view-' + name);
@@ -632,9 +1224,18 @@ function showView(name, el) {
     document.querySelectorAll('.sidebar > .sidebar-link').forEach(l => l.classList.remove('active'));
     el.classList.add('active');
   }
+  if (name === 'tasks') renderTasks();
+  if (name === 'projects' || name === 'dashboard') renderProjects();
+  if (name === 'approvals' || name === 'dashboard') renderApprovals();
+  if (name === 'availability') renderAvailability();
   window.scrollTo(0, 0);
   setTimeout(() => lucide.createIcons(), 50);
 }
+
+renderTasks();
+renderProjects();
+renderApprovals();
+renderAvailability();
 </script>
 </body>
 </html>

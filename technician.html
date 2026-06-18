@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Technician App — ServiceHub</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -27,13 +28,14 @@
 
   /* Stat row */
   .stat-row { display: flex; gap: 8px; padding: 0 20px 16px; }
-  .stat-card { flex: 1; background: #fff; border-radius: 12px; padding: 12px; border: 1px solid #F3F4F6; }
+  .stat-card { flex: 1; background: #fff; border-radius: 12px; padding: 12px; border: 1px solid #F3F4F6; text-align:left; }
   .stat-num { font-size: 22px; font-weight: 700; margin-bottom: 2px; }
   .stat-label { font-size: 11px; color: #6B7280; font-weight: 500; }
 
   /* Task card */
-  .task-card { background: #fff; border-radius: 12px; padding: 14px; border: 1px solid #F3F4F6; margin-bottom: 10px; }
-  .task-card .top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+  .task-card { background: #fff; border-radius: 12px; padding: 14px; border: 1px solid #F3F4F6; margin-bottom: 10px; text-align:left; cursor:pointer; transition: box-shadow .15s, transform .05s; }
+  .task-card:active { transform: scale(0.99); }
+  .task-card .top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; gap:8px; }
   .task-title { font-weight: 600; font-size: 14px; line-height: 1.3; }
   .task-meta { display: flex; flex-wrap: wrap; gap: 6px; font-size: 11px; color: #6B7280; align-items: center; }
   .task-cust { color: #111; font-weight: 600; font-size: 13px; }
@@ -41,13 +43,13 @@
   /* Section title */
   .sec-title { padding: 4px 20px 8px; display: flex; justify-content: space-between; align-items: center; }
   .sec-title h3 { font-size: 15px; font-weight: 700; margin: 0; }
-  .sec-title a { font-size: 12px; color: #4F46E5; font-weight: 600; }
+  .sec-title a { font-size: 12px; color: #4F46E5; font-weight: 600; cursor:pointer; }
 
   /* Task detail */
-  .detail-header { background: white; padding: 50px 20px 16px; border-bottom: 1px solid #F3F4F6; display: flex; align-items: center; gap: 12px; }
-  .back-btn { width: 36px; height: 36px; border-radius: 10px; background: #F3F4F6; display: flex; align-items: center; justify-content: center; }
+  .detail-header { background: white; padding: 50px 20px 16px; border-bottom: 1px solid #F3F4F6; display: flex; align-items: center; gap: 12px; text-align:left; }
+  .back-btn { width: 36px; height: 36px; border-radius: 10px; background: #F3F4F6; display: flex; align-items: center; justify-content: center; cursor:pointer; flex-shrink:0; }
   .detail-title { font-size: 17px; font-weight: 700; }
-  .detail-body { padding: 16px 20px; }
+  .detail-body { padding: 16px 20px; text-align:left; }
   .section-block { background: white; border-radius: 12px; padding: 14px; margin-bottom: 12px; border: 1px solid #F3F4F6; }
   .section-block h4 { font-size: 12px; font-weight: 700; color: #6B7280; text-transform: uppercase; letter-spacing: 0.5px; margin: 0 0 10px; }
   .row-icon { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 10px; }
@@ -59,476 +61,596 @@
   /* Action bar */
   .action-bar { padding: 12px 20px 24px; background: white; border-top: 1px solid #F3F4F6; display: flex; gap: 10px; }
 
-  /* In progress */
-  .timer { background: linear-gradient(135deg, #F59E0B, #EF4444); color: white; padding: 20px; border-radius: 14px; text-align: center; margin-bottom: 16px; }
-  .timer-time { font-size: 36px; font-weight: 700; letter-spacing: 1px; font-variant-numeric: tabular-nums; }
-  .timer-label { font-size: 12px; opacity: 0.9; margin-top: 4px; }
+  /* Status banner */
+  .status-banner { padding: 14px; border-radius: 14px; text-align: center; margin-bottom: 16px; font-weight:600; font-size:14px; }
+  .status-inprogress { background: linear-gradient(135deg,#FEF3C7,#FDE68A); color:#92400E; }
+  .status-withpm { background: linear-gradient(135deg,#DBEAFE,#BFDBFE); color:#1E40AF; }
 
   /* Proof upload slots */
   .upload-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-  .upload-slot { aspect-ratio: 1; border: 2px dashed #D1D5DB; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; color: #6B7280; font-size: 11px; }
-  .upload-slot.filled { border: none; background-size: cover; background-position: center; position: relative; overflow: hidden; }
-  .upload-slot.filled::after { content: '✓'; position: absolute; top: 6px; right: 6px; background: #10B981; color: white; width: 22px; height: 22px; border-radius: 999px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; }
-  .filled-1 { background: linear-gradient(135deg, #6EE7B7, #10B981); }
-  .filled-2 { background: linear-gradient(135deg, #93C5FD, #3B82F6); }
+  .upload-slot { aspect-ratio: 1; border: 2px dashed #D1D5DB; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; color: #6B7280; font-size: 11px; cursor:pointer; overflow:hidden; position:relative; }
+  .upload-slot img { width:100%; height:100%; object-fit:cover; }
+  .upload-slot .rm { position:absolute; top:4px; right:4px; background:rgba(0,0,0,0.55); color:#fff; width:20px; height:20px; border-radius:999px; display:flex; align-items:center; justify-content:center; font-size:13px; }
+
+  /* Form */
+  .field { text-align:left; margin-bottom:14px; }
+  .label.req::after { content:' *'; color:#EF4444; }
+  .input.err, .textarea.err { border-color:#EF4444 !important; background:#FEF2F2; }
+  .field-err { color:#EF4444; font-size:11px; margin-top:4px; display:none; }
+  .field-err.show { display:block; }
+  .form-banner { background:#FEF2F2; border:1px solid #FCA5A5; color:#B91C1C; font-size:12.5px; padding:10px 12px; border-radius:10px; margin-bottom:14px; display:none; text-align:left; }
+  .form-banner.show { display:block; }
 
   /* Complete */
-  .complete-screen { background: linear-gradient(180deg, #ECFDF5 0%, #fff 100%); height: 100%; padding: 80px 24px 24px; text-align: center; display: flex; flex-direction: column; }
-  .complete-circle { width: 110px; height: 110px; border-radius: 999px; background: #10B981; display: inline-flex; align-items: center; justify-content: center; margin: 0 auto 24px; box-shadow: 0 20px 40px -10px rgba(16,185,129,0.5); animation: pop 0.5s ease; }
+  .complete-screen { background: linear-gradient(180deg, #EFF6FF 0%, #fff 100%); height: 100%; padding: 70px 24px 24px; text-align: center; display: flex; flex-direction: column; }
+  .complete-circle { width: 110px; height: 110px; border-radius: 999px; background: #2563EB; display: inline-flex; align-items: center; justify-content: center; margin: 0 auto 24px; box-shadow: 0 20px 40px -10px rgba(37,99,235,0.5); animation: pop 0.5s ease; }
   @keyframes pop { from { transform: scale(0); } to { transform: scale(1); } }
-  .rating { display: inline-flex; gap: 4px; margin: 16px 0; }
+
+  .type-service { background:#EEF2FF; color:#4338CA; }
+  .type-project { background:#ECFDF5; color:#047857; }
+  .type-other   { background:#FEF3C7; color:#92400E; }
 </style>
 </head>
 <body>
 
 <div class="stage">
   <div class="stage-title">Technician App · Sajeev T.</div>
-  <h2 class="stage-name" id="stageName">1. Login</h2>
+  <h2 class="stage-name" id="stageName">Login</h2>
 
   <div class="phone-frame">
     <div class="phone-notch"></div>
-    <div class="phone-screen">
-
-      <!-- 1. LOGIN -->
-      <div class="screen active" data-name="1. Login">
-        <div class="login-screen">
-          <div class="login-logo"><i data-lucide="layers" style="width:32px;height:32px;color:white;"></i></div>
-          <h2 class="login-h">ServiceHub</h2>
-          <div class="login-sub">Technician Portal</div>
-
-          <div class="login-card">
-            <div class="field">
-              <label class="label">Phone Number</label>
-              <input type="text" class="input" value="+91 98470 11122">
-            </div>
-            <div class="field">
-              <label class="label">OTP</label>
-              <div style="display:flex; gap:8px;">
-                <input class="input" style="text-align:center;font-weight:700;" value="4" maxlength="1">
-                <input class="input" style="text-align:center;font-weight:700;" value="8" maxlength="1">
-                <input class="input" style="text-align:center;font-weight:700;" value="2" maxlength="1">
-                <input class="input" style="text-align:center;font-weight:700;" value="1" maxlength="1">
-              </div>
-            </div>
-            <button class="btn btn-primary btn-block btn-lg" onclick="goNext()">
-              Sign In
-              <i data-lucide="arrow-right" style="width:16px;height:16px;"></i>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- 2. HOME / TODAY -->
-      <div class="screen" data-name="2. Home — Today's Tasks">
-        <div style="flex:1; overflow-y:auto; padding-top:40px;">
-          <div class="home-header">
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-              <div>
-                <h2 class="home-greet">Hi, Sajeev 👋</h2>
-                <div class="home-sub">Tuesday, May 12 · 4 tasks today</div>
-              </div>
-              <div class="avatar avatar-lg">ST</div>
-            </div>
-          </div>
-
-          <div class="stat-row">
-            <div class="stat-card">
-              <div class="stat-num" style="color:#F59E0B;">3</div>
-              <div class="stat-label">In Progress</div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-num" style="color:#4F46E5;">5</div>
-              <div class="stat-label">Upcoming</div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-num" style="color:#10B981;">12</div>
-              <div class="stat-label">Done · Week</div>
-            </div>
-          </div>
-
-          <div class="sec-title"><h3>Today's tasks</h3><a>See all</a></div>
-
-          <div style="padding:0 20px 12px;">
-            <div class="task-card card-hover" onclick="show(3)">
-              <div class="top">
-                <div class="task-cust">Rajesh Nair</div>
-                <span class="pill pill-red">Urgent</span>
-              </div>
-              <div class="task-title">AC not cooling — Showroom</div>
-              <div class="task-meta" style="margin-top:6px;">
-                <span class="cc-pill"><i data-lucide="map-pin" style="width:10px;height:10px;display:inline;"></i> Kollam</span>
-                <span>·</span>
-                <span><i data-lucide="clock" style="width:11px;height:11px;display:inline;vertical-align:middle;"></i> 11:00 AM</span>
-              </div>
-            </div>
-
-            <div class="task-card">
-              <div class="top">
-                <div class="task-cust">Priya Menon</div>
-                <span class="pill pill-amber">Medium</span>
-              </div>
-              <div class="task-title">Network cable replacement</div>
-              <div class="task-meta" style="margin-top:6px;">
-                <span class="cc-pill"><i data-lucide="map-pin" style="width:10px;height:10px;display:inline;"></i> Kollam</span>
-                <span>·</span>
-                <span><i data-lucide="clock" style="width:11px;height:11px;display:inline;vertical-align:middle;"></i> 2:00 PM</span>
-              </div>
-            </div>
-
-            <div class="task-card">
-              <div class="top">
-                <div class="task-cust">Anoop Kumar</div>
-                <span class="pill pill-indigo">Service</span>
-              </div>
-              <div class="task-title">CCTV camera focus issue</div>
-              <div class="task-meta" style="margin-top:6px;">
-                <span class="cc-pill"><i data-lucide="map-pin" style="width:10px;height:10px;display:inline;"></i> Kollam</span>
-                <span>·</span>
-                <span><i data-lucide="clock" style="width:11px;height:11px;display:inline;vertical-align:middle;"></i> 4:30 PM</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="bottom-nav">
-          <div class="bottom-nav-item active">
-            <i data-lucide="home" style="width:20px;height:20px;"></i>
-            <span>Home</span>
-          </div>
-          <div class="bottom-nav-item" onclick="show(2)">
-            <i data-lucide="list-checks" style="width:20px;height:20px;"></i>
-            <span>Tasks</span>
-          </div>
-          <div class="bottom-nav-item">
-            <i data-lucide="bell" style="width:20px;height:20px;"></i>
-            <span>Alerts</span>
-          </div>
-          <div class="bottom-nav-item">
-            <i data-lucide="user" style="width:20px;height:20px;"></i>
-            <span>Profile</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- 3. TASK LIST (with tabs) -->
-      <div class="screen" data-name="3. Task List · Tabs">
-        <div style="flex:1; overflow-y:auto; padding-top:40px;">
-          <div class="home-header">
-            <h2 class="home-greet" style="font-size:20px;">My Tasks</h2>
-          </div>
-          <div class="tabs" style="padding: 0 20px; margin-bottom:12px;">
-            <div class="tab active">Today (4)</div>
-            <div class="tab">Upcoming (5)</div>
-            <div class="tab">Done</div>
-          </div>
-          <div style="padding:0 20px 8px; display:flex; gap:6px; overflow-x:auto;">
-            <span class="chip active">All</span>
-            <span class="chip">Service</span>
-            <span class="chip">Project</span>
-            <span class="chip">Urgent</span>
-          </div>
-
-          <div style="padding:8px 20px 12px;">
-            <div class="task-card card-hover" onclick="show(3)">
-              <div class="top">
-                <div class="task-cust">Rajesh Nair</div>
-                <span class="pill pill-red">Urgent</span>
-              </div>
-              <div class="task-title">AC not cooling — Showroom</div>
-              <div class="task-meta" style="margin-top:6px;">
-                <span class="cc-pill">Kollam</span>
-                <span>·</span>
-                <span>11:00 AM</span>
-                <span>·</span>
-                <span class="pill pill-indigo">Service</span>
-              </div>
-            </div>
-
-            <div class="task-card">
-              <div class="top">
-                <div class="task-cust">Hotel Sea View</div>
-                <span class="pill pill-amber">High</span>
-              </div>
-              <div class="task-title">CCTV installation — 12 cameras</div>
-              <div class="task-meta" style="margin-top:6px;">
-                <span class="cc-pill">Kollam</span>
-                <span>·</span>
-                <span>1:30 PM</span>
-                <span>·</span>
-                <span class="pill pill-emerald">Project</span>
-              </div>
-            </div>
-
-            <div class="task-card">
-              <div class="top">
-                <div class="task-cust">Priya Menon</div>
-                <span class="pill pill-amber">Medium</span>
-              </div>
-              <div class="task-title">Network cable replacement</div>
-              <div class="task-meta" style="margin-top:6px;">
-                <span class="cc-pill">Kollam</span>
-                <span>·</span>
-                <span>2:00 PM</span>
-              </div>
-            </div>
-
-            <div class="task-card">
-              <div class="top">
-                <div class="task-cust">Anoop Kumar</div>
-                <span class="pill pill-gray">Low</span>
-              </div>
-              <div class="task-title">CCTV camera focus issue</div>
-              <div class="task-meta" style="margin-top:6px;">
-                <span class="cc-pill">Kollam</span>
-                <span>·</span>
-                <span>4:30 PM</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="bottom-nav">
-          <div class="bottom-nav-item" onclick="show(1)">
-            <i data-lucide="home" style="width:20px;height:20px;"></i><span>Home</span>
-          </div>
-          <div class="bottom-nav-item active">
-            <i data-lucide="list-checks" style="width:20px;height:20px;"></i><span>Tasks</span>
-          </div>
-          <div class="bottom-nav-item">
-            <i data-lucide="bell" style="width:20px;height:20px;"></i><span>Alerts</span>
-          </div>
-          <div class="bottom-nav-item">
-            <i data-lucide="user" style="width:20px;height:20px;"></i><span>Profile</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- 4. TASK DETAIL -->
-      <div class="screen" data-name="4. Task Detail">
-        <div style="flex:1; overflow-y:auto;">
-          <div class="detail-header">
-            <div class="back-btn" onclick="show(2)"><i data-lucide="chevron-left" style="width:20px;height:20px;"></i></div>
-            <div>
-              <div style="font-size:11px;color:#6B7280;font-weight:600;">TICKET #SR-2451</div>
-              <div class="detail-title">AC not cooling</div>
-            </div>
-          </div>
-
-          <div class="detail-body">
-            <div style="display:flex; gap:6px; margin-bottom:12px;">
-              <span class="pill pill-red">Urgent</span>
-              <span class="pill pill-indigo">Service</span>
-              <span class="pill" style="background:#DBEAFE;color:#1E40AF;">Assigned</span>
-            </div>
-
-            <div class="section-block">
-              <h4>Customer</h4>
-              <div class="row-icon">
-                <div class="ico"><i data-lucide="user" style="width:16px;height:16px;"></i></div>
-                <div class="txt"><strong>Rajesh Nair</strong><span>Showroom owner</span></div>
-              </div>
-              <div class="row-icon">
-                <div class="ico"><i data-lucide="phone" style="width:16px;height:16px;"></i></div>
-                <div class="txt"><strong>+91 98470 12345</strong><span>Tap to call</span></div>
-              </div>
-              <div class="row-icon">
-                <div class="ico"><i data-lucide="map-pin" style="width:16px;height:16px;"></i></div>
-                <div class="txt"><strong>Sky Plaza, Kollam</strong><span>3.2 km away</span></div>
-              </div>
-            </div>
-
-            <div class="section-block">
-              <h4>Issue</h4>
-              <p style="font-size:13px; margin:0; color:#374151; line-height:1.5;">AC unit in our showroom is not cooling. Started this morning, customers complaining.</p>
-              <div style="display:flex; gap:6px; margin-top:10px;">
-                <div style="width:60px;height:60px;border-radius:8px;background:linear-gradient(135deg,#FCA5A5,#EF4444);"></div>
-                <div style="width:60px;height:60px;border-radius:8px;background:linear-gradient(135deg,#FCD34D,#F59E0B);"></div>
-              </div>
-            </div>
-
-            <div class="section-block">
-              <h4>Schedule</h4>
-              <div class="row-icon">
-                <div class="ico"><i data-lucide="calendar" style="width:16px;height:16px;"></i></div>
-                <div class="txt"><strong>Today · 11:00 AM</strong><span>SLA: 4 hours</span></div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="action-bar">
-          <button class="btn btn-secondary" style="flex:1;"><i data-lucide="phone" style="width:14px;height:14px;"></i>Call</button>
-          <button class="btn btn-primary" style="flex:2;" onclick="goNext()">
-            Start Task
-            <i data-lucide="play" style="width:14px;height:14px;"></i>
-          </button>
-        </div>
-      </div>
-
-      <!-- 5. IN PROGRESS -->
-      <div class="screen" data-name="5. Task In Progress">
-        <div style="flex:1; overflow-y:auto;">
-          <div class="detail-header">
-            <div class="back-btn"><i data-lucide="chevron-left" style="width:20px;height:20px;"></i></div>
-            <div>
-              <div style="font-size:11px;color:#6B7280;font-weight:600;">TICKET #SR-2451</div>
-              <div class="detail-title">AC not cooling</div>
-            </div>
-          </div>
-          <div class="detail-body">
-            <div class="timer">
-              <div class="timer-time">00:24:18</div>
-              <div class="timer-label">In Progress · Started 11:02 AM</div>
-            </div>
-
-            <div class="section-block">
-              <h4>Work Note</h4>
-              <textarea class="textarea" rows="3" style="resize:none;" placeholder="Add notes about what you're doing...">Diagnosed compressor fault. Replacing capacitor and refilling refrigerant.</textarea>
-            </div>
-
-            <div class="section-block">
-              <h4>Proof Photos</h4>
-              <div class="upload-grid">
-                <div class="upload-slot filled filled-1"></div>
-                <div class="upload-slot filled filled-2"></div>
-                <div class="upload-slot">
-                  <i data-lucide="camera" style="width:24px;height:24px;"></i>
-                  <span>Add photo</span>
-                </div>
-                <div class="upload-slot">
-                  <i data-lucide="image-plus" style="width:24px;height:24px;"></i>
-                  <span>From gallery</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="action-bar">
-          <button class="btn btn-secondary" style="flex:1;">Pause</button>
-          <button class="btn btn-success" style="flex:2;" onclick="goNext()">
-            <i data-lucide="check" style="width:14px;height:14px;"></i>
-            Mark as Done
-          </button>
-        </div>
-      </div>
-
-      <!-- 6. COMPLETION FORM / PROOF -->
-      <div class="screen" data-name="6. Submit Proof">
-        <div style="flex:1; overflow-y:auto;">
-          <div class="detail-header">
-            <div class="back-btn"><i data-lucide="chevron-left" style="width:20px;height:20px;"></i></div>
-            <div>
-              <div style="font-size:11px;color:#6B7280;font-weight:600;">FINAL SUBMISSION</div>
-              <div class="detail-title">Close Ticket</div>
-            </div>
-          </div>
-          <div class="detail-body">
-            <div class="section-block">
-              <h4>Work Summary</h4>
-              <textarea class="textarea" rows="3" style="resize:none;">Replaced faulty capacitor, refilled refrigerant. AC cooling normally. Customer verified.</textarea>
-            </div>
-
-            <div class="section-block">
-              <h4>Parts Used</h4>
-              <div style="display:flex; justify-content:space-between; padding:6px 0; font-size:13px; border-bottom:1px solid #F3F4F6;">
-                <span>Capacitor 45µF</span>
-                <span style="font-weight:600;">₹850</span>
-              </div>
-              <div style="display:flex; justify-content:space-between; padding:6px 0; font-size:13px;">
-                <span>Refrigerant (R-410A)</span>
-                <span style="font-weight:600;">₹1,200</span>
-              </div>
-            </div>
-
-            <div class="section-block">
-              <h4>Customer Signature</h4>
-              <div style="height:80px; border:1.5px dashed #D1D5DB; border-radius:10px; display:flex; align-items:center; justify-content:center;">
-                <svg viewBox="0 0 200 60" style="width:80%; height:100%;">
-                  <path d="M10,40 Q30,10 50,30 T90,30 Q110,50 130,25 T180,30" stroke="#4F46E5" stroke-width="2" fill="none"/>
-                </svg>
-              </div>
-            </div>
-
-            <div class="section-block">
-              <h4>Customer Rating</h4>
-              <div class="rating">
-                <i data-lucide="star" style="width:24px;height:24px;color:#F59E0B;fill:#F59E0B;"></i>
-                <i data-lucide="star" style="width:24px;height:24px;color:#F59E0B;fill:#F59E0B;"></i>
-                <i data-lucide="star" style="width:24px;height:24px;color:#F59E0B;fill:#F59E0B;"></i>
-                <i data-lucide="star" style="width:24px;height:24px;color:#F59E0B;fill:#F59E0B;"></i>
-                <i data-lucide="star" style="width:24px;height:24px;color:#F59E0B;fill:#F59E0B;"></i>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="action-bar">
-          <button class="btn btn-success btn-block btn-lg" onclick="goNext()">
-            <i data-lucide="check-circle-2" style="width:16px;height:16px;"></i>
-            Submit & Close Ticket
-          </button>
-        </div>
-      </div>
-
-      <!-- 7. COMPLETE -->
-      <div class="screen" data-name="7. Task Complete">
-        <div class="complete-screen">
-          <div class="complete-circle"><i data-lucide="check" style="width:56px;height:56px;color:white;stroke-width:3;"></i></div>
-          <h2 style="font-size:24px; font-weight:700; margin:0 0 8px;">Great work!</h2>
-          <p style="color:#4B5563; font-size:14px; margin:0 0 8px;">Ticket #SR-2451 closed</p>
-          <div style="font-size:13px; color:#10B981; font-weight:600;">⭐ 5/5 from Rajesh Nair</div>
-
-          <div class="info-card" style="margin-top:32px; text-align:left;">
-            <div style="display:flex; justify-content:space-between; padding:8px 0; font-size:13px; border-bottom:1px solid #F3F4F6;">
-              <span style="color:#6B7280;">Time taken</span>
-              <span style="font-weight:600;">42 minutes</span>
-            </div>
-            <div style="display:flex; justify-content:space-between; padding:8px 0; font-size:13px; border-bottom:1px solid #F3F4F6;">
-              <span style="color:#6B7280;">Parts cost</span>
-              <span style="font-weight:600;">₹2,050</span>
-            </div>
-            <div style="display:flex; justify-content:space-between; padding:8px 0; font-size:13px;">
-              <span style="color:#6B7280;">Points earned</span>
-              <span style="font-weight:600; color:#10B981;">+50 ⚡</span>
-            </div>
-          </div>
-
-          <button class="btn btn-primary btn-block btn-lg" style="margin-top:24px;" onclick="show(1)">
-            Back to Home
-          </button>
-        </div>
-      </div>
-
-    </div>
+    <div class="phone-screen" id="app"></div>
   </div>
 </div>
 
 <div class="demo-bar">
   <a href="index.html" class="home-link"><i data-lucide="home" style="width:14px;height:14px;display:inline;vertical-align:middle;"></i> Home</a>
-  <button onclick="goPrev()">← Prev</button>
-  <span class="step-indicator" id="stepInd">1 / 7</span>
-  <button onclick="goNext()">Next →</button>
+  <button onclick="resetDemo()">↻ Reset demo</button>
+  <span class="step-indicator" id="stepInd">Interactive</span>
 </div>
 
 <script>
-lucide.createIcons();
-let current = 0;
-const screens = document.querySelectorAll('.screen');
-const total = screens.length;
+/* ----------------------------- DATA MODEL ----------------------------- */
+// Workflow: PM rolls a ticket out to the technician (status 'todo').
+// Technician starts it ('inprogress'), does the work, then submits the
+// mandatory Daily Activity Report. On submit the ticket moves back to the
+// PM for closure/approval ('withpm') — shown to the technician under "Done".
 
-function show(i) {
-  if (i < 0 || i >= total) return;
-  screens.forEach((s, idx) => s.classList.toggle('active', idx === i));
-  document.getElementById('stageName').textContent = screens[i].dataset.name;
-  document.getElementById('stepInd').textContent = `${i+1} / ${total}`;
-  current = i;
+const TECH = { name: 'Sajeev T.', initials: 'ST', phone: '+91 98470 11122' };
+
+let tasks = [
+  {
+    id: 'SR-2451', customer: 'Rajesh Nair', contact: 'Showroom owner', phone: '+91 98470 12345',
+    title: 'AC not cooling — Showroom', type: 'Service', priority: 'Urgent',
+    location: 'Kollam', addr: 'Sky Plaza, Kollam', dist: '3.2 km away',
+    time: '11:00 AM', sla: '4 hours', today: true,
+    issue: 'AC unit in our showroom is not cooling. Started this morning, customers complaining.',
+    status: 'todo', report: null
+  },
+  {
+    id: 'PR-1180', customer: 'Hotel Sea View', contact: 'Facility manager', phone: '+91 98470 33445',
+    title: 'CCTV installation — 12 cameras', type: 'Project', priority: 'High',
+    location: 'Kollam', addr: 'Beach Road, Kollam', dist: '6.0 km away',
+    time: '1:30 PM', sla: '2 days', today: true,
+    issue: 'Supply and install 12 IP cameras with NVR across lobby, corridors and parking.',
+    status: 'todo', report: null
+  },
+  {
+    id: 'SR-2452', customer: 'Priya Menon', contact: 'Home owner', phone: '+91 98470 55667',
+    title: 'Network cable replacement', type: 'Service', priority: 'Medium',
+    location: 'Kollam', addr: 'Kadappakada, Kollam', dist: '4.1 km away',
+    time: '2:00 PM', sla: '8 hours', today: true,
+    issue: 'Internet drops frequently. Suspect damaged LAN cabling between router and switch.',
+    status: 'inprogress', report: null
+  },
+  {
+    id: 'OT-3090', customer: 'Anoop Kumar', contact: 'Shop owner', phone: '+91 98470 77889',
+    title: 'CCTV camera focus issue', type: 'Other', priority: 'Low',
+    location: 'Kollam', addr: 'Chinnakada, Kollam', dist: '2.4 km away',
+    time: '4:30 PM', sla: '1 day', today: true,
+    issue: 'One camera out of focus after recent power cut. Needs re-adjustment.',
+    status: 'todo', report: null
+  },
+  {
+    id: 'SR-2440', customer: 'Suresh Babu', contact: 'Office admin', phone: '+91 98470 99001',
+    title: 'Router configuration', type: 'Service', priority: 'Medium',
+    location: 'Kollam', addr: 'Asramam, Kollam', dist: '5.5 km away',
+    time: 'Yesterday', sla: 'Closed', today: false,
+    issue: 'Reconfigure office router and set up guest WiFi VLAN.',
+    status: 'withpm',
+    report: { date: '2026-06-02', tech: 'Sajeev T.', client: 'Suresh Babu', scope: 'Router reconfig',
+      performed: 'Reset router, set up guest VLAN, tested all devices.', staff: 'Sajeev T.',
+      materials: 'Cat6 patch cable x2', purchase: 'No', pending: 'No', remarks: 'All working fine.', photos: 1 }
+  }
+];
+
+/* ----------------------------- APP STATE ----------------------------- */
+const state = { view: 'login', tab: 'todo', filter: 'All', currentId: null };
+let reportPhotos = [];   // data URLs added in the report form
+
+const VIEW_NAMES = {
+  login: 'Login', home: "Home — Today's Tasks", tasks: 'My Tasks',
+  detail: 'Task Detail', progress: 'Task In Progress', report: 'Daily Activity Report',
+  done: 'Submitted to PM'
+};
+
+function getTask(id) { return tasks.find(t => t.id === id); }
+function esc(s) { return (s || '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
+function typeClass(t) { return t === 'Service' ? 'type-service' : t === 'Project' ? 'type-project' : 'type-other'; }
+function prioClass(p) {
+  return p === 'Urgent' ? 'pill-red' : p === 'High' ? 'pill-amber'
+       : p === 'Medium' ? 'pill-amber' : 'pill-gray';
+}
+
+/* ----------------------------- RENDER ----------------------------- */
+function render() {
+  const app = document.getElementById('app');
+  app.innerHTML = ({
+    login: viewLogin, home: viewHome, tasks: viewTasks,
+    detail: viewDetail, progress: viewProgress, report: viewReport, done: viewDone
+  })[state.view]();
+  document.getElementById('stageName').textContent = VIEW_NAMES[state.view];
+  document.getElementById('stepInd').textContent = state.view === 'login' ? 'Interactive' : 'Live demo';
   lucide.createIcons();
 }
-function goNext() { if (current < total - 1) show(current + 1); }
-function goPrev() { if (current > 0) show(current - 1); }
 
-document.addEventListener('keydown', e => {
-  if (e.key === 'ArrowRight') goNext();
-  if (e.key === 'ArrowLeft') goPrev();
-});
+function go(view) { state.view = view; render(); }
+
+/* ---- Login ---- */
+function viewLogin() {
+  return `
+  <div class="login-screen">
+    <div class="login-logo"><i data-lucide="layers" style="width:32px;height:32px;color:white;"></i></div>
+    <h2 class="login-h">ServiceHub</h2>
+    <div class="login-sub">Technician Portal</div>
+    <div class="login-card">
+      <div class="field">
+        <label class="label">Phone Number</label>
+        <input type="text" class="input" value="${TECH.phone}">
+      </div>
+      <div class="field">
+        <label class="label">OTP</label>
+        <div style="display:flex; gap:8px;">
+          <input class="input" style="text-align:center;font-weight:700;" value="4" maxlength="1">
+          <input class="input" style="text-align:center;font-weight:700;" value="8" maxlength="1">
+          <input class="input" style="text-align:center;font-weight:700;" value="2" maxlength="1">
+          <input class="input" style="text-align:center;font-weight:700;" value="1" maxlength="1">
+        </div>
+      </div>
+      <button class="btn btn-primary btn-block btn-lg" onclick="go('home')">
+        Sign In <i data-lucide="arrow-right" style="width:16px;height:16px;"></i>
+      </button>
+    </div>
+  </div>`;
+}
+
+/* ---- Bottom nav ---- */
+function bottomNav(active) {
+  const item = (key, icon, label, view) =>
+    `<div class="bottom-nav-item ${active===key?'active':''}" onclick="go('${view}')">
+       <i data-lucide="${icon}" style="width:20px;height:20px;"></i><span>${label}</span>
+     </div>`;
+  return `<div class="bottom-nav">
+    ${item('home','home','Home','home')}
+    ${item('tasks','list-checks','Tasks','tasks')}
+    <div class="bottom-nav-item"><i data-lucide="bell" style="width:20px;height:20px;"></i><span>Alerts</span></div>
+    <div class="bottom-nav-item"><i data-lucide="user" style="width:20px;height:20px;"></i><span>Profile</span></div>
+  </div>`;
+}
+
+/* ---- Home ---- */
+function viewHome() {
+  const todo = tasks.filter(t => t.status === 'todo').length;
+  const inprog = tasks.filter(t => t.status === 'inprogress').length;
+  const done = tasks.filter(t => t.status === 'withpm').length;
+  const todays = tasks.filter(t => t.today && t.status !== 'withpm');
+
+  return `
+  <div style="flex:1; overflow-y:auto; padding-top:40px;">
+    <div class="home-header">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <div>
+          <h2 class="home-greet">Hi, Sajeev 👋</h2>
+          <div class="home-sub">Wednesday, Jun 3 · ${todays.length} tasks today</div>
+        </div>
+        <div class="avatar avatar-lg">${TECH.initials}</div>
+      </div>
+    </div>
+
+    <div class="stat-row">
+      <div class="stat-card" onclick="openTab('todo')" style="cursor:pointer;">
+        <div class="stat-num" style="color:#4F46E5;">${todo}</div>
+        <div class="stat-label">To-do</div>
+      </div>
+      <div class="stat-card" onclick="openTab('inprogress')" style="cursor:pointer;">
+        <div class="stat-num" style="color:#F59E0B;">${inprog}</div>
+        <div class="stat-label">In Progress</div>
+      </div>
+      <div class="stat-card" onclick="openTab('done')" style="cursor:pointer;">
+        <div class="stat-num" style="color:#2563EB;">${done}</div>
+        <div class="stat-label">Done · With PM</div>
+      </div>
+    </div>
+
+    <div class="sec-title"><h3>Today's tasks</h3><a onclick="openTab('todo')">See all</a></div>
+    <div style="padding:0 20px 12px;">
+      ${todays.length ? todays.map(taskCard).join('') : emptyState('No tasks scheduled for today')}
+    </div>
+  </div>
+  ${bottomNav('home')}`;
+}
+
+/* ---- Task list with tabs ---- */
+function viewTasks() {
+  const counts = {
+    todo: tasks.filter(t => t.status === 'todo').length,
+    inprogress: tasks.filter(t => t.status === 'inprogress').length,
+    withpm: tasks.filter(t => t.status === 'withpm').length
+  };
+  const tab = state.tab;
+  const statusForTab = tab === 'done' ? 'withpm' : tab;
+  let list = tasks.filter(t => t.status === statusForTab);
+  if (state.filter !== 'All') list = list.filter(t => t.type === state.filter);
+
+  const tabBtn = (key, label, count) =>
+    `<div class="tab ${tab===key?'active':''}" onclick="setTab('${key}')">${label} (${count})</div>`;
+  const chip = f =>
+    `<span class="chip ${state.filter===f?'active':''}" onclick="setFilter('${f}')">${f}</span>`;
+
+  return `
+  <div style="flex:1; overflow-y:auto; padding-top:40px;">
+    <div class="home-header"><h2 class="home-greet" style="font-size:20px;">My Tasks</h2></div>
+    <div class="tabs" style="padding: 0 20px; margin-bottom:12px;">
+      ${tabBtn('todo','To-do',counts.todo)}
+      ${tabBtn('inprogress','In Progress',counts.inprogress)}
+      ${tabBtn('done','Done',counts.withpm)}
+    </div>
+    <div style="padding:0 20px 8px; display:flex; gap:6px; overflow-x:auto;">
+      ${['All','Service','Project','Other'].map(chip).join('')}
+    </div>
+    <div style="padding:8px 20px 12px;">
+      ${list.length ? list.map(taskCard).join('') : emptyState('Nothing here yet')}
+    </div>
+  </div>
+  ${bottomNav('tasks')}`;
+}
+
+function taskCard(t) {
+  const withpm = t.status === 'withpm';
+  const statusPill = withpm
+    ? `<span class="pill" style="background:#DBEAFE;color:#1E40AF;">With PM</span>`
+    : t.status === 'inprogress'
+      ? `<span class="pill pill-amber">In Progress</span>`
+      : `<span class="pill ${prioClass(t.priority)}">${t.priority}</span>`;
+  return `
+  <div class="task-card card-hover" onclick="openTask('${t.id}')">
+    <div class="top">
+      <div class="task-cust">${esc(t.customer)}</div>
+      ${statusPill}
+    </div>
+    <div class="task-title">${esc(t.title)}</div>
+    <div class="task-meta" style="margin-top:6px;">
+      <span class="cc-pill"><i data-lucide="map-pin" style="width:10px;height:10px;display:inline;"></i> ${esc(t.location)}</span>
+      <span>·</span>
+      <span><i data-lucide="clock" style="width:11px;height:11px;display:inline;vertical-align:middle;"></i> ${esc(t.time)}</span>
+      <span>·</span>
+      <span class="pill ${typeClass(t.type)}">${t.type}</span>
+    </div>
+  </div>`;
+}
+
+function emptyState(msg) {
+  return `<div style="text-align:center; color:#9CA3AF; font-size:13px; padding:40px 0;">
+    <i data-lucide="inbox" style="width:32px;height:32px;"></i><div style="margin-top:8px;">${msg}</div>
+  </div>`;
+}
+
+/* ---- Task detail ---- */
+function viewDetail() {
+  const t = getTask(state.currentId);
+  const ticketLabel = t.type === 'Project' ? 'PROJECT' : 'TICKET';
+
+  let actions;
+  if (t.status === 'todo') {
+    actions = `
+      <button class="btn btn-secondary" style="flex:1;"><i data-lucide="phone" style="width:14px;height:14px;"></i>Call</button>
+      <button class="btn btn-primary" style="flex:2;" onclick="startTask('${t.id}')">
+        Start Task <i data-lucide="play" style="width:14px;height:14px;"></i>
+      </button>`;
+  } else if (t.status === 'inprogress') {
+    actions = `<button class="btn btn-primary btn-block" onclick="go('progress')">
+        Continue Work <i data-lucide="arrow-right" style="width:14px;height:14px;"></i></button>`;
+  } else {
+    actions = `<button class="btn btn-secondary btn-block" disabled>Submitted — awaiting PM closure</button>`;
+  }
+
+  const statusPill = t.status === 'withpm'
+    ? `<span class="pill" style="background:#DBEAFE;color:#1E40AF;">With PM</span>`
+    : t.status === 'inprogress'
+      ? `<span class="pill pill-amber">In Progress</span>`
+      : `<span class="pill" style="background:#DBEAFE;color:#1E40AF;">Assigned by PM</span>`;
+
+  return `
+  <div style="flex:1; overflow-y:auto;">
+    <div class="detail-header">
+      <div class="back-btn" onclick="go('tasks')"><i data-lucide="chevron-left" style="width:20px;height:20px;"></i></div>
+      <div>
+        <div style="font-size:11px;color:#6B7280;font-weight:600;">${ticketLabel} #${t.id}</div>
+        <div class="detail-title">${esc(t.title)}</div>
+      </div>
+    </div>
+    <div class="detail-body">
+      <div style="display:flex; gap:6px; margin-bottom:12px; flex-wrap:wrap;">
+        <span class="pill ${prioClass(t.priority)}">${t.priority}</span>
+        <span class="pill ${typeClass(t.type)}">${t.type}</span>
+        ${statusPill}
+      </div>
+
+      <div class="section-block">
+        <h4>Customer</h4>
+        <div class="row-icon">
+          <div class="ico"><i data-lucide="user" style="width:16px;height:16px;"></i></div>
+          <div class="txt"><strong>${esc(t.customer)}</strong><span>${esc(t.contact)}</span></div>
+        </div>
+        <div class="row-icon">
+          <div class="ico"><i data-lucide="phone" style="width:16px;height:16px;"></i></div>
+          <div class="txt"><strong>${esc(t.phone)}</strong><span>Tap to call</span></div>
+        </div>
+        <div class="row-icon">
+          <div class="ico"><i data-lucide="map-pin" style="width:16px;height:16px;"></i></div>
+          <div class="txt"><strong>${esc(t.addr)}</strong><span>${esc(t.dist)}</span></div>
+        </div>
+      </div>
+
+      <div class="section-block">
+        <h4>Scope / Issue</h4>
+        <p style="font-size:13px; margin:0; color:#374151; line-height:1.5;">${esc(t.issue)}</p>
+      </div>
+
+      <div class="section-block">
+        <h4>Schedule</h4>
+        <div class="row-icon">
+          <div class="ico"><i data-lucide="calendar" style="width:16px;height:16px;"></i></div>
+          <div class="txt"><strong>${esc(t.time)}</strong><span>SLA: ${esc(t.sla)}</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="action-bar">${actions}</div>`;
+}
+
+/* ---- In progress (no timer) ---- */
+function viewProgress() {
+  const t = getTask(state.currentId);
+  return `
+  <div style="flex:1; overflow-y:auto;">
+    <div class="detail-header">
+      <div class="back-btn" onclick="go('detail')"><i data-lucide="chevron-left" style="width:20px;height:20px;"></i></div>
+      <div>
+        <div style="font-size:11px;color:#6B7280;font-weight:600;">${t.type==='Project'?'PROJECT':'TICKET'} #${t.id}</div>
+        <div class="detail-title">${esc(t.title)}</div>
+      </div>
+    </div>
+    <div class="detail-body">
+      <div class="status-banner status-inprogress">
+        <i data-lucide="loader" style="width:16px;height:16px;display:inline;vertical-align:middle;"></i>
+        Work in progress
+      </div>
+
+      <div class="section-block">
+        <h4>Work Note</h4>
+        <textarea class="textarea" rows="3" style="resize:none;" placeholder="Add notes about what you're doing..."></textarea>
+      </div>
+
+      <div class="section-block">
+        <h4>On completion</h4>
+        <p style="font-size:13px; margin:0; color:#374151; line-height:1.5;">
+          Once the work is done, submit the <strong>Daily Activity Report</strong>. The ticket then moves to your Project Manager for closure.
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="action-bar">
+    <button class="btn btn-secondary" style="flex:1;" onclick="go('detail')">Back</button>
+    <button class="btn btn-success" style="flex:2;" onclick="openReport()">
+      <i data-lucide="clipboard-list" style="width:14px;height:14px;"></i>
+      Daily Activity Report
+    </button>
+  </div>`;
+}
+
+/* ---- Daily Activity Report form (all fields mandatory + photo) ---- */
+function field(id, label, value, opts = {}) {
+  const tag = opts.textarea
+    ? `<textarea id="${id}" class="textarea" rows="${opts.rows||2}" style="resize:none;" placeholder="${opts.ph||''}">${esc(value||'')}</textarea>`
+    : `<input id="${id}" type="${opts.type||'text'}" class="input" value="${esc(value||'')}" placeholder="${opts.ph||''}">`;
+  return `
+  <div class="field">
+    <label class="label req">${label}</label>
+    ${tag}
+    <div class="field-err" id="${id}_err">This field is required</div>
+  </div>`;
+}
+
+function viewReport() {
+  const t = getTask(state.currentId);
+  return `
+  <div style="flex:1; overflow-y:auto;">
+    <div class="detail-header">
+      <div class="back-btn" onclick="go('progress')"><i data-lucide="chevron-left" style="width:20px;height:20px;"></i></div>
+      <div>
+        <div style="font-size:11px;color:#6B7280;font-weight:600;">${t.type==='Project'?'PROJECT':'TICKET'} #${t.id}</div>
+        <div class="detail-title">Daily Activity Report</div>
+      </div>
+    </div>
+    <div class="detail-body">
+      <div class="form-banner" id="formBanner">Please fill all required fields and add at least one site photo.</div>
+
+      <div class="section-block">
+        ${field('r_date','Date', '2026-06-03', { type:'date' })}
+        ${field('r_tech','Technician Name', TECH.name)}
+        ${field('r_client','Client Name', t.customer, { ph:'Client / site name' })}
+        ${field('r_scope','Scope of Work', t.type==='Service'?'':'', { ph:'e.g. Site visit, Installation' })}
+        ${field('r_performed','What Performed', '', { textarea:true, rows:3, ph:'What was done on site' })}
+        ${field('r_staff','Total Number of Staff with Names', TECH.name, { textarea:true, rows:2, ph:'e.g. 2 — Sajeev, Aseeb' })}
+        ${field('r_materials','Used Materials (model & serial no.)', '', { textarea:true, rows:2, ph:'Model + serial of materials used' })}
+        ${field('r_purchase','Local Purchase Items & Other Expense', '', { textarea:true, rows:2, ph:'Write "No" if none' })}
+        ${field('r_pending','Pending Works in This Site', '', { textarea:true, rows:2, ph:'Write "No" if none' })}
+        ${field('r_remarks','Remarks / Site Observations', '', { textarea:true, rows:2, ph:'Write "No" if none' })}
+      </div>
+
+      <div class="section-block">
+        <h4>Site Photos <span style="color:#EF4444;">*</span></h4>
+        <div class="upload-grid" id="photoGrid">
+          <label class="upload-slot">
+            <input type="file" accept="image/*" style="display:none" onchange="addPhoto(event)">
+            <i data-lucide="camera" style="width:24px;height:24px;"></i>
+            <span>Add photo</span>
+          </label>
+        </div>
+        <div class="field-err" id="photo_err" style="margin-top:8px;">At least one site photo is required</div>
+      </div>
+    </div>
+  </div>
+  <div class="action-bar">
+    <button class="btn btn-success btn-block btn-lg" onclick="submitReport()">
+      <i data-lucide="send" style="width:16px;height:16px;"></i>
+      Submit &amp; Send to PM
+    </button>
+  </div>`;
+}
+
+/* ---- Done ---- */
+function viewDone() {
+  const t = getTask(state.currentId);
+  return `
+  <div class="complete-screen">
+    <div class="complete-circle"><i data-lucide="check" style="width:56px;height:56px;color:white;stroke-width:3;"></i></div>
+    <h2 style="font-size:24px; font-weight:700; margin:0 0 8px;">Report submitted</h2>
+    <p style="color:#4B5563; font-size:14px; margin:0 0 6px;">${t.type==='Project'?'Project':'Ticket'} #${t.id}</p>
+    <div style="font-size:13px; color:#2563EB; font-weight:600;">
+      <i data-lucide="arrow-up-right" style="width:14px;height:14px;display:inline;vertical-align:middle;"></i>
+      Moved to Project Manager for closure
+    </div>
+
+    <div class="info-card" style="margin-top:32px; text-align:left;">
+      <div style="display:flex; justify-content:space-between; padding:8px 0; font-size:13px; border-bottom:1px solid #F3F4F6;">
+        <span style="color:#6B7280;">Client</span><span style="font-weight:600;">${esc(t.report.client)}</span>
+      </div>
+      <div style="display:flex; justify-content:space-between; padding:8px 0; font-size:13px; border-bottom:1px solid #F3F4F6;">
+        <span style="color:#6B7280;">Staff</span><span style="font-weight:600;">${esc(t.report.staff)}</span>
+      </div>
+      <div style="display:flex; justify-content:space-between; padding:8px 0; font-size:13px; border-bottom:1px solid #F3F4F6;">
+        <span style="color:#6B7280;">Photos attached</span><span style="font-weight:600;">${t.report.photos}</span>
+      </div>
+      <div style="display:flex; justify-content:space-between; padding:8px 0; font-size:13px;">
+        <span style="color:#6B7280;">Status</span><span style="font-weight:600; color:#2563EB;">With PM · awaiting closure</span>
+      </div>
+    </div>
+
+    <button class="btn btn-primary btn-block btn-lg" style="margin-top:24px;" onclick="go('home')">Back to Home</button>
+  </div>`;
+}
+
+/* ----------------------------- ACTIONS ----------------------------- */
+function openTab(tab) { state.tab = tab; state.filter = 'All'; go('tasks'); }
+function setTab(tab) { state.tab = tab; render(); }
+function setFilter(f) { state.filter = f; render(); }
+function openTask(id) { state.currentId = id; go('detail'); }
+
+function startTask(id) {
+  const t = getTask(id);
+  t.status = 'inprogress';
+  go('progress');
+}
+
+function openReport() { reportPhotos = []; go('report'); }
+
+function addPhoto(e) {
+  const file = e.target.files && e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    reportPhotos.push(ev.target.result);
+    renderPhotoGrid();
+    document.getElementById('photo_err').classList.remove('show');
+  };
+  reader.readAsDataURL(file);
+}
+
+function removePhoto(i) { reportPhotos.splice(i, 1); renderPhotoGrid(); }
+
+function renderPhotoGrid() {
+  const grid = document.getElementById('photoGrid');
+  if (!grid) return;
+  const thumbs = reportPhotos.map((src, i) =>
+    `<div class="upload-slot" style="border:none;cursor:default;">
+       <img src="${src}" alt="site photo">
+       <div class="rm" onclick="removePhoto(${i})">×</div>
+     </div>`).join('');
+  const adder = `
+    <label class="upload-slot">
+      <input type="file" accept="image/*" style="display:none" onchange="addPhoto(event)">
+      <i data-lucide="camera" style="width:24px;height:24px;"></i>
+      <span>Add photo</span>
+    </label>`;
+  grid.innerHTML = thumbs + adder;
+  lucide.createIcons();
+}
+
+function val(id) { const el = document.getElementById(id); return el ? el.value.trim() : ''; }
+
+function submitReport() {
+  const required = ['r_date','r_tech','r_client','r_scope','r_performed','r_staff','r_materials','r_purchase','r_pending','r_remarks'];
+  let ok = true, firstBad = null;
+  required.forEach(id => {
+    const el = document.getElementById(id);
+    const err = document.getElementById(id + '_err');
+    if (!el.value.trim()) {
+      el.classList.add('err'); err.classList.add('show');
+      ok = false; if (!firstBad) firstBad = el;
+    } else {
+      el.classList.remove('err'); err.classList.remove('show');
+    }
+  });
+
+  const photoOk = reportPhotos.length > 0;
+  document.getElementById('photo_err').classList.toggle('show', !photoOk);
+
+  if (!ok || !photoOk) {
+    document.getElementById('formBanner').classList.add('show');
+    (firstBad || document.getElementById('photo_err')).scrollIntoView({ behavior:'smooth', block:'center' });
+    return;
+  }
+
+  const t = getTask(state.currentId);
+  t.report = {
+    date: val('r_date'), tech: val('r_tech'), client: val('r_client'), scope: val('r_scope'),
+    performed: val('r_performed'), staff: val('r_staff'), materials: val('r_materials'),
+    purchase: val('r_purchase'), pending: val('r_pending'), remarks: val('r_remarks'),
+    photos: reportPhotos.length
+  };
+  t.status = 'withpm';   // ticket leaves technician → PM for closure
+  t.today = false;
+  go('done');
+}
+
+function resetDemo() {
+  // restore initial statuses
+  tasks.forEach(t => {
+    if (t.id === 'SR-2452') { t.status = 'inprogress'; t.today = true; t.report = null; }
+    else if (t.id === 'SR-2440') { t.status = 'withpm'; }
+    else { t.status = 'todo'; t.today = true; t.report = null; }
+  });
+  Object.assign(state, { view: 'login', tab: 'todo', filter: 'All', currentId: null });
+  reportPhotos = [];
+  render();
+}
+
+/* ----------------------------- INIT ----------------------------- */
+render();
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && state.view !== 'login') go('home'); });
 </script>
 </body>
 </html>
