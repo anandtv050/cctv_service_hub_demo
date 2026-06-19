@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Admin Dashboard — ServiceHub</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin Console — ServiceHub</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/lucide@latest"></script>
@@ -15,6 +16,7 @@
   .brand-name { font-weight: 800; font-size: 16px; }
   .brand-sub { font-size: 11px; color: #6B7280; }
   .sidebar-section { font-size: 10px; font-weight: 700; color: #9CA3AF; text-transform: uppercase; letter-spacing: 0.5px; padding: 16px 12px 6px; }
+  .sidebar-link { cursor: pointer; }
 
   .topbar { background: #fff; padding: 14px 32px; border-bottom: 1px solid #E5E7EB; display: flex; align-items: center; justify-content: space-between; margin: -24px -32px 24px; }
   .search-box { display: flex; align-items: center; gap: 8px; background: #F3F4F6; border-radius: 10px; padding: 8px 14px; width: 360px; }
@@ -23,7 +25,7 @@
   .icon-btn { width: 36px; height: 36px; border-radius: 10px; background: #F3F4F6; display: flex; align-items: center; justify-content: center; cursor: pointer; position: relative; }
   .badge-dot { position: absolute; top: 8px; right: 8px; width: 8px; height: 8px; background: #EF4444; border-radius: 999px; border: 2px solid white; }
 
-  .cc-tabs { display: flex; gap: 6px; margin-bottom: 20px; }
+  .cc-tabs { display: flex; gap: 6px; margin-bottom: 20px; flex-wrap: wrap; }
   .cc-tab { padding: 8px 16px; border-radius: 10px; background: #fff; border: 1px solid #E5E7EB; font-size: 13px; font-weight: 600; color: #6B7280; cursor: pointer; }
   .cc-tab.active { background: #4F46E5; color: white; border-color: #4F46E5; }
 
@@ -31,35 +33,15 @@
   .chart-card { background: white; border-radius: 14px; padding: 20px; border: 1px solid #F3F4F6; }
   .chart-card h3 { font-size: 15px; font-weight: 700; margin: 0 0 16px; }
 
-  /* View switching */
   .view { display: none; }
   .view.active { display: block; animation: fadeIn 0.3s; }
   @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
-  /* Action panel (ticket detail) */
-  .detail-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
-  .timeline { padding-left: 24px; }
-  .timeline-item { position: relative; padding-bottom: 16px; padding-left: 20px; border-left: 2px solid #E5E7EB; margin-left: 4px; }
-  .timeline-item:last-child { border-left: 2px solid transparent; padding-bottom: 0; }
-  .timeline-dot { position: absolute; left: -7px; top: 2px; width: 12px; height: 12px; border-radius: 999px; background: #4F46E5; border: 3px solid white; box-shadow: 0 0 0 2px #4F46E5; }
-  .timeline-item.done .timeline-dot { background: #10B981; box-shadow: 0 0 0 2px #10B981; }
-  .timeline-item.muted .timeline-dot { background: #D1D5DB; box-shadow: 0 0 0 2px #D1D5DB; }
-  .timeline-title { font-size: 14px; font-weight: 600; }
-  .timeline-meta { font-size: 12px; color: #6B7280; }
-
-  /* Projects grid */
   .proj-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
   .proj-card { background: white; border-radius: 14px; padding: 18px; border: 1px solid #F3F4F6; cursor: pointer; transition: all 0.2s; }
   .proj-card:hover { transform: translateY(-2px); box-shadow: 0 10px 25px -5px rgba(0,0,0,0.08); }
-  .proj-card-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
-  .proj-name { font-size: 15px; font-weight: 700; line-height: 1.3; }
-  .proj-meta { font-size: 12px; color: #6B7280; margin-bottom: 12px; }
-  .progress-row { display: flex; justify-content: space-between; font-size: 11px; color: #6B7280; margin-bottom: 6px; }
   .progress-bar { height: 6px; background: #F3F4F6; border-radius: 999px; overflow: hidden; margin-bottom: 14px; }
   .progress-fill { height: 100%; background: linear-gradient(90deg, #4F46E5, #6366F1); border-radius: 999px; }
-  .avatar-stack { display: flex; }
-  .avatar-stack .avatar { width: 26px; height: 26px; font-size: 10px; border: 2px solid white; margin-left: -8px; }
-  .avatar-stack .avatar:first-child { margin-left: 0; }
 
   /* Modal */
   .modal-backdrop { position: fixed; inset: 0; background: rgba(15,23,42,0.5); backdrop-filter: blur(4px); z-index: 100; display: none; align-items: center; justify-content: center; }
@@ -68,8 +50,8 @@
   .modal-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
   .modal-title { font-size: 20px; font-weight: 700; margin: 0; }
   .close-btn { width: 32px; height: 32px; border-radius: 8px; background: #F3F4F6; display: flex; align-items: center; justify-content: center; cursor: pointer; border: none; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 
-  /* Leaderboard */
   .leader-row { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid #F3F4F6; }
   .leader-row:last-child { border-bottom: none; }
   .leader-rank { width: 28px; height: 28px; border-radius: 999px; background: #F3F4F6; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; color: #6B7280; }
@@ -77,31 +59,84 @@
   .leader-rank.silver { background: #F3F4F6; color: #374151; }
   .leader-rank.bronze { background: #FED7AA; color: #9A3412; }
 
-  .gantt-row { display: grid; grid-template-columns: 200px 1fr; gap: 12px; padding: 10px 0; align-items: center; border-bottom: 1px solid #F3F4F6; font-size: 13px; }
-  .gantt-bar-track { background: #F9FAFB; height: 22px; border-radius: 6px; position: relative; }
-  .gantt-bar { position: absolute; top: 0; height: 22px; border-radius: 6px; background: linear-gradient(90deg, #4F46E5, #818CF8); display: flex; align-items: center; padding: 0 8px; color: white; font-size: 11px; font-weight: 600; }
+  /* Form validation */
+  .label.req::after { content:' *'; color:#EF4444; }
+  .input.err, .select.err, .textarea.err { border-color:#EF4444 !important; background:#FEF2F2; }
+  .field-err { color:#EF4444; font-size:11px; margin-top:4px; display:none; }
+  .field-err.show { display:block; }
+
+  /* Login gate */
+  .login-gate { position: fixed; inset: 0; z-index: 200; background: linear-gradient(160deg, #4338CA 0%, #6366F1 100%); display: flex; align-items: center; justify-content: center; padding: 24px; }
+  .login-gate.hide { display: none; }
+  .login-box { background: white; border-radius: 20px; padding: 36px; width: 380px; box-shadow: 0 30px 60px -15px rgba(0,0,0,0.35); }
+  .login-mark { width: 56px; height: 56px; background: linear-gradient(135deg, #6366F1, #4F46E5); border-radius: 14px; display: flex; align-items: center; justify-content: center; color: white; margin-bottom: 18px; }
+
+  /* Toast */
+  .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(20px); background: #111827; color: white; padding: 12px 20px; border-radius: 12px; font-size: 14px; font-weight: 500; display: flex; align-items: center; gap: 8px; opacity: 0; pointer-events: none; transition: all 0.3s; z-index: 300; box-shadow: 0 10px 30px -5px rgba(0,0,0,0.4); }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  /* Ticket detail (Jira-style) */
+  .det-grid { display: grid; grid-template-columns: 1fr 340px; gap: 24px; align-items: start; }
+  .crumb { font-size: 13px; color: #6B7280; margin-bottom: 12px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .crumb a { color: #4F46E5; cursor: pointer; font-weight: 600; }
+  .crumb .sep { color: #D1D5DB; }
+  .det-h1 { font-size: 24px; font-weight: 800; margin: 0 0 14px; line-height: 1.25; }
+  .det-card { background: #fff; border: 1px solid #E5E7EB; border-radius: 14px; padding: 18px 20px; margin-bottom: 16px; }
+  .det-row { display: flex; justify-content: space-between; gap: 16px; padding: 11px 0; font-size: 13px; border-bottom: 1px solid #F3F4F6; }
+  .det-row:last-child { border-bottom: none; }
+  .det-row .k { color: #6B7280; }
+  .det-row .v { font-weight: 600; text-align: right; }
+  .badge-status { display:inline-flex; align-items:center; padding:6px 12px; border-radius:8px; font-size:12px; font-weight:700; letter-spacing:0.4px; }
+  .desc-box { background:#F9FAFB; border:1px solid #E5E7EB; border-radius:10px; min-height:54px; padding:14px; font-size:14px; color:#374151; line-height:1.6; }
+
+  /* Deployment module */
+  .deploy-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; align-items: start; }
+  .deploy-col { background: #F9FAFB; border: 1px solid #EEF0F3; border-radius: 14px; padding: 14px; }
+  .deploy-col-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+  .deploy-col-head .nm { font-weight: 700; font-size: 15px; }
+  .deploy-load { font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 999px; }
+  .tech-mini { background: #fff; border: 1px solid #E5E7EB; border-radius: 12px; padding: 12px; margin-bottom: 10px; }
+  .tech-mini:last-child { margin-bottom: 0; }
+  .load-bar { height: 7px; background: #F3F4F6; border-radius: 999px; overflow: hidden; margin: 8px 0; }
+  .load-fill { height: 100%; border-radius: 999px; }
+  .skill-chip { display:inline-block; background:#EEF2FF; color:#4338CA; font-size:10px; font-weight:600; padding:2px 8px; border-radius:999px; margin:2px 2px 0 0; }
+  .avail-badge { font-size:10px; font-weight:700; padding:3px 9px; border-radius:999px; white-space:nowrap; }
+  .relocate-sel { width:100%; padding:6px 8px; font-size:12px; }
+  .tech-ctrl { margin-top:10px; padding-top:10px; border-top:1px dashed #E5E7EB; display:flex; flex-direction:column; gap:6px; }
+  .cap-btn { width:24px; height:24px; border-radius:6px; border:1px solid #E5E7EB; background:#fff; font-size:14px; font-weight:700; line-height:1; cursor:pointer; color:#4338CA; }
+  .cap-btn:hover { background:#EEF2FF; }
 </style>
 </head>
 <body>
 
-<!-- SIDEBAR -->
+<!-- ============ LOGIN GATE ============ -->
+<div class="login-gate" id="loginGate">
+  <div class="login-box">
+    <div class="login-mark"><i data-lucide="layers" style="width:26px;height:26px;"></i></div>
+    <h2 style="margin:0 0 4px; font-size:22px; font-weight:800;">ServiceHub</h2>
+    <p style="margin:0 0 24px; color:#6B7280; font-size:13px;">Admin Console</p>
+    <div class="field"><label class="label">Email</label><input class="input" value="suresh.v@servicehub.in"></div>
+    <div class="field"><label class="label">Password</label><input class="input" type="password" value="demo1234"></div>
+    <button class="btn btn-primary btn-block btn-lg" style="margin-top:6px;" onclick="signIn()">Sign In <i data-lucide="arrow-right" style="width:16px;height:16px;"></i></button>
+    <p style="text-align:center; font-size:12px; color:#9CA3AF; margin:16px 0 0;">Signing in as <strong>Suresh Varma</strong> · Administrator</p>
+  </div>
+</div>
+
+<!-- ============ SIDEBAR ============ -->
 <div class="sidebar">
   <div class="brand-row">
     <div class="brand-mark"><i data-lucide="layers" style="width:18px;height:18px;"></i></div>
-    <div>
-      <div class="brand-name">ServiceHub</div>
-      <div class="brand-sub">Admin Console</div>
-    </div>
+    <div><div class="brand-name">ServiceHub</div><div class="brand-sub">Admin Console</div></div>
   </div>
 
   <div class="sidebar-section">Overview</div>
   <a class="sidebar-link active" onclick="showView('dashboard', this)"><i data-lucide="layout-dashboard"></i> Dashboard</a>
-  <a class="sidebar-link" onclick="showView('tickets', this)"><i data-lucide="ticket"></i> Tickets <span style="margin-left:auto; background:#EF4444; color:white; font-size:10px; padding:2px 6px; border-radius:999px;">3</span></a>
+  <a class="sidebar-link" onclick="showView('tickets', this)"><i data-lucide="ticket"></i> Tickets <span id="ticketBadge" style="margin-left:auto; background:#EF4444; color:white; font-size:10px; padding:2px 6px; border-radius:999px;">0</span></a>
   <a class="sidebar-link" onclick="showView('projects', this)"><i data-lucide="briefcase"></i> Projects</a>
-  <a class="sidebar-link" onclick="showView('services', this)"><i data-lucide="wrench"></i> Services</a>
 
   <div class="sidebar-section">Team</div>
   <a class="sidebar-link" onclick="showView('technicians', this)"><i data-lucide="users"></i> Technicians</a>
+  <a class="sidebar-link" onclick="showView('deployment', this)"><i data-lucide="map"></i> Deployment</a>
   <a class="sidebar-link" onclick="showView('managers', this)"><i data-lucide="user-check"></i> Project Managers</a>
 
   <div class="sidebar-section">Operations</div>
@@ -111,16 +146,13 @@
 
   <div style="position:absolute; bottom: 16px; left: 16px; right: 16px;">
     <a href="index.html" style="display:flex; gap:10px; align-items:center; padding:10px 12px; background:#F9FAFB; border-radius:10px; text-decoration:none; color:#374151; font-size:13px; font-weight:500;">
-      <i data-lucide="arrow-left" style="width:16px;height:16px;"></i>
-      Back to Demo Home
+      <i data-lucide="arrow-left" style="width:16px;height:16px;"></i> Back to Demo Home
     </a>
   </div>
 </div>
 
-<!-- MAIN -->
+<!-- ============ MAIN ============ -->
 <div class="main">
-
-  <!-- TOPBAR -->
   <div class="topbar">
     <div class="search-box">
       <i data-lucide="search" style="width:16px;height:16px;color:#6B7280;"></i>
@@ -128,992 +160,654 @@
       <kbd style="font-size:10px; background:#fff; padding:2px 6px; border-radius:4px; color:#9CA3AF;">⌘K</kbd>
     </div>
     <div class="topbar-right">
-      <div class="icon-btn"><i data-lucide="plus" style="width:18px;height:18px;"></i></div>
+      <button class="btn btn-primary" onclick="openTicketModal()"><i data-lucide="plus" style="width:14px;height:14px;"></i>New Ticket</button>
       <div class="icon-btn"><i data-lucide="bell" style="width:18px;height:18px;"></i><span class="badge-dot"></span></div>
       <div style="display:flex; align-items:center; gap:10px;">
         <div class="avatar">SV</div>
-        <div>
-          <div style="font-size:13px; font-weight:600;">Suresh Varma</div>
-          <div style="font-size:11px; color:#6B7280;">Admin</div>
-        </div>
+        <div><div style="font-size:13px; font-weight:600;">Suresh Varma</div><div style="font-size:11px; color:#6B7280;">Administrator</div></div>
       </div>
     </div>
   </div>
 
-  <!-- ============================== -->
-  <!-- DASHBOARD VIEW -->
-  <!-- ============================== -->
-  <div class="view active" id="view-dashboard">
+  <div class="view active" id="view-dashboard"></div>
+  <div class="view" id="view-tickets"></div>
+  <div class="view" id="view-detail"></div>
+  <div class="view" id="view-projects"></div>
+  <div class="view" id="view-technicians"></div>
+  <div class="view" id="view-deployment"></div>
+  <div class="view" id="view-managers"></div>
+  <div class="view" id="view-costcenters"></div>
+  <div class="view" id="view-reports"></div>
+  <div class="view" id="view-settings"></div>
+</div>
+
+<!-- ============ NEW TICKET MODAL ============ -->
+<div class="modal-backdrop" id="ticketModal">
+  <div class="modal">
+    <div class="modal-head">
+      <h2 class="modal-title">Create New Ticket</h2>
+      <button class="close-btn" onclick="closeTicketModal()"><i data-lucide="x" style="width:16px;height:16px;"></i></button>
+    </div>
+    <div class="field"><label class="label req">Title</label><input class="input" id="k_title" placeholder="e.g., CCTV camera focus issue"><div class="field-err" id="k_title_err">Title is required</div></div>
+    <div class="field"><label class="label req">Customer / Site</label><input class="input" id="k_customer" placeholder="e.g., Rajesh Nair / Sky Plaza"><div class="field-err" id="k_customer_err">Customer is required</div></div>
+    <div class="grid-2">
+      <div class="field"><label class="label">Cost Center</label><select class="select" id="k_cc"><option>Kollam</option><option>Calicut</option><option>Ernakulam</option></select></div>
+      <div class="field"><label class="label">Type</label><select class="select" id="k_type"><option>Service</option><option>Project</option><option>Other</option></select></div>
+    </div>
+    <div class="grid-2">
+      <div class="field"><label class="label">Priority</label><select class="select" id="k_priority"><option>Urgent</option><option>High</option><option selected>Medium</option><option>Low</option></select></div>
+      <div class="field"><label class="label">Status</label><select class="select" id="k_status"><option selected>New</option><option>In Progress</option><option>Done</option></select></div>
+    </div>
+    <div class="grid-2">
+      <div class="field"><label class="label">Assign Technician</label><select class="select" id="k_tech"></select></div>
+      <div class="field"><label class="label req">Schedule Date</label><input class="input" type="date" id="k_date" value="2026-06-19"><div class="field-err" id="k_date_err">Date is required</div></div>
+    </div>
+    <div class="field"><label class="label">Description</label><textarea class="textarea" id="k_desc" rows="3" style="resize:none;" placeholder="Describe the work..."></textarea></div>
+    <div style="display:flex; gap:10px; margin-top:8px;">
+      <button class="btn btn-secondary" style="flex:1;" onclick="closeTicketModal()">Cancel</button>
+      <button class="btn btn-primary" style="flex:1;" onclick="createTicket()"><i data-lucide="send" style="width:14px;height:14px;"></i>Create Ticket</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"><i data-lucide="check-circle-2" style="width:16px;height:16px;"></i><span id="toastMsg"></span></div>
+
+<script>
+lucide.createIcons();
+
+/* ============================ DATA ============================ */
+const COST_CENTERS = ['Calicut','Kollam','Ernakulam'];
+const COLORS = {
+  ST:'linear-gradient(135deg,#FCA5A5,#EF4444)', VR:'linear-gradient(135deg,#6EE7B7,#10B981)',
+  HM:'linear-gradient(135deg,#A78BFA,#7C3AED)', AS:'linear-gradient(135deg,#93C5FD,#3B82F6)',
+  RK:'linear-gradient(135deg,#FCD34D,#F59E0B)', PG:'linear-gradient(135deg,#F472B6,#DB2777)',
+  JT:'linear-gradient(135deg,#34D399,#059669)'
+};
+
+let technicians = [
+  { name:'Sajeev T.',  ini:'ST', exp:'Senior · 8 yrs', cc:'Kollam',    skills:['AC','Electrical','CCTV'], capacity:5, status:'active', rating:4.9 },
+  { name:'Vishnu Raj', ini:'VR', exp:'Technician · 4 yrs', cc:'Kollam', skills:['CCTV','Wiring'],         capacity:5, status:'active', rating:4.7 },
+  { name:'Anjali S.',  ini:'AS', exp:'Network · 5 yrs', cc:'Kollam',    skills:['Network','CCTV'],         capacity:4, status:'leave',  rating:4.8 },
+  { name:'Hareesh M.', ini:'HM', exp:'Senior · 6 yrs', cc:'Ernakulam',  skills:['Smart Home','CCTV'],      capacity:4, status:'active', rating:4.8 },
+  { name:'Jithin T.',  ini:'JT', exp:'Technician · 2 yrs', cc:'Ernakulam', skills:['CCTV'],                capacity:4, status:'active', rating:4.5 },
+  { name:'Rahul K.',   ini:'RK', exp:'Technician · 3 yrs', cc:'Calicut', skills:['AC'],                    capacity:5, status:'active', rating:4.6 },
+  { name:'Praveen G.', ini:'PG', exp:'Senior · 7 yrs', cc:'Calicut',    skills:['Electrical','Solar'],     capacity:5, status:'active', rating:4.9 }
+];
+
+const PMS = [
+  { name:'Manoj Pillai',   ini:'MP', cc:'Kollam',    email:'manoj.p@servicehub.in', centers:['Kollam','Ernakulam'], color:'linear-gradient(135deg,#FBBF24,#D97706)', ontime:94 },
+  { name:'Deepa Krishnan', ini:'DK', cc:'Calicut',   email:'deepa.k@servicehub.in', centers:['Calicut'],            color:'linear-gradient(135deg,#A78BFA,#7C3AED)', ontime:91 },
+  { name:'Arun Krishnan',  ini:'AK', cc:'Ernakulam', email:'arun.k@servicehub.in',  centers:['Ernakulam'],          color:'linear-gradient(135deg,#6EE7B7,#10B981)', ontime:88 }
+];
+
+const CC_META = {
+  Calicut:   { emoji:'🏙️', addr:'PG Industrial Estate, Calicut 673001', mgr:'Deepa Krishnan', mgrIni:'DK', accent:'#4F46E5' },
+  Kollam:    { emoji:'🏖️', addr:'Chinnakada Junction, Kollam 691001',  mgr:'Manoj Pillai',   mgrIni:'MP', accent:'#10B981' },
+  Ernakulam: { emoji:'🏢', addr:'MG Road, Kochi 682011',               mgr:'Arun Krishnan',  mgrIni:'AK', accent:'#F59E0B' }
+};
+
+let tasks = [
+  { id:'SR-2451', title:'AC not cooling — Showroom', customer:'Rajesh Nair', cc:'Kollam',    type:'Service', priority:'Urgent', tech:'Sajeev T.', status:'In Progress', created:'Today, 10:42 AM', desc:'AC unit not cooling since morning, customers complaining.' },
+  { id:'PR-2450', title:'Hotel Sea View — 12-camera CCTV', customer:'Hotel Sea View', cc:'Kollam', type:'Project', priority:'High', tech:'Sajeev T.', status:'New', created:'Today, 9:15 AM', due:'May 28', progress:65, desc:'Supply & install 12 IP cameras with NVR.' },
+  { id:'SR-2449', title:'Network cable replacement', customer:'Priya Menon', cc:'Calicut',  type:'Service', priority:'Medium', tech:'Rahul K.', status:'In Progress', created:'Today, 8:30 AM', desc:'Frequent internet drops, suspect damaged LAN.' },
+  { id:'PR-2448', title:'Fathima Beevi — Network (3 floors)', customer:'Fathima Beevi', cc:'Ernakulam', type:'Project', priority:'High', tech:'Hareesh M.', status:'In Progress', created:'Yesterday, 4:20 PM', due:'May 22', progress:85, desc:'Structured cabling across 3 floors.' },
+  { id:'SR-2447', title:'CCTV camera focus issue', customer:'Anoop Kumar', cc:'Calicut',    type:'Service', priority:'Low', tech:'Praveen G.', status:'Done', created:'Yesterday, 2:10 PM', desc:'Re-adjust camera focus after power cut.' },
+  { id:'SR-2446', title:'Power outage — store down', customer:'Sunny Joseph', cc:'Ernakulam', type:'Service', priority:'Urgent', tech:'Jithin T.', status:'Overdue', created:'2 days ago', desc:'Full power outage, store offline.' },
+  { id:'PR-2445', title:'Megha Stores — Solar setup', customer:'Megha Stores', cc:'Calicut', type:'Project', priority:'High', tech:'Praveen G.', status:'In Progress', created:'3 days ago', due:'Jun 5', progress:55, desc:'8-panel solar installation.' },
+  { id:'SR-2444', title:'Router reconfiguration', customer:'Suresh Babu', cc:'Kollam',      type:'Service', priority:'Medium', tech:'Vishnu Raj', status:'With PM', created:'Yesterday', desc:'Guest VLAN setup, awaiting PM closure.' },
+  { id:'OT-2443', title:'Signage power check', customer:'Lulu Cafe', cc:'Ernakulam',        type:'Other', priority:'Low', tech:'Jithin T.', status:'New', created:'Today', desc:'Inspect signage power supply.' },
+  { id:'PR-2442', title:'City Hospital — CCTV upgrade', customer:'City Hospital', cc:'Kollam', type:'Project', priority:'Urgent', tech:'Sajeev T.', status:'In Progress', created:'Today', due:'Jun 30', progress:40, desc:'Upgrade 30 cameras to IP + central NVR.' }
+];
+let seq = 2452;
+
+/* ============================ HELPERS ============================ */
+const PRIO_CLASS = { Urgent:'pill-red', High:'pill-amber', Medium:'pill-amber', Low:'pill-gray' };
+const TYPE_CLASS = { Service:'pill-indigo', Project:'pill-emerald', Other:'pill-amber' };
+const STATUS_CLASS = { 'New':'status-new', 'In Progress':'status-progress', 'With PM':'status-progress', 'Done':'status-done', 'Overdue':'status-overdue' };
+const STATUS_BADGE = {
+  'New':{label:'NEW',bg:'#DBEAFE',fg:'#1E40AF'}, 'In Progress':{label:'IN PROGRESS',bg:'#FEF3C7',fg:'#92400E'},
+  'With PM':{label:'WITH PM',bg:'#EEF2FF',fg:'#4338CA'}, 'Done':{label:'DONE',bg:'#D1FAE5',fg:'#065F46'},
+  'Overdue':{label:'OVERDUE',bg:'#FEE2E2',fg:'#991B1B'}
+};
+const esc = s => (s||'').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const techByName = n => technicians.find(t => t.name === n);
+const iniOf = n => { const t = techByName(n); return t ? t.ini : (n||'?').split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase(); };
+const colorOf = n => COLORS[iniOf(n)] || 'linear-gradient(135deg,#CBD5E1,#94A3B8)';
+function nowStamp() { const d=new Date(), p=n=>String(n).padStart(2,'0'); return `${p(d.getDate())}/${p(d.getMonth()+1)}/${d.getFullYear()} ${p(d.getHours())}:${p(d.getMinutes())}`; }
+
+function techLoad(name) { return tasks.filter(t => t.tech===name && (t.status==='New'||t.status==='In Progress')).length; }
+function techActive(name) { return tasks.filter(t => t.tech===name && (t.status==='New'||t.status==='In Progress')); }
+function availInfo(t) {
+  if (t.status==='leave') return { key:'leave', label:'On Leave', bg:'#F3F4F6', fg:'#6B7280', load:0 };
+  const load=techLoad(t.name), rem=t.capacity-load;
+  if (load===0) return { key:'free', label:'Free', bg:'#D1FAE5', fg:'#065F46', load, rem };
+  if (rem<=0)   return { key:'full', label:'Full', bg:'#FEE2E2', fg:'#991B1B', load, rem:0 };
+  return { key:'avail', label:`${rem} free`, bg:'#DBEAFE', fg:'#1E40AF', load, rem };
+}
+
+/* filters */
+let ccFilter = 'All';
+function ccApplies(t) { return ccFilter==='All' || t.cc===ccFilter; }
+
+function ccTabs(active) {
+  return `<div class="cc-tabs">
+    ${['All',...COST_CENTERS].map(c => `<div class="cc-tab ${ccFilter===c?'active':''}" onclick="setCC('${c}')">${c==='All'?'🌐 All Centers':(CC_META[c].emoji+' '+c)}</div>`).join('')}
+  </div>`;
+}
+function setCC(c) { ccFilter = c; const v = currentView; renderView(v); }
+
+/* ============================ DASHBOARD ============================ */
+function renderDashboard() {
+  const scope = tasks.filter(ccApplies);
+  const open = scope.filter(t=>t.status==='New').length;
+  const prog = scope.filter(t=>t.status==='In Progress').length;
+  const done = scope.filter(t=>t.status==='Done').length;
+  const over = scope.filter(t=>t.status==='Overdue').length;
+  const recent = scope.slice(0,6);
+
+  document.getElementById('view-dashboard').innerHTML = `
     <div class="topbar" style="background:transparent; border:none; padding:0; margin:0 0 16px;">
       <h1>Dashboard</h1>
       <div style="display:flex; gap:10px;">
         <button class="btn btn-secondary"><i data-lucide="download" style="width:14px;height:14px;"></i>Export</button>
-        <button class="btn btn-primary" onclick="openCreateModal()"><i data-lucide="plus" style="width:14px;height:14px;"></i>New Project</button>
+        <button class="btn btn-primary" onclick="openTicketModal()"><i data-lucide="plus" style="width:14px;height:14px;"></i>New Ticket</button>
       </div>
     </div>
-
-    <!-- Cost center tabs -->
-    <div class="cc-tabs">
-      <div class="cc-tab active">🌐 All Centers</div>
-      <div class="cc-tab">🏙️ Calicut</div>
-      <div class="cc-tab">🏖️ Kollam</div>
-      <div class="cc-tab">🏢 Ernakulam (EKM)</div>
-    </div>
-
-    <!-- KPI cards -->
+    ${ccTabs()}
     <div class="kpi-grid">
-      <div class="kpi">
-        <div class="kpi-label">Open Tickets</div>
-        <div class="kpi-value">47</div>
-        <div class="kpi-trend up">↑ 12% vs last week</div>
-      </div>
-      <div class="kpi">
-        <div class="kpi-label">In Progress</div>
-        <div class="kpi-value" style="color:#F59E0B;">23</div>
-        <div class="kpi-trend up">↑ 8 since yesterday</div>
-      </div>
-      <div class="kpi">
-        <div class="kpi-label">Completed Today</div>
-        <div class="kpi-value" style="color:#10B981;">12</div>
-        <div class="kpi-trend up">↑ 4 vs avg</div>
-      </div>
-      <div class="kpi">
-        <div class="kpi-label">Overdue</div>
-        <div class="kpi-value" style="color:#EF4444;">3</div>
-        <div class="kpi-trend down">↓ 2 vs yesterday</div>
-      </div>
+      <div class="kpi"><div class="kpi-label">Open Tickets</div><div class="kpi-value">${open}</div><div class="kpi-trend up">live</div></div>
+      <div class="kpi"><div class="kpi-label">In Progress</div><div class="kpi-value" style="color:#F59E0B;">${prog}</div><div class="kpi-trend up">live</div></div>
+      <div class="kpi"><div class="kpi-label">Completed</div><div class="kpi-value" style="color:#10B981;">${done}</div><div class="kpi-trend up">live</div></div>
+      <div class="kpi"><div class="kpi-label">Overdue</div><div class="kpi-value" style="color:#EF4444;">${over}</div><div class="kpi-trend down">needs action</div></div>
     </div>
-
-    <!-- Charts -->
     <div class="grid-charts">
-      <div class="chart-card">
-        <h3>By Cost Center</h3>
-        <canvas id="donutChart" style="max-height:240px;"></canvas>
-      </div>
-      <div class="chart-card">
-        <h3>Tickets — Last 7 days</h3>
-        <canvas id="lineChart" style="max-height:240px;"></canvas>
-      </div>
+      <div class="chart-card"><h3>Tickets by Cost Center</h3><canvas id="donutChart" style="max-height:240px;"></canvas></div>
+      <div class="chart-card"><h3>Tickets — Last 7 days</h3><canvas id="lineChart" style="max-height:240px;"></canvas></div>
     </div>
-
-    <!-- Recent tickets -->
     <div class="chart-card" style="padding:0; overflow:hidden;">
       <div style="padding:20px; display:flex; justify-content:space-between; align-items:center;">
         <h3 style="margin:0; font-size:15px; font-weight:700;">Recent Tickets</h3>
-        <a onclick="showView('tickets', null)" style="font-size:13px; color:#4F46E5; font-weight:600; cursor:pointer;">View all →</a>
+        <a onclick="showView('tickets', sidebarLink('tickets'))" style="font-size:13px; color:#4F46E5; font-weight:600; cursor:pointer;">View all →</a>
       </div>
       <table class="table">
-        <thead>
-          <tr>
-            <th>Ticket</th>
-            <th>Customer</th>
-            <th>Cost Center</th>
-            <th>Type</th>
-            <th>Priority</th>
-            <th>Status</th>
-            <th>Assigned</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr onclick="showView('ticketDetail', null)">
-            <td><strong>#SR-2451</strong></td>
-            <td>Rajesh Nair</td>
-            <td><span class="cc-pill">Kollam</span></td>
-            <td><span class="pill pill-indigo">Service</span></td>
-            <td><span class="pill pill-red">Urgent</span></td>
-            <td><span class="pill status-progress">In Progress</span></td>
-            <td><div style="display:flex; align-items:center; gap:8px;"><div class="avatar avatar-sm">ST</div>Sajeev T.</div></td>
-          </tr>
-          <tr>
-            <td><strong>#PR-2450</strong></td>
-            <td>Hotel Sea View</td>
-            <td><span class="cc-pill">Kollam</span></td>
-            <td><span class="pill pill-emerald">Project</span></td>
-            <td><span class="pill pill-amber">High</span></td>
-            <td><span class="pill status-new">New</span></td>
-            <td>—</td>
-          </tr>
-          <tr>
-            <td><strong>#SR-2449</strong></td>
-            <td>Priya Menon</td>
-            <td><span class="cc-pill">Calicut</span></td>
-            <td><span class="pill pill-indigo">Service</span></td>
-            <td><span class="pill pill-amber">Medium</span></td>
-            <td><span class="pill status-progress">In Progress</span></td>
-            <td><div style="display:flex; align-items:center; gap:8px;"><div class="avatar avatar-sm">VR</div>Vishnu R.</div></td>
-          </tr>
-          <tr>
-            <td><strong>#PR-2448</strong></td>
-            <td>Fathima Beevi</td>
-            <td><span class="cc-pill">Ernakulam</span></td>
-            <td><span class="pill pill-emerald">Project</span></td>
-            <td><span class="pill pill-amber">High</span></td>
-            <td><span class="pill status-progress">In Progress</span></td>
-            <td><div style="display:flex; align-items:center; gap:8px;"><div class="avatar avatar-sm">HM</div>Hareesh M.</div></td>
-          </tr>
-          <tr>
-            <td><strong>#SR-2447</strong></td>
-            <td>Anoop Kumar</td>
-            <td><span class="cc-pill">Calicut</span></td>
-            <td><span class="pill pill-indigo">Service</span></td>
-            <td><span class="pill pill-gray">Low</span></td>
-            <td><span class="pill status-done">Done</span></td>
-            <td><div style="display:flex; align-items:center; gap:8px;"><div class="avatar avatar-sm">AS</div>Anjali S.</div></td>
-          </tr>
-        </tbody>
+        <thead><tr><th>Ticket</th><th>Customer</th><th>Cost Center</th><th>Type</th><th>Priority</th><th>Status</th><th>Assigned</th></tr></thead>
+        <tbody>${recent.map(ticketRow).join('')}</tbody>
       </table>
-    </div>
-  </div>
+    </div>`;
+  renderCharts();
+  lucide.createIcons();
+}
 
-  <!-- ============================== -->
-  <!-- TICKETS LIST VIEW -->
-  <!-- ============================== -->
-  <div class="view" id="view-tickets">
+let donut, line, bar;
+function renderCharts() {
+  const byCC = COST_CENTERS.map(c => tasks.filter(t=>t.cc===c).length);
+  const dc = document.getElementById('donutChart');
+  if (dc) { if (donut) donut.destroy();
+    donut = new Chart(dc, { type:'doughnut', data:{ labels:COST_CENTERS, datasets:[{ data:byCC, backgroundColor:['#4F46E5','#10B981','#F59E0B'], borderWidth:0 }] },
+      options:{ plugins:{ legend:{ position:'bottom' } }, cutout:'62%' } });
+  }
+  const lc = document.getElementById('lineChart');
+  if (lc) { if (line) line.destroy();
+    line = new Chart(lc, { type:'line', data:{ labels:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'], datasets:[{ label:'Created', data:[8,12,9,14,11,6,4], borderColor:'#4F46E5', backgroundColor:'rgba(79,70,229,0.1)', fill:true, tension:0.4 },{ label:'Closed', data:[6,10,11,9,13,5,3], borderColor:'#10B981', backgroundColor:'rgba(16,185,129,0.08)', fill:true, tension:0.4 }] },
+      options:{ plugins:{ legend:{ position:'bottom' } }, scales:{ y:{ beginAtZero:true } } } });
+  }
+}
+
+/* ============================ TICKETS ============================ */
+let tFilter = { status:'', type:'', priority:'', search:'' };
+function renderTickets() {
+  const list = tasks.filter(t => ccApplies(t)
+    && (!tFilter.status || t.status===tFilter.status)
+    && (!tFilter.type || t.type===tFilter.type)
+    && (!tFilter.priority || t.priority===tFilter.priority)
+    && (!tFilter.search || `${t.id} ${t.title} ${t.customer}`.toLowerCase().includes(tFilter.search.toLowerCase())));
+
+  document.getElementById('ticketBadge').textContent = tasks.filter(t=>t.status==='New'||t.status==='Overdue').length;
+
+  document.getElementById('view-tickets').innerHTML = `
     <div class="topbar" style="background:transparent; border:none; padding:0; margin:0 0 16px;">
-      <h1>All Tickets</h1>
-      <button class="btn btn-primary"><i data-lucide="plus" style="width:14px;height:14px;"></i>New Ticket</button>
+      <div><h1>All Tickets</h1><p style="color:#6B7280; margin:4px 0 0; font-size:14px;">${list.length} of ${tasks.length} tickets</p></div>
+      <button class="btn btn-primary" onclick="openTicketModal()"><i data-lucide="plus" style="width:14px;height:14px;"></i>New Ticket</button>
     </div>
-
-    <div class="cc-tabs">
-      <div class="cc-tab active">All</div>
-      <div class="cc-tab">Calicut (18)</div>
-      <div class="cc-tab">Kollam (21)</div>
-      <div class="cc-tab">Ernakulam (12)</div>
+    ${ccTabs()}
+    <div style="display:flex; gap:10px; margin-bottom:16px; flex-wrap:wrap;">
+      <div class="search-box" style="width:240px;"><i data-lucide="search" style="width:14px;height:14px;color:#6B7280;"></i><input id="t_search" placeholder="Search tickets..." oninput="tFilter.search=this.value; renderTickets()" value="${esc(tFilter.search)}"></div>
+      <select class="select" style="width:auto;" onchange="tFilter.status=this.value; renderTickets()">${optList(['All Status','New','In Progress','With PM','Done','Overdue'],'status')}</select>
+      <select class="select" style="width:auto;" onchange="tFilter.type=this.value; renderTickets()">${optList(['All Types','Service','Project','Other'],'type')}</select>
+      <select class="select" style="width:auto;" onchange="tFilter.priority=this.value; renderTickets()">${optList(['All Priority','Urgent','High','Medium','Low'],'priority')}</select>
     </div>
-
-    <div style="background:white; border-radius:14px; padding: 16px; margin-bottom:16px; display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
-      <div style="display:flex; align-items:center; gap:8px; background:#F3F4F6; border-radius:8px; padding:7px 12px; min-width:260px;">
-        <i data-lucide="search" style="width:14px;height:14px;color:#6B7280;"></i>
-        <input placeholder="Search tickets..." style="background:transparent; border:none; outline:none; font-size:13px;">
-      </div>
-      <select class="select" style="width:auto;"><option>All Status</option><option>New</option><option>In Progress</option><option>Done</option></select>
-      <select class="select" style="width:auto;"><option>All Types</option><option>Service</option><option>Project</option></select>
-      <select class="select" style="width:auto;"><option>All Priority</option><option>Urgent</option><option>High</option><option>Medium</option><option>Low</option></select>
-      <button class="btn btn-secondary"><i data-lucide="filter" style="width:14px;height:14px;"></i>More filters</button>
-    </div>
-
     <div class="chart-card" style="padding:0;">
       <table class="table">
-        <thead>
-          <tr>
-            <th>Ticket ID</th>
-            <th>Customer</th>
-            <th>Cost Center</th>
-            <th>Type</th>
-            <th>Priority</th>
-            <th>Assigned</th>
-            <th>Status</th>
-            <th>Created</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr onclick="showView('ticketDetail', null)"><td><strong>#SR-2451</strong></td><td>Rajesh Nair</td><td><span class="cc-pill">Kollam</span></td><td><span class="pill pill-indigo">Service</span></td><td><span class="pill pill-red">Urgent</span></td><td><div style="display:flex; align-items:center; gap:8px;"><div class="avatar avatar-sm">ST</div>Sajeev T.</div></td><td><span class="pill status-progress">In Progress</span></td><td>Today, 10:42 AM</td></tr>
-          <tr><td><strong>#PR-2450</strong></td><td>Hotel Sea View</td><td><span class="cc-pill">Kollam</span></td><td><span class="pill pill-emerald">Project</span></td><td><span class="pill pill-amber">High</span></td><td>—</td><td><span class="pill status-new">New</span></td><td>Today, 9:15 AM</td></tr>
-          <tr><td><strong>#SR-2449</strong></td><td>Priya Menon</td><td><span class="cc-pill">Calicut</span></td><td><span class="pill pill-indigo">Service</span></td><td><span class="pill pill-amber">Medium</span></td><td><div style="display:flex; align-items:center; gap:8px;"><div class="avatar avatar-sm">VR</div>Vishnu R.</div></td><td><span class="pill status-progress">In Progress</span></td><td>Today, 8:30 AM</td></tr>
-          <tr><td><strong>#PR-2448</strong></td><td>Fathima Beevi</td><td><span class="cc-pill">Ernakulam</span></td><td><span class="pill pill-emerald">Project</span></td><td><span class="pill pill-amber">High</span></td><td><div style="display:flex; align-items:center; gap:8px;"><div class="avatar avatar-sm">HM</div>Hareesh M.</div></td><td><span class="pill status-progress">In Progress</span></td><td>Yesterday, 4:20 PM</td></tr>
-          <tr><td><strong>#SR-2447</strong></td><td>Anoop Kumar</td><td><span class="cc-pill">Calicut</span></td><td><span class="pill pill-indigo">Service</span></td><td><span class="pill pill-gray">Low</span></td><td><div style="display:flex; align-items:center; gap:8px;"><div class="avatar avatar-sm">AS</div>Anjali S.</div></td><td><span class="pill status-done">Done</span></td><td>Yesterday, 2:10 PM</td></tr>
-          <tr><td><strong>#SR-2446</strong></td><td>Sunny Joseph</td><td><span class="cc-pill">Ernakulam</span></td><td><span class="pill pill-indigo">Service</span></td><td><span class="pill pill-red">Urgent</span></td><td><div style="display:flex; align-items:center; gap:8px;"><div class="avatar avatar-sm">ST</div>Sajeev T.</div></td><td><span class="pill status-overdue">Overdue</span></td><td>2 days ago</td></tr>
-          <tr><td><strong>#PR-2445</strong></td><td>Megha Stores</td><td><span class="cc-pill">Calicut</span></td><td><span class="pill pill-emerald">Project</span></td><td><span class="pill pill-amber">High</span></td><td><div style="display:flex; align-items:center; gap:8px;"><div class="avatar avatar-sm">HM</div>Hareesh M.</div></td><td><span class="pill status-progress">In Progress</span></td><td>3 days ago</td></tr>
-        </tbody>
+        <thead><tr><th>Ticket ID</th><th>Customer</th><th>Cost Center</th><th>Type</th><th>Priority</th><th>Assigned</th><th>Status</th><th>Created</th></tr></thead>
+        <tbody>${list.length ? list.map(ticketRow).join('') : `<tr><td colspan="8" style="text-align:center; color:#9CA3AF; padding:40px;">No tickets match these filters</td></tr>`}</tbody>
       </table>
+    </div>`;
+  // restore focus to search if active
+  lucide.createIcons();
+}
+function optList(arr, key) {
+  return arr.map((o,i) => { const val = i===0?'':o; return `<option value="${val}" ${tFilter[key]===val?'selected':''}>${o}</option>`; }).join('');
+}
+function ticketRow(t) {
+  const assigned = t.tech
+    ? `<div style="display:flex; align-items:center; gap:8px;"><div class="avatar avatar-sm" style="background:${colorOf(t.tech)};">${iniOf(t.tech)}</div>${t.tech}</div>`
+    : '<span style="color:#9CA3AF;">—</span>';
+  return `<tr style="cursor:pointer;" onclick="openDetail('${t.id}')">
+    <td><strong>#${t.id}</strong></td><td>${esc(t.customer)}</td>
+    <td><span class="cc-pill">${t.cc}</span></td>
+    <td><span class="pill ${TYPE_CLASS[t.type]}">${t.type}</span></td>
+    <td><span class="pill ${PRIO_CLASS[t.priority]}">${t.priority}</span></td>
+    <td>${assigned}</td>
+    <td><span class="pill ${STATUS_CLASS[t.status]}">${t.status}</span></td>
+    <td>${t.created}</td>
+  </tr>`;
+}
+
+/* ============================ TICKET DETAIL ============================ */
+let detailFrom = 'tickets';
+function openDetail(id, from) { detailFrom = from || 'tickets'; renderDetail(id); showView('detail', null); }
+function renderDetail(id) {
+  const t = tasks.find(x=>x.id===id); if (!t) return;
+  const b = STATUS_BADGE[t.status] || {label:t.status,bg:'#F3F4F6',fg:'#374151'};
+  const assignee = t.tech ? `<span style="display:inline-flex;align-items:center;gap:8px;"><span class="avatar avatar-sm" style="background:${colorOf(t.tech)};">${iniOf(t.tech)}</span>${t.tech}</span>` : '<span style="color:#9CA3AF;">Unassigned</span>';
+  document.getElementById('view-detail').innerHTML = `
+    <div class="crumb">
+      <a onclick="showView('${detailFrom}', sidebarLink('${detailFrom}'))">${detailFrom==='projects'?'Projects':'Tickets'}</a>
+      <span class="sep">/</span><span>${t.type}</span><span class="sep">/</span>
+      <span style="display:inline-flex;align-items:center;gap:6px;"><i data-lucide="${t.type==='Project'?'briefcase':'ticket'}" style="width:14px;height:14px;"></i> #${t.id}</span>
     </div>
-  </div>
-
-  <!-- ============================== -->
-  <!-- TICKET DETAIL VIEW (with Convert buttons) -->
-  <!-- ============================== -->
-  <div class="view" id="view-ticketDetail">
-    <div style="display:flex; align-items:center; gap:12px; margin-bottom:20px;">
-      <button class="icon-btn" onclick="showView('tickets', null)"><i data-lucide="arrow-left" style="width:16px;height:16px;"></i></button>
+    <div class="det-grid">
       <div>
-        <div style="font-size:12px; color:#6B7280; font-weight:600;">TICKET #SR-2451</div>
-        <h1 style="font-size:22px; margin:2px 0 0;">AC not cooling — Showroom</h1>
-      </div>
-      <div style="margin-left:auto; display:flex; gap:8px;">
-        <span class="pill pill-red">Urgent</span>
-        <span class="pill pill-indigo">Service</span>
-        <span class="pill status-new">New</span>
-      </div>
-    </div>
-
-    <div class="detail-grid">
-      <div>
-        <div class="chart-card mb-4">
-          <h3 style="margin:0 0 14px;">Customer</h3>
-          <div style="display:flex; gap:16px; align-items:center;">
-            <div class="avatar avatar-lg">RN</div>
-            <div style="flex:1;">
-              <div style="font-weight:700; font-size:15px;">Rajesh Nair</div>
-              <div style="font-size:13px; color:#6B7280;">Showroom Owner</div>
-              <div style="display:flex; gap:14px; margin-top:8px; font-size:13px; color:#374151;">
-                <span><i data-lucide="phone" style="width:13px;height:13px;display:inline;vertical-align:middle;"></i> +91 98470 12345</span>
-                <span><i data-lucide="map-pin" style="width:13px;height:13px;display:inline;vertical-align:middle;"></i> Sky Plaza, Kollam</span>
-              </div>
-            </div>
-            <button class="btn btn-secondary"><i data-lucide="phone" style="width:14px;height:14px;"></i>Call</button>
-          </div>
+        <h1 class="det-h1">${esc(t.title)}</h1>
+        <div style="margin-bottom:18px;"><span class="badge-status" style="background:${b.bg};color:${b.fg};">${b.label}</span></div>
+        <div style="display:flex; gap:10px; margin-bottom:20px; flex-wrap:wrap;">
+          <button class="btn btn-secondary"><i data-lucide="paperclip" style="width:14px;height:14px;"></i>Attach</button>
+          <button class="btn btn-secondary"><i data-lucide="link" style="width:14px;height:14px;"></i>Linked Issues</button>
         </div>
-
-        <div class="chart-card mb-4">
-          <h3 style="margin:0 0 14px;">Issue Description</h3>
-          <p style="margin:0; color:#374151; line-height:1.6; font-size:14px;">AC unit in our showroom is not cooling. Started this morning, customers complaining.</p>
-          <div style="display:flex; gap:8px; margin-top:14px;">
-            <div style="width:90px; height:90px; border-radius:10px; background:linear-gradient(135deg,#FCA5A5,#EF4444);"></div>
-            <div style="width:90px; height:90px; border-radius:10px; background:linear-gradient(135deg,#FCD34D,#F59E0B);"></div>
-            <div style="width:90px; height:90px; border-radius:10px; background:linear-gradient(135deg,#A78BFA,#7C3AED);"></div>
-          </div>
-        </div>
-
-        <div class="chart-card">
-          <h3 style="margin:0 0 14px;">Activity Timeline</h3>
-          <div class="timeline">
-            <div class="timeline-item">
-              <div class="timeline-dot"></div>
-              <div class="timeline-title">Ticket created via auto-link</div>
-              <div class="timeline-meta">Today, 10:42 AM · Customer submitted form</div>
-            </div>
-            <div class="timeline-item muted">
-              <div class="timeline-dot"></div>
-              <div class="timeline-title">Awaiting classification</div>
-              <div class="timeline-meta">Choose Service or Project to proceed</div>
-            </div>
-            <div class="timeline-item muted">
-              <div class="timeline-dot"></div>
-              <div class="timeline-title">Assign technician</div>
-            </div>
-            <div class="timeline-item muted">
-              <div class="timeline-dot"></div>
-              <div class="timeline-title">Technician completes & uploads proof</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div>
-        <div class="chart-card mb-4" style="border: 2px solid #EEF2FF;">
-          <h3 style="margin:0 0 6px; font-size:14px;">⚡ Classify Ticket</h3>
-          <p style="font-size:12px; color:#6B7280; margin:0 0 14px;">Convert this ticket into a service request or a full project.</p>
-          <button class="btn btn-primary btn-block mb-2">
-            <i data-lucide="wrench" style="width:14px;height:14px;"></i>
-            Convert to Service
-          </button>
-          <button class="btn btn-success btn-block" onclick="openCreateModal()">
-            <i data-lucide="briefcase" style="width:14px;height:14px;"></i>
-            Convert to Project
-          </button>
-        </div>
-
-        <div class="chart-card mb-4">
-          <h3 style="margin:0 0 14px; font-size:14px;">Assignment</h3>
-          <div class="field">
-            <label class="label">Assigned Technician</label>
-            <select class="select">
-              <option>Select technician...</option>
-              <option selected>Sajeev T. (Kollam · 3 active)</option>
-              <option>Vishnu Raj (Kollam · 5 active)</option>
-              <option>Hareesh M. (Kollam · 2 active)</option>
+        <h3 style="font-size:15px; font-weight:700; margin:0 0 8px;">Description</h3>
+        <div class="desc-box">${t.desc ? esc(t.desc) : '<span style="color:#9CA3AF;">No description.</span>'}</div>
+        <h3 style="font-size:15px; font-weight:700; margin:24px 0 8px;">Reassign</h3>
+        <div class="det-card" style="margin:0;">
+          <div style="display:flex; gap:10px; align-items:center;">
+            <span style="font-size:13px; color:#6B7280;">Move this ticket to:</span>
+            <select class="select" style="width:auto;" onchange="reassignTicket('${t.id}', this.value)">
+              <option value="">Select technician…</option>
+              ${technicians.filter(x=>x.status!=='leave').map(x=>`<option ${x.name===t.tech?'selected':''}>${x.name} · ${x.cc}</option>`).join('')}
             </select>
           </div>
-          <div class="field">
-            <label class="label">Priority</label>
-            <select class="select">
-              <option selected>Urgent</option><option>High</option><option>Medium</option><option>Low</option>
-            </select>
-          </div>
-          <div class="field" style="margin-bottom:0;">
-            <label class="label">Due By</label>
-            <input class="input" type="text" value="Today, 3:00 PM">
-          </div>
-        </div>
-
-        <div class="chart-card">
-          <h3 style="margin:0 0 12px; font-size:14px;">Cost Center</h3>
-          <span class="cc-pill" style="font-size:13px; padding:6px 12px;">Kollam</span>
-          <div style="margin-top:12px; font-size:12px; color:#6B7280;">SLA: 4 hours · Branch contact: Manoj Pillai</div>
         </div>
       </div>
-    </div>
-  </div>
+      <div>
+        <div class="det-card">
+          <h4 style="margin:0 0 12px; font-size:15px; font-weight:700;">Details</h4>
+          <div class="det-row"><span class="k">Assignee</span><span class="v">${assignee}</span></div>
+          <div class="det-row"><span class="k">Type</span><span class="v"><span class="pill ${TYPE_CLASS[t.type]}">${t.type}</span></span></div>
+          <div class="det-row"><span class="k">Priority</span><span class="v"><span class="pill ${PRIO_CLASS[t.priority]}">${t.priority}</span></span></div>
+          <div class="det-row"><span class="k">Cost Center</span><span class="v"><span class="cc-pill">${t.cc}</span></span></div>
+          <div class="det-row"><span class="k">Customer</span><span class="v">${esc(t.customer)}</span></div>
+          <div class="det-row"><span class="k">Status</span><span class="v"><span class="pill ${STATUS_CLASS[t.status]}">${t.status}</span></span></div>
+          ${t.due?`<div class="det-row"><span class="k">Due</span><span class="v">${t.due}</span></div>`:''}
+          <div class="det-row"><span class="k">Created</span><span class="v">${t.created}</span></div>
+        </div>
+      </div>
+    </div>`;
+  lucide.createIcons();
+}
+function reassignTicket(id, name) {
+  if (!name) return;
+  const t = tasks.find(x=>x.id===id); const pick = name.split(' · ')[0];
+  t.tech = pick; if (techByName(pick)) t.cc = techByName(pick).cc;
+  refreshAll(); renderDetail(id);
+  toast(`#${id} reassigned to ${pick}`);
+}
 
-  <!-- ============================== -->
-  <!-- PROJECTS VIEW -->
-  <!-- ============================== -->
-  <div class="view" id="view-projects">
+/* ============================ PROJECTS ============================ */
+function renderProjects() {
+  const projs = tasks.filter(t => t.type==='Project' && ccApplies(t));
+  document.getElementById('view-projects').innerHTML = `
     <div class="topbar" style="background:transparent; border:none; padding:0; margin:0 0 16px;">
-      <h1>Projects</h1>
-      <button class="btn btn-primary" onclick="openCreateModal()"><i data-lucide="plus" style="width:14px;height:14px;"></i>New Project</button>
+      <div><h1>Projects</h1><p style="color:#6B7280; margin:4px 0 0; font-size:14px;">${projs.length} projects · tickets of type Project</p></div>
+      <button class="btn btn-primary" onclick="openTicketModal()"><i data-lucide="plus" style="width:14px;height:14px;"></i>New Project</button>
     </div>
-
-    <div class="cc-tabs">
-      <div class="cc-tab active">All (14)</div>
-      <div class="cc-tab">Calicut (5)</div>
-      <div class="cc-tab">Kollam (6)</div>
-      <div class="cc-tab">Ernakulam (3)</div>
-    </div>
-
+    ${ccTabs()}
     <div class="proj-grid">
-      <div class="proj-card card-hover" onclick="showView('projectDetail', null)">
-        <div class="proj-card-head">
-          <span class="cc-pill">Kollam</span>
-          <span class="pill pill-amber">In Progress</span>
-        </div>
-        <div class="proj-name">Hotel Sea View — CCTV Installation</div>
-        <div class="proj-meta">12 cameras · 2 floors · Due May 28</div>
-        <div class="progress-row"><span>Progress</span><span>65%</span></div>
-        <div class="progress-bar"><div class="progress-fill" style="width:65%;"></div></div>
-        <div style="display:flex; justify-content:space-between; align-items:center;">
-          <div class="avatar-stack">
-            <div class="avatar avatar-sm">MP</div>
-            <div class="avatar avatar-sm" style="background:linear-gradient(135deg,#FCA5A5,#EF4444);">ST</div>
-            <div class="avatar avatar-sm" style="background:linear-gradient(135deg,#6EE7B7,#10B981);">VR</div>
-          </div>
-          <span style="font-size:12px; color:#6B7280;">PM: Manoj Pillai</span>
-        </div>
-      </div>
+      ${projs.length ? projs.map(p => {
+        const prog = p.progress != null ? p.progress : ({'New':15,'In Progress':50,'With PM':90,'Done':100}[p.status]||0);
+        const fill = prog<35 ? 'background:linear-gradient(90deg,#EF4444,#F87171);' : '';
+        return `<div class="proj-card" onclick="openDetail('${p.id}','projects')">
+          <div style="display:flex; justify-content:space-between; margin-bottom:8px;"><span class="cc-pill">${p.cc}</span><span class="pill ${STATUS_CLASS[p.status]}">${p.status}</span></div>
+          <h3 style="margin:0 0 4px; font-size:15px;">${esc(p.title)}</h3>
+          <p style="font-size:12px; color:#6B7280; margin:0 0 14px;">${esc(p.customer)} · #${p.id}${p.due?' · Due '+p.due:''}</p>
+          <div style="font-size:12px; color:#6B7280; display:flex; justify-content:space-between; margin-bottom:6px;"><span>Progress</span><span style="font-weight:600;">${prog}%</span></div>
+          <div class="progress-bar"><div class="progress-fill" style="width:${prog}%; ${fill}"></div></div>
+          <div style="display:flex; align-items:center; gap:8px; font-size:12px; color:#6B7280;"><div class="avatar avatar-sm" style="background:${colorOf(p.tech)};">${iniOf(p.tech)}</div>${p.tech||'Unassigned'}</div>
+        </div>`;
+      }).join('') : `<div style="color:#9CA3AF; padding:20px; grid-column:1/-1;">No projects in this view.</div>`}
+    </div>`;
+  lucide.createIcons();
+}
 
-      <div class="proj-card card-hover">
-        <div class="proj-card-head">
-          <span class="cc-pill">Calicut</span>
-          <span class="pill pill-amber">In Progress</span>
-        </div>
-        <div class="proj-name">Office Renovation Phase 2</div>
-        <div class="proj-meta">Megha Stores · Due Jun 15</div>
-        <div class="progress-row"><span>Progress</span><span>40%</span></div>
-        <div class="progress-bar"><div class="progress-fill" style="width:40%;"></div></div>
-        <div style="display:flex; justify-content:space-between; align-items:center;">
-          <div class="avatar-stack">
-            <div class="avatar avatar-sm" style="background:linear-gradient(135deg,#FBBF24,#F59E0B);">DK</div>
-            <div class="avatar avatar-sm" style="background:linear-gradient(135deg,#A78BFA,#7C3AED);">HM</div>
-          </div>
-          <span style="font-size:12px; color:#6B7280;">PM: Deepa K.</span>
-        </div>
-      </div>
-
-      <div class="proj-card card-hover">
-        <div class="proj-card-head">
-          <span class="cc-pill">Ernakulam</span>
-          <span class="pill pill-emerald">On Track</span>
-        </div>
-        <div class="proj-name">Fathima Beevi — Network Setup</div>
-        <div class="proj-meta">3 floors · 24 ports · Due May 22</div>
-        <div class="progress-row"><span>Progress</span><span>85%</span></div>
-        <div class="progress-bar"><div class="progress-fill" style="width:85%;"></div></div>
-        <div style="display:flex; justify-content:space-between; align-items:center;">
-          <div class="avatar-stack">
-            <div class="avatar avatar-sm">MP</div>
-            <div class="avatar avatar-sm" style="background:linear-gradient(135deg,#6EE7B7,#10B981);">HM</div>
-          </div>
-          <span style="font-size:12px; color:#6B7280;">PM: Manoj Pillai</span>
-        </div>
-      </div>
-
-      <div class="proj-card card-hover">
-        <div class="proj-card-head">
-          <span class="cc-pill">Kollam</span>
-          <span class="pill pill-red">At Risk</span>
-        </div>
-        <div class="proj-name">Showroom AC Overhaul</div>
-        <div class="proj-meta">Rajesh Nair · Due May 18</div>
-        <div class="progress-row"><span>Progress</span><span>20%</span></div>
-        <div class="progress-bar"><div class="progress-fill" style="width:20%; background:linear-gradient(90deg,#EF4444,#F87171);"></div></div>
-        <div style="display:flex; justify-content:space-between; align-items:center;">
-          <div class="avatar-stack">
-            <div class="avatar avatar-sm">MP</div>
-            <div class="avatar avatar-sm" style="background:linear-gradient(135deg,#FCA5A5,#EF4444);">ST</div>
-          </div>
-          <span style="font-size:12px; color:#6B7280;">PM: Manoj Pillai</span>
-        </div>
-      </div>
-
-      <div class="proj-card card-hover">
-        <div class="proj-card-head">
-          <span class="cc-pill">Calicut</span>
-          <span class="pill pill-emerald">On Track</span>
-        </div>
-        <div class="proj-name">Solar Panel Installation</div>
-        <div class="proj-meta">Anoop Kumar · 8 panels · Due Jun 5</div>
-        <div class="progress-row"><span>Progress</span><span>55%</span></div>
-        <div class="progress-bar"><div class="progress-fill" style="width:55%;"></div></div>
-        <div style="display:flex; justify-content:space-between; align-items:center;">
-          <div class="avatar-stack">
-            <div class="avatar avatar-sm" style="background:linear-gradient(135deg,#FBBF24,#F59E0B);">DK</div>
-            <div class="avatar avatar-sm" style="background:linear-gradient(135deg,#93C5FD,#3B82F6);">AS</div>
-          </div>
-          <span style="font-size:12px; color:#6B7280;">PM: Deepa K.</span>
-        </div>
-      </div>
-
-      <div class="proj-card card-hover">
-        <div class="proj-card-head">
-          <span class="cc-pill">Ernakulam</span>
-          <span class="pill pill-amber">In Progress</span>
-        </div>
-        <div class="proj-name">Smart Lock System — Apartment</div>
-        <div class="proj-meta">Sunny Joseph · 24 units · Due Jun 10</div>
-        <div class="progress-row"><span>Progress</span><span>30%</span></div>
-        <div class="progress-bar"><div class="progress-fill" style="width:30%;"></div></div>
-        <div style="display:flex; justify-content:space-between; align-items:center;">
-          <div class="avatar-stack">
-            <div class="avatar avatar-sm">MP</div>
-            <div class="avatar avatar-sm" style="background:linear-gradient(135deg,#6EE7B7,#10B981);">HM</div>
-            <div class="avatar avatar-sm" style="background:linear-gradient(135deg,#93C5FD,#3B82F6);">AS</div>
-          </div>
-          <span style="font-size:12px; color:#6B7280;">PM: Manoj Pillai</span>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ============================== -->
-  <!-- PROJECT DETAIL VIEW -->
-  <!-- ============================== -->
-  <div class="view" id="view-projectDetail">
-    <div style="display:flex; align-items:center; gap:12px; margin-bottom:20px;">
-      <button class="icon-btn" onclick="showView('projects', null)"><i data-lucide="arrow-left" style="width:16px;height:16px;"></i></button>
-      <div style="flex:1;">
-        <div style="font-size:12px; color:#6B7280; font-weight:600;">PROJECT · KOLLAM</div>
-        <h1 style="font-size:22px; margin:2px 0 0;">Hotel Sea View — CCTV Installation</h1>
-      </div>
-      <span class="pill pill-amber">In Progress</span>
-      <span class="pill pill-emerald">On Track</span>
-    </div>
-
-    <div class="tabs">
-      <div class="tab active">Overview</div>
-      <div class="tab">Tasks (8)</div>
-      <div class="tab">Team (4)</div>
-      <div class="tab">Files (12)</div>
-      <div class="tab">Activity</div>
-    </div>
-
-    <div class="kpi-grid" style="grid-template-columns: repeat(4, 1fr);">
-      <div class="kpi"><div class="kpi-label">Progress</div><div class="kpi-value">65%</div><div class="kpi-trend up">↑ 12% this week</div></div>
-      <div class="kpi"><div class="kpi-label">Tasks Done</div><div class="kpi-value">5 / 8</div></div>
-      <div class="kpi"><div class="kpi-label">Days Left</div><div class="kpi-value" style="color:#F59E0B;">16</div></div>
-      <div class="kpi"><div class="kpi-label">Budget Used</div><div class="kpi-value">62%</div><div class="kpi-trend">₹1.24L / ₹2L</div></div>
-    </div>
-
-    <div class="grid-charts">
-      <div class="chart-card">
-        <h3>Team</h3>
-        <div style="display:flex; flex-direction:column; gap:10px;">
-          <div style="display:flex; align-items:center; gap:10px;"><div class="avatar">MP</div><div><div style="font-weight:600; font-size:14px;">Manoj Pillai</div><div style="font-size:12px; color:#6B7280;">Project Manager</div></div></div>
-          <div style="display:flex; align-items:center; gap:10px;"><div class="avatar" style="background:linear-gradient(135deg,#FCA5A5,#EF4444);">ST</div><div><div style="font-weight:600; font-size:14px;">Sajeev T.</div><div style="font-size:12px; color:#6B7280;">Senior Technician</div></div></div>
-          <div style="display:flex; align-items:center; gap:10px;"><div class="avatar" style="background:linear-gradient(135deg,#6EE7B7,#10B981);">VR</div><div><div style="font-weight:600; font-size:14px;">Vishnu Raj</div><div style="font-size:12px; color:#6B7280;">Technician</div></div></div>
-          <div style="display:flex; align-items:center; gap:10px;"><div class="avatar" style="background:linear-gradient(135deg,#93C5FD,#3B82F6);">AS</div><div><div style="font-weight:600; font-size:14px;">Anjali S.</div><div style="font-size:12px; color:#6B7280;">Network Specialist</div></div></div>
-        </div>
-      </div>
-
-      <div class="chart-card">
-        <h3>Project Timeline</h3>
-        <div class="gantt-row">
-          <div>Site Survey</div>
-          <div class="gantt-bar-track"><div class="gantt-bar" style="left:0; width:18%; background:linear-gradient(90deg,#10B981,#34D399);">Done</div></div>
-        </div>
-        <div class="gantt-row">
-          <div>Wiring & Conduits</div>
-          <div class="gantt-bar-track"><div class="gantt-bar" style="left:18%; width:25%; background:linear-gradient(90deg,#10B981,#34D399);">Done</div></div>
-        </div>
-        <div class="gantt-row">
-          <div>Camera Mount (12)</div>
-          <div class="gantt-bar-track"><div class="gantt-bar" style="left:43%; width:22%;">In Progress · 60%</div></div>
-        </div>
-        <div class="gantt-row">
-          <div>NVR Config</div>
-          <div class="gantt-bar-track"><div class="gantt-bar" style="left:65%; width:18%; background:linear-gradient(90deg,#D1D5DB,#9CA3AF);">Pending</div></div>
-        </div>
-        <div class="gantt-row" style="border-bottom:none;">
-          <div>Testing & Handover</div>
-          <div class="gantt-bar-track"><div class="gantt-bar" style="left:83%; width:17%; background:linear-gradient(90deg,#D1D5DB,#9CA3AF);">Pending</div></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="chart-card mt-4">
-      <h3>Proof Gallery</h3>
-      <div style="display:grid; grid-template-columns: repeat(6, 1fr); gap:10px;">
-        <div style="aspect-ratio:1; border-radius:10px; background:linear-gradient(135deg,#6EE7B7,#10B981);"></div>
-        <div style="aspect-ratio:1; border-radius:10px; background:linear-gradient(135deg,#93C5FD,#3B82F6);"></div>
-        <div style="aspect-ratio:1; border-radius:10px; background:linear-gradient(135deg,#FCD34D,#F59E0B);"></div>
-        <div style="aspect-ratio:1; border-radius:10px; background:linear-gradient(135deg,#A78BFA,#7C3AED);"></div>
-        <div style="aspect-ratio:1; border-radius:10px; background:linear-gradient(135deg,#FCA5A5,#EF4444);"></div>
-        <div style="aspect-ratio:1; border-radius:10px; background:#F3F4F6; display:flex; align-items:center; justify-content:center; color:#6B7280; font-weight:600;">+7</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ============================== -->
-  <!-- SERVICES VIEW -->
-  <!-- ============================== -->
-  <div class="view" id="view-services">
+/* ============================ TECHNICIANS ============================ */
+function renderTechnicians() {
+  const list = technicians.filter(t => ccFilter==='All' || t.cc===ccFilter);
+  const activeNow = technicians.filter(t=>t.status==='active').length;
+  const onLeave = technicians.filter(t=>t.status==='leave').length;
+  const avg = (technicians.reduce((s,t)=>s+t.rating,0)/technicians.length).toFixed(1);
+  document.getElementById('view-technicians').innerHTML = `
     <div class="topbar" style="background:transparent; border:none; padding:0; margin:0 0 16px;">
-      <h1>Service Requests</h1>
+      <div><h1>Technicians</h1><p style="color:#6B7280; margin:4px 0 0; font-size:14px;">${technicians.length} technicians across ${COST_CENTERS.length} cost centers</p></div>
+      <button class="btn btn-primary"><i data-lucide="plus" style="width:14px;height:14px;"></i>Add Technician</button>
+    </div>
+    ${ccTabs()}
+    <div class="kpi-grid">
+      <div class="kpi"><div class="kpi-label">Active</div><div class="kpi-value">${activeNow}</div></div>
+      <div class="kpi"><div class="kpi-label">On Leave</div><div class="kpi-value" style="color:#F59E0B;">${onLeave}</div></div>
+      <div class="kpi"><div class="kpi-label">Avg Rating</div><div class="kpi-value" style="color:#10B981;">${avg} ★</div></div>
+      <div class="kpi"><div class="kpi-label">Open Tasks</div><div class="kpi-value">${tasks.filter(t=>t.status==='New'||t.status==='In Progress').length}</div></div>
     </div>
     <div class="chart-card" style="padding:0;">
       <table class="table">
-        <thead><tr><th>ID</th><th>Customer</th><th>Issue</th><th>Cost Center</th><th>Technician</th><th>Status</th><th>Duration</th></tr></thead>
-        <tbody>
-          <tr><td><strong>#SR-2451</strong></td><td>Rajesh Nair</td><td>AC not cooling</td><td><span class="cc-pill">Kollam</span></td><td>Sajeev T.</td><td><span class="pill status-progress">In Progress</span></td><td>42 min</td></tr>
-          <tr><td><strong>#SR-2449</strong></td><td>Priya Menon</td><td>Network cable</td><td><span class="cc-pill">Calicut</span></td><td>Vishnu R.</td><td><span class="pill status-progress">In Progress</span></td><td>1h 20m</td></tr>
-          <tr><td><strong>#SR-2447</strong></td><td>Anoop Kumar</td><td>CCTV focus</td><td><span class="cc-pill">Calicut</span></td><td>Anjali S.</td><td><span class="pill status-done">Done</span></td><td>38 min</td></tr>
-          <tr><td><strong>#SR-2446</strong></td><td>Sunny Joseph</td><td>Power outage</td><td><span class="cc-pill">Ernakulam</span></td><td>Sajeev T.</td><td><span class="pill status-overdue">Overdue</span></td><td>2d 4h</td></tr>
-        </tbody>
+        <thead><tr><th>Technician</th><th>Cost Center</th><th>Skills</th><th>Load</th><th>Rating</th><th>Status</th></tr></thead>
+        <tbody>${list.map(t => {
+          const a = availInfo(t);
+          return `<tr>
+            <td><div style="display:flex; align-items:center; gap:10px;"><div class="avatar avatar-sm" style="background:${colorOf(t.name)};">${t.ini}</div><div><div style="font-weight:600;">${t.name}</div><div style="font-size:11px; color:#6B7280;">${t.exp}</div></div></div></td>
+            <td><span class="cc-pill">${t.cc}</span></td>
+            <td>${t.skills.map(s=>`<span class="pill pill-indigo" style="font-size:10px;">${s}</span>`).join(' ')}</td>
+            <td><span class="avail-badge" style="background:${a.bg}; color:${a.fg};">${t.status==='leave'?'On Leave':a.load+'/'+t.capacity}</span></td>
+            <td style="color:#F59E0B; font-weight:600;">${t.rating} ★</td>
+            <td><span class="pill ${t.status==='leave'?'pill-amber':'pill-emerald'}">${t.status==='leave'?'On Leave':'Active'}</span></td>
+          </tr>`;
+        }).join('')}</tbody>
       </table>
-    </div>
-  </div>
+    </div>`;
+  lucide.createIcons();
+}
 
-  <!-- ============================== -->
-  <!-- REPORTS VIEW -->
-  <!-- ============================== -->
-  <div class="view" id="view-reports">
+/* ============================ DEPLOYMENT (cross-center) ============================ */
+function renderDeployment() {
+  // per-center load summary
+  const colHtml = COST_CENTERS.map(cc => {
+    const techs = technicians.filter(t => t.cc===cc);
+    const totalLoad = techs.reduce((s,t)=>s+techLoad(t.name),0);
+    const totalCap = techs.reduce((s,t)=>s+(t.status==='leave'?0:t.capacity),0);
+    const pct = totalCap ? Math.round(totalLoad/totalCap*100) : 0;
+    const loadColor = pct>=85 ? '#EF4444' : pct>=50 ? '#F59E0B' : '#10B981';
+    const loadBg = pct>=85 ? '#FEE2E2' : pct>=50 ? '#FEF3C7' : '#D1FAE5';
+    const loadFg = pct>=85 ? '#991B1B' : pct>=50 ? '#92400E' : '#065F46';
+
+    const cards = techs.map(t => {
+      const a = availInfo(t);
+      const load = a.load, pctT = Math.round(load/t.capacity*100);
+      const fillC = a.key==='free' ? '#10B981' : a.key==='full' ? '#EF4444' : '#2563EB';
+      const others = COST_CENTERS.filter(c=>c!==cc).map(c=>`<option value="${c}">→ ${c}</option>`).join('');
+      const cur = techActive(t.name);
+      return `<div class="tech-mini">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:6px;">
+          <div style="display:flex; gap:8px; align-items:center; min-width:0;">
+            <div class="avatar avatar-sm" style="background:${colorOf(t.name)};">${t.ini}</div>
+            <div style="min-width:0;"><div style="font-weight:600; font-size:13px;">${t.name}</div><div style="font-size:11px; color:#6B7280;">${t.exp}</div></div>
+          </div>
+          <span class="avail-badge" style="background:${a.bg}; color:${a.fg};">${a.label}</span>
+        </div>
+        <div class="load-bar"><div class="load-fill" style="width:${pctT}%; background:${fillC};"></div></div>
+        <div style="font-size:11px; color:#6B7280;">${load}/${t.capacity} tasks${cur.length?` · now: ${esc(cur[0].title)}`:''}</div>
+        <div>${t.skills.map(s=>`<span class="skill-chip">${s}</span>`).join('')}</div>
+        <div class="tech-ctrl">
+          <div style="display:flex; gap:6px; align-items:center;">
+            <select class="select" style="flex:1; padding:5px 8px; font-size:12px;" onchange="setTechStatus('${t.name}', this.value)">
+              <option value="active" ${t.status==='active'?'selected':''}>🟢 Active</option>
+              <option value="leave" ${t.status==='leave'?'selected':''}>🟡 On Leave</option>
+            </select>
+            <div style="display:flex; align-items:center; gap:4px;">
+              <button class="cap-btn" onclick="changeCapacity('${t.name}',-1)">−</button>
+              <span style="font-size:11px; color:#6B7280; min-width:46px; text-align:center;">cap ${t.capacity}</span>
+              <button class="cap-btn" onclick="changeCapacity('${t.name}',1)">+</button>
+            </div>
+          </div>
+          <select class="select relocate-sel" onchange="relocateTech('${t.name}', this.value)">
+            <option value="">📍 Relocate to…</option>${others}
+          </select>
+        </div>
+      </div>`;
+    }).join('') || `<div style="color:#9CA3AF; font-size:12px; padding:8px;">No technicians here.</div>`;
+
+    return `<div class="deploy-col">
+      <div class="deploy-col-head">
+        <div class="nm">${CC_META[cc].emoji} ${cc}</div>
+        <span class="deploy-load" style="background:${loadBg}; color:${loadFg};">${pct}% load</span>
+      </div>
+      <div style="font-size:11px; color:#6B7280; margin:-6px 0 12px;">${techs.length} techs · ${totalLoad}/${totalCap} capacity used</div>
+      ${cards}
+    </div>`;
+  }).join('');
+
+  // simple rebalance hint
+  const loads = COST_CENTERS.map(cc => {
+    const techs = technicians.filter(t=>t.cc===cc);
+    const tl = techs.reduce((s,t)=>s+techLoad(t.name),0);
+    const tc = techs.reduce((s,t)=>s+(t.status==='leave'?0:t.capacity),0);
+    return { cc, pct: tc?tl/tc:0 };
+  });
+  const hot = loads.slice().sort((a,b)=>b.pct-a.pct)[0];
+  const cold = loads.slice().sort((a,b)=>a.pct-b.pct)[0];
+  const hint = hot.pct - cold.pct > 0.25
+    ? `<div style="background:#FEF3C7; border:1px solid #FDE68A; color:#92400E; padding:12px 16px; border-radius:12px; margin-bottom:18px; font-size:13px;"><i data-lucide="lightbulb" style="width:14px;height:14px;display:inline;vertical-align:middle;"></i> <strong>${hot.cc}</strong> is running hot while <strong>${cold.cc}</strong> has spare capacity — consider relocating a technician.</div>`
+    : `<div style="background:#D1FAE5; border:1px solid #A7F3D0; color:#065F46; padding:12px 16px; border-radius:12px; margin-bottom:18px; font-size:13px;"><i data-lucide="check-circle-2" style="width:14px;height:14px;display:inline;vertical-align:middle;"></i> Load is balanced across all cost centers.</div>`;
+
+  document.getElementById('view-deployment').innerHTML = `
+    <div class="topbar" style="background:transparent; border:none; padding:0; margin:0 0 16px;">
+      <div><h1>Deployment</h1><p style="color:#6B7280; margin:4px 0 0; font-size:14px;">Set each person's availability & capacity, and relocate them across cost centers.</p></div>
+    </div>
+    ${hint}
+    <div class="deploy-grid">${colHtml}</div>`;
+  lucide.createIcons();
+}
+function relocateTech(name, toCC) {
+  if (!toCC) return;
+  const t = techByName(name); const from = t.cc;
+  t.cc = toCC;
+  refreshAll();
+  toast(`${name} relocated: ${from} → ${toCC}`);
+}
+function setTechStatus(name, status) {
+  const t = techByName(name); if (!t || t.status === status) return;
+  t.status = status;
+  refreshAll();
+  toast(`${name} set to ${status === 'leave' ? 'On Leave' : 'Active'}`);
+}
+function changeCapacity(name, delta) {
+  const t = techByName(name); if (!t) return;
+  t.capacity = Math.max(1, Math.min(10, t.capacity + delta));
+  refreshAll();
+  toast(`${name} capacity set to ${t.capacity}`);
+}
+
+/* ============================ MANAGERS ============================ */
+function renderManagers() {
+  document.getElementById('view-managers').innerHTML = `
+    <div class="topbar" style="background:transparent; border:none; padding:0; margin:0 0 16px;">
+      <div><h1>Project Managers</h1><p style="color:#6B7280; margin:4px 0 0; font-size:14px;">${PMS.length} PMs across ${COST_CENTERS.length} cost centers</p></div>
+      <button class="btn btn-primary"><i data-lucide="plus" style="width:14px;height:14px;"></i>Add PM</button>
+    </div>
+    <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:16px;">
+      ${PMS.map(pm => {
+        const projects = tasks.filter(t=>t.type==='Project' && pm.centers.includes(t.cc)).length;
+        const team = technicians.filter(t=>pm.centers.includes(t.cc)).length;
+        return `<div class="chart-card">
+          <div style="display:flex; gap:14px; align-items:flex-start; margin-bottom:14px;">
+            <div class="avatar avatar-lg" style="background:${pm.color};">${pm.ini}</div>
+            <div style="flex:1;"><div style="font-weight:700; font-size:16px;">${pm.name}</div><div style="font-size:12px; color:#6B7280;">PM · ${pm.cc}</div><div style="font-size:11px; color:#6B7280; margin-top:4px;">${pm.email}</div></div>
+          </div>
+          <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px;">${pm.centers.map(c=>`<span class="cc-pill">${c}</span>`).join('')}</div>
+          <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:8px; padding-top:12px; border-top:1px solid #F3F4F6;">
+            <div><div style="font-size:11px; color:#6B7280;">Projects</div><div style="font-weight:700; font-size:18px;">${projects}</div></div>
+            <div><div style="font-size:11px; color:#6B7280;">Team</div><div style="font-weight:700; font-size:18px;">${team}</div></div>
+            <div><div style="font-size:11px; color:#6B7280;">On-time</div><div style="font-weight:700; font-size:18px; color:#10B981;">${pm.ontime}%</div></div>
+          </div>
+        </div>`;
+      }).join('')}
+    </div>`;
+  lucide.createIcons();
+}
+
+/* ============================ COST CENTERS ============================ */
+function renderCostCenters() {
+  document.getElementById('view-costcenters').innerHTML = `
+    <div class="topbar" style="background:transparent; border:none; padding:0; margin:0 0 16px;">
+      <div><h1>Cost Centers</h1><p style="color:#6B7280; margin:4px 0 0; font-size:14px;">${COST_CENTERS.length} branches across Kerala</p></div>
+      <button class="btn btn-primary"><i data-lucide="plus" style="width:14px;height:14px;"></i>Add Cost Center</button>
+    </div>
+    <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:16px;">
+      ${COST_CENTERS.map(cc => {
+        const m = CC_META[cc];
+        const techs = technicians.filter(t=>t.cc===cc).length;
+        const active = tasks.filter(t=>t.cc===cc && t.status!=='Done').length;
+        const projects = tasks.filter(t=>t.cc===cc && t.type==='Project').length;
+        return `<div class="chart-card" style="border-top:4px solid ${m.accent}; padding-top:24px;">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+            <div><h3 style="margin:0 0 4px; font-size:18px;">${m.emoji} ${cc}</h3><div style="font-size:12px; color:#6B7280;">${m.addr}</div></div>
+            <span class="pill pill-emerald">Active</span>
+          </div>
+          <div style="margin-top:18px; padding:14px; background:#F9FAFB; border-radius:10px;">
+            <div style="display:flex; gap:10px; align-items:center;">
+              <div class="avatar avatar-sm" style="background:${colorOf(m.mgr)};">${m.mgrIni}</div>
+              <div><div style="font-size:13px; font-weight:600;">${m.mgr}</div><div style="font-size:11px; color:#6B7280;">Branch Manager</div></div>
+            </div>
+          </div>
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:14px;">
+            <div><div style="font-size:11px; color:#6B7280;">Technicians</div><div style="font-weight:700; font-size:20px;">${techs}</div></div>
+            <div><div style="font-size:11px; color:#6B7280;">Active Tickets</div><div style="font-weight:700; font-size:20px; color:#4F46E5;">${active}</div></div>
+            <div><div style="font-size:11px; color:#6B7280;">Projects</div><div style="font-weight:700; font-size:20px;">${projects}</div></div>
+            <div><div style="font-size:11px; color:#6B7280;">SLA Met</div><div style="font-weight:700; font-size:20px; color:#10B981;">95%</div></div>
+          </div>
+        </div>`;
+      }).join('')}
+    </div>`;
+  lucide.createIcons();
+}
+
+/* ============================ REPORTS ============================ */
+function renderReports() {
+  // leaderboard derived from done/total tasks per tech
+  const board = technicians.map(t => ({ t, total: tasks.filter(x=>x.tech===t.name).length, done: tasks.filter(x=>x.tech===t.name && x.status==='Done').length }))
+    .sort((a,b)=> b.total - a.total).slice(0,4);
+  document.getElementById('view-reports').innerHTML = `
     <div class="topbar" style="background:transparent; border:none; padding:0; margin:0 0 16px;">
       <h1>Reports & Analytics</h1>
       <button class="btn btn-secondary"><i data-lucide="download" style="width:14px;height:14px;"></i>Export PDF</button>
     </div>
-
     <div class="kpi-grid">
       <div class="kpi"><div class="kpi-label">Avg Resolution</div><div class="kpi-value">3.2h</div><div class="kpi-trend up">↑ 18% faster</div></div>
       <div class="kpi"><div class="kpi-label">SLA Met</div><div class="kpi-value" style="color:#10B981;">94%</div><div class="kpi-trend up">↑ 2%</div></div>
       <div class="kpi"><div class="kpi-label">CSAT</div><div class="kpi-value">4.7 ★</div><div class="kpi-trend up">↑ 0.2</div></div>
       <div class="kpi"><div class="kpi-label">Revenue (Month)</div><div class="kpi-value">₹14.2L</div><div class="kpi-trend up">↑ 9%</div></div>
     </div>
-
     <div class="grid-charts">
-      <div class="chart-card">
-        <h3>Completion Rate by Cost Center</h3>
-        <canvas id="barChart" style="max-height:260px;"></canvas>
+      <div class="chart-card"><h3>Tickets by Cost Center</h3><canvas id="barChart" style="max-height:260px;"></canvas></div>
+      <div class="chart-card"><h3>Technician Leaderboard</h3>
+        ${board.map((r,i)=>`<div class="leader-row"><div class="leader-rank ${['gold','silver','bronze'][i]||''}">${i+1}</div><div class="avatar avatar-sm" style="background:${colorOf(r.t.name)};">${r.t.ini}</div><div style="flex:1;"><div style="font-weight:600; font-size:14px;">${r.t.name}</div><div style="font-size:12px; color:#6B7280;">${r.total} tickets · ${r.t.rating} ★</div></div><div style="font-weight:700; ${i===0?'color:#10B981;':''}">${r.total*180} pts</div></div>`).join('')}
       </div>
-
-      <div class="chart-card">
-        <h3>Technician Leaderboard — This Month</h3>
-        <div class="leader-row"><div class="leader-rank gold">1</div><div class="avatar avatar-sm" style="background:linear-gradient(135deg,#FCA5A5,#EF4444);">ST</div><div style="flex:1;"><div style="font-weight:600; font-size:14px;">Sajeev T.</div><div style="font-size:12px; color:#6B7280;">42 tickets · 4.9 ★</div></div><div style="font-weight:700; color:#10B981;">2,150 pts</div></div>
-        <div class="leader-row"><div class="leader-rank silver">2</div><div class="avatar avatar-sm" style="background:linear-gradient(135deg,#A78BFA,#7C3AED);">HM</div><div style="flex:1;"><div style="font-weight:600; font-size:14px;">Hareesh M.</div><div style="font-size:12px; color:#6B7280;">38 tickets · 4.8 ★</div></div><div style="font-weight:700;">1,920 pts</div></div>
-        <div class="leader-row"><div class="leader-rank bronze">3</div><div class="avatar avatar-sm" style="background:linear-gradient(135deg,#6EE7B7,#10B981);">VR</div><div style="flex:1;"><div style="font-weight:600; font-size:14px;">Vishnu Raj</div><div style="font-size:12px; color:#6B7280;">35 tickets · 4.7 ★</div></div><div style="font-weight:700;">1,780 pts</div></div>
-        <div class="leader-row"><div class="leader-rank">4</div><div class="avatar avatar-sm" style="background:linear-gradient(135deg,#93C5FD,#3B82F6);">AS</div><div style="flex:1;"><div style="font-weight:600; font-size:14px;">Anjali S.</div><div style="font-size:12px; color:#6B7280;">29 tickets · 4.8 ★</div></div><div style="font-weight:700;">1,520 pts</div></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ============================== -->
-  <!-- TECHNICIANS VIEW -->
-  <!-- ============================== -->
-  <div class="view" id="view-technicians">
-    <div class="topbar" style="background:transparent; border:none; padding:0; margin:0 0 16px;">
-      <div>
-        <h1>Technicians</h1>
-        <p style="color:#6B7280; margin:4px 0 0; font-size:14px;">12 technicians across 3 cost centers</p>
-      </div>
-      <button class="btn btn-primary"><i data-lucide="plus" style="width:14px;height:14px;"></i>Add Technician</button>
-    </div>
-
-    <div class="cc-tabs">
-      <div class="cc-tab active">All (12)</div>
-      <div class="cc-tab">Calicut (4)</div>
-      <div class="cc-tab">Kollam (5)</div>
-      <div class="cc-tab">Ernakulam (3)</div>
-    </div>
-
-    <div class="kpi-grid">
-      <div class="kpi"><div class="kpi-label">Active Now</div><div class="kpi-value">9</div></div>
-      <div class="kpi"><div class="kpi-label">On Leave</div><div class="kpi-value" style="color:#F59E0B;">2</div></div>
-      <div class="kpi"><div class="kpi-label">Avg Rating</div><div class="kpi-value" style="color:#10B981;">4.8 ★</div></div>
-      <div class="kpi"><div class="kpi-label">Tasks This Week</div><div class="kpi-value">142</div></div>
-    </div>
-
-    <div class="chart-card" style="padding:0;">
-      <table class="table">
-        <thead><tr><th>Technician</th><th>Cost Center</th><th>Skills</th><th>Active</th><th>This Week</th><th>Rating</th><th>Status</th></tr></thead>
-        <tbody>
-          <tr><td><div style="display:flex; align-items:center; gap:10px;"><div class="avatar avatar-sm" style="background:linear-gradient(135deg,#FCA5A5,#EF4444);">ST</div><div><div style="font-weight:600;">Sajeev T.</div><div style="font-size:11px; color:#6B7280;">Senior · 8 yrs</div></div></div></td><td><span class="cc-pill">Kollam</span></td><td><span class="pill pill-indigo">AC</span> <span class="pill pill-emerald">Electrical</span></td><td>3</td><td>12</td><td style="color:#F59E0B; font-weight:600;">4.9 ★</td><td><span class="pill pill-emerald">Active</span></td></tr>
-          <tr><td><div style="display:flex; align-items:center; gap:10px;"><div class="avatar avatar-sm" style="background:linear-gradient(135deg,#6EE7B7,#10B981);">VR</div><div><div style="font-weight:600;">Vishnu Raj</div><div style="font-size:11px; color:#6B7280;">Technician · 4 yrs</div></div></div></td><td><span class="cc-pill">Kollam</span></td><td><span class="pill pill-indigo">CCTV</span> <span class="pill pill-emerald">Wiring</span></td><td>5</td><td>9</td><td style="color:#F59E0B; font-weight:600;">4.7 ★</td><td><span class="pill pill-emerald">Active</span></td></tr>
-          <tr><td><div style="display:flex; align-items:center; gap:10px;"><div class="avatar avatar-sm" style="background:linear-gradient(135deg,#A78BFA,#7C3AED);">HM</div><div><div style="font-weight:600;">Hareesh M.</div><div style="font-size:11px; color:#6B7280;">Senior · 6 yrs</div></div></div></td><td><span class="cc-pill">Ernakulam</span></td><td><span class="pill pill-indigo">Smart Home</span></td><td>2</td><td>10</td><td style="color:#F59E0B; font-weight:600;">4.8 ★</td><td><span class="pill pill-emerald">Active</span></td></tr>
-          <tr><td><div style="display:flex; align-items:center; gap:10px;"><div class="avatar avatar-sm" style="background:linear-gradient(135deg,#93C5FD,#3B82F6);">AS</div><div><div style="font-weight:600;">Anjali S.</div><div style="font-size:11px; color:#6B7280;">Network · 5 yrs</div></div></div></td><td><span class="cc-pill">Kollam</span></td><td><span class="pill pill-emerald">Network</span> <span class="pill pill-indigo">CCTV</span></td><td>1</td><td>7</td><td style="color:#F59E0B; font-weight:600;">4.8 ★</td><td><span class="pill pill-amber">On Leave</span></td></tr>
-          <tr><td><div style="display:flex; align-items:center; gap:10px;"><div class="avatar avatar-sm" style="background:linear-gradient(135deg,#FCD34D,#F59E0B);">RK</div><div><div style="font-weight:600;">Rahul K.</div><div style="font-size:11px; color:#6B7280;">Technician · 3 yrs</div></div></div></td><td><span class="cc-pill">Calicut</span></td><td><span class="pill pill-indigo">AC</span></td><td>4</td><td>11</td><td style="color:#F59E0B; font-weight:600;">4.6 ★</td><td><span class="pill pill-emerald">Active</span></td></tr>
-          <tr><td><div style="display:flex; align-items:center; gap:10px;"><div class="avatar avatar-sm" style="background:linear-gradient(135deg,#F472B6,#DB2777);">PG</div><div><div style="font-weight:600;">Praveen G.</div><div style="font-size:11px; color:#6B7280;">Senior · 7 yrs</div></div></div></td><td><span class="cc-pill">Calicut</span></td><td><span class="pill pill-emerald">Electrical</span> <span class="pill pill-indigo">Solar</span></td><td>3</td><td>13</td><td style="color:#F59E0B; font-weight:600;">4.9 ★</td><td><span class="pill pill-emerald">Active</span></td></tr>
-          <tr><td><div style="display:flex; align-items:center; gap:10px;"><div class="avatar avatar-sm" style="background:linear-gradient(135deg,#34D399,#059669);">JT</div><div><div style="font-weight:600;">Jithin T.</div><div style="font-size:11px; color:#6B7280;">Technician · 2 yrs</div></div></div></td><td><span class="cc-pill">Ernakulam</span></td><td><span class="pill pill-indigo">CCTV</span></td><td>2</td><td>8</td><td style="color:#F59E0B; font-weight:600;">4.5 ★</td><td><span class="pill pill-emerald">Active</span></td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- ============================== -->
-  <!-- PROJECT MANAGERS VIEW -->
-  <!-- ============================== -->
-  <div class="view" id="view-managers">
-    <div class="topbar" style="background:transparent; border:none; padding:0; margin:0 0 16px;">
-      <div>
-        <h1>Project Managers</h1>
-        <p style="color:#6B7280; margin:4px 0 0; font-size:14px;">3 PMs managing 14 active projects</p>
-      </div>
-      <button class="btn btn-primary"><i data-lucide="plus" style="width:14px;height:14px;"></i>Add PM</button>
-    </div>
-
-    <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:16px;">
-      <div class="chart-card">
-        <div style="display:flex; gap:14px; align-items:flex-start; margin-bottom:14px;">
-          <div class="avatar avatar-lg" style="background:linear-gradient(135deg,#FBBF24,#D97706);">MP</div>
-          <div style="flex:1;">
-            <div style="font-weight:700; font-size:16px;">Manoj Pillai</div>
-            <div style="font-size:12px; color:#6B7280;">PM · Kollam</div>
-            <div style="font-size:11px; color:#6B7280; margin-top:4px;">manoj.p@servicehub.in</div>
-          </div>
-        </div>
-        <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px;">
-          <span class="cc-pill">Kollam</span>
-          <span class="cc-pill">Ernakulam</span>
-        </div>
-        <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:8px; padding-top:12px; border-top:1px solid #F3F4F6;">
-          <div><div style="font-size:11px; color:#6B7280;">Projects</div><div style="font-weight:700; font-size:18px;">5</div></div>
-          <div><div style="font-size:11px; color:#6B7280;">Team</div><div style="font-weight:700; font-size:18px;">4</div></div>
-          <div><div style="font-size:11px; color:#6B7280;">On-time</div><div style="font-weight:700; font-size:18px; color:#10B981;">94%</div></div>
-        </div>
-      </div>
-
-      <div class="chart-card">
-        <div style="display:flex; gap:14px; align-items:flex-start; margin-bottom:14px;">
-          <div class="avatar avatar-lg" style="background:linear-gradient(135deg,#A78BFA,#7C3AED);">DK</div>
-          <div style="flex:1;">
-            <div style="font-weight:700; font-size:16px;">Deepa Krishnan</div>
-            <div style="font-size:12px; color:#6B7280;">PM · Calicut</div>
-            <div style="font-size:11px; color:#6B7280; margin-top:4px;">deepa.k@servicehub.in</div>
-          </div>
-        </div>
-        <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px;">
-          <span class="cc-pill">Calicut</span>
-        </div>
-        <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:8px; padding-top:12px; border-top:1px solid #F3F4F6;">
-          <div><div style="font-size:11px; color:#6B7280;">Projects</div><div style="font-weight:700; font-size:18px;">5</div></div>
-          <div><div style="font-size:11px; color:#6B7280;">Team</div><div style="font-weight:700; font-size:18px;">3</div></div>
-          <div><div style="font-size:11px; color:#6B7280;">On-time</div><div style="font-weight:700; font-size:18px; color:#10B981;">91%</div></div>
-        </div>
-      </div>
-
-      <div class="chart-card">
-        <div style="display:flex; gap:14px; align-items:flex-start; margin-bottom:14px;">
-          <div class="avatar avatar-lg" style="background:linear-gradient(135deg,#6EE7B7,#10B981);">AK</div>
-          <div style="flex:1;">
-            <div style="font-weight:700; font-size:16px;">Arun Krishnan</div>
-            <div style="font-size:12px; color:#6B7280;">PM · Ernakulam</div>
-            <div style="font-size:11px; color:#6B7280; margin-top:4px;">arun.k@servicehub.in</div>
-          </div>
-        </div>
-        <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px;">
-          <span class="cc-pill">Ernakulam</span>
-        </div>
-        <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:8px; padding-top:12px; border-top:1px solid #F3F4F6;">
-          <div><div style="font-size:11px; color:#6B7280;">Projects</div><div style="font-weight:700; font-size:18px;">4</div></div>
-          <div><div style="font-size:11px; color:#6B7280;">Team</div><div style="font-weight:700; font-size:18px;">3</div></div>
-          <div><div style="font-size:11px; color:#6B7280;">On-time</div><div style="font-weight:700; font-size:18px; color:#F59E0B;">88%</div></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ============================== -->
-  <!-- COST CENTERS VIEW -->
-  <!-- ============================== -->
-  <div class="view" id="view-costcenters">
-    <div class="topbar" style="background:transparent; border:none; padding:0; margin:0 0 16px;">
-      <div>
-        <h1>Cost Centers</h1>
-        <p style="color:#6B7280; margin:4px 0 0; font-size:14px;">3 branches across Kerala</p>
-      </div>
-      <button class="btn btn-primary"><i data-lucide="plus" style="width:14px;height:14px;"></i>Add Cost Center</button>
-    </div>
-
-    <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:16px;">
-      <div class="chart-card" style="border-top: 4px solid #4F46E5; padding-top: 24px;">
-        <div style="display:flex; justify-content:space-between; align-items:flex-start;">
-          <div>
-            <h3 style="margin:0 0 4px; font-size:18px;">🏙️ Calicut</h3>
-            <div style="font-size:12px; color:#6B7280;">PG Industrial Estate, Calicut 673001</div>
-          </div>
-          <span class="pill pill-emerald">Active</span>
-        </div>
-        <div style="margin-top:18px; padding:14px; background:#F9FAFB; border-radius:10px;">
-          <div style="display:flex; gap:10px; align-items:center;">
-            <div class="avatar avatar-sm" style="background:linear-gradient(135deg,#A78BFA,#7C3AED);">DK</div>
-            <div><div style="font-size:13px; font-weight:600;">Deepa Krishnan</div><div style="font-size:11px; color:#6B7280;">Branch Manager</div></div>
-          </div>
-        </div>
-        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:14px;">
-          <div><div style="font-size:11px; color:#6B7280;">Technicians</div><div style="font-weight:700; font-size:20px;">4</div></div>
-          <div><div style="font-size:11px; color:#6B7280;">Active Tickets</div><div style="font-weight:700; font-size:20px; color:#4F46E5;">18</div></div>
-          <div><div style="font-size:11px; color:#6B7280;">Projects</div><div style="font-weight:700; font-size:20px;">5</div></div>
-          <div><div style="font-size:11px; color:#6B7280;">SLA Met</div><div style="font-weight:700; font-size:20px; color:#10B981;">96%</div></div>
-        </div>
-      </div>
-
-      <div class="chart-card" style="border-top: 4px solid #10B981; padding-top: 24px;">
-        <div style="display:flex; justify-content:space-between; align-items:flex-start;">
-          <div>
-            <h3 style="margin:0 0 4px; font-size:18px;">🏖️ Kollam</h3>
-            <div style="font-size:12px; color:#6B7280;">Chinnakada Junction, Kollam 691001</div>
-          </div>
-          <span class="pill pill-emerald">Active</span>
-        </div>
-        <div style="margin-top:18px; padding:14px; background:#F9FAFB; border-radius:10px;">
-          <div style="display:flex; gap:10px; align-items:center;">
-            <div class="avatar avatar-sm" style="background:linear-gradient(135deg,#FBBF24,#D97706);">MP</div>
-            <div><div style="font-size:13px; font-weight:600;">Manoj Pillai</div><div style="font-size:11px; color:#6B7280;">Branch Manager</div></div>
-          </div>
-        </div>
-        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:14px;">
-          <div><div style="font-size:11px; color:#6B7280;">Technicians</div><div style="font-weight:700; font-size:20px;">5</div></div>
-          <div><div style="font-size:11px; color:#6B7280;">Active Tickets</div><div style="font-weight:700; font-size:20px; color:#4F46E5;">21</div></div>
-          <div><div style="font-size:11px; color:#6B7280;">Projects</div><div style="font-weight:700; font-size:20px;">6</div></div>
-          <div><div style="font-size:11px; color:#6B7280;">SLA Met</div><div style="font-weight:700; font-size:20px; color:#10B981;">94%</div></div>
-        </div>
-      </div>
-
-      <div class="chart-card" style="border-top: 4px solid #F59E0B; padding-top: 24px;">
-        <div style="display:flex; justify-content:space-between; align-items:flex-start;">
-          <div>
-            <h3 style="margin:0 0 4px; font-size:18px;">🏢 Ernakulam</h3>
-            <div style="font-size:12px; color:#6B7280;">MG Road, Ernakulam 682035</div>
-          </div>
-          <span class="pill pill-emerald">Active</span>
-        </div>
-        <div style="margin-top:18px; padding:14px; background:#F9FAFB; border-radius:10px;">
-          <div style="display:flex; gap:10px; align-items:center;">
-            <div class="avatar avatar-sm" style="background:linear-gradient(135deg,#6EE7B7,#10B981);">AK</div>
-            <div><div style="font-size:13px; font-weight:600;">Arun Krishnan</div><div style="font-size:11px; color:#6B7280;">Branch Manager</div></div>
-          </div>
-        </div>
-        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:14px;">
-          <div><div style="font-size:11px; color:#6B7280;">Technicians</div><div style="font-weight:700; font-size:20px;">3</div></div>
-          <div><div style="font-size:11px; color:#6B7280;">Active Tickets</div><div style="font-weight:700; font-size:20px; color:#4F46E5;">12</div></div>
-          <div><div style="font-size:11px; color:#6B7280;">Projects</div><div style="font-weight:700; font-size:20px;">3</div></div>
-          <div><div style="font-size:11px; color:#6B7280;">SLA Met</div><div style="font-weight:700; font-size:20px; color:#F59E0B;">88%</div></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="chart-card mt-4" style="margin-top:20px;">
-      <h3 style="margin:0 0 14px;">Combined Performance</h3>
-      <canvas id="ccBarChart" style="max-height:240px;"></canvas>
-    </div>
-  </div>
-
-  <!-- ============================== -->
-  <!-- SETTINGS VIEW -->
-  <!-- ============================== -->
-  <div class="view" id="view-settings">
-    <div class="topbar" style="background:transparent; border:none; padding:0; margin:0 0 16px;">
-      <div>
-        <h1>Settings</h1>
-        <p style="color:#6B7280; margin:4px 0 0; font-size:14px;">Manage organization and account preferences</p>
-      </div>
-    </div>
-
-    <div style="display:grid; grid-template-columns: 240px 1fr; gap:20px;">
-      <div class="chart-card" style="padding:8px;">
-        <a class="sidebar-link active" style="cursor:pointer;"><i data-lucide="building"></i> Organization</a>
-        <a class="sidebar-link" style="cursor:pointer;"><i data-lucide="user"></i> Profile</a>
-        <a class="sidebar-link" style="cursor:pointer;"><i data-lucide="bell"></i> Notifications</a>
-        <a class="sidebar-link" style="cursor:pointer;"><i data-lucide="shield"></i> Security & Roles</a>
-        <a class="sidebar-link" style="cursor:pointer;"><i data-lucide="phone"></i> SMS / Call Gateway</a>
-        <a class="sidebar-link" style="cursor:pointer;"><i data-lucide="link"></i> Integrations</a>
-        <a class="sidebar-link" style="cursor:pointer;"><i data-lucide="credit-card"></i> Billing</a>
-      </div>
-
-      <div>
-        <div class="chart-card" style="margin-bottom:16px;">
-          <h3 style="margin:0 0 4px;">Organization Details</h3>
-          <p style="font-size:13px; color:#6B7280; margin:0 0 20px;">Public info shown across all branches.</p>
-
-          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px;">
-            <div class="field"><label class="label">Organization Name</label><input class="input" value="ServiceHub Kerala"></div>
-            <div class="field"><label class="label">GST Number</label><input class="input" value="32AAACS1234A1Z5"></div>
-            <div class="field"><label class="label">Support Email</label><input class="input" value="support@servicehub.in"></div>
-            <div class="field"><label class="label">Support Number</label><input class="input" value="+91 80 4567 1234"></div>
-            <div class="field"><label class="label">Default Timezone</label><select class="select"><option selected>Asia/Kolkata (IST)</option></select></div>
-            <div class="field"><label class="label">Working Hours</label><input class="input" value="9:00 AM - 7:00 PM"></div>
-          </div>
-
-          <div style="display:flex; gap:10px;">
-            <button class="btn btn-primary">Save Changes</button>
-            <button class="btn btn-secondary">Cancel</button>
-          </div>
-        </div>
-
-        <div class="chart-card">
-          <h3 style="margin:0 0 14px;">SMS & Call Gateway</h3>
-          <div style="display:flex; gap:12px; padding:14px; background:#F0FDF4; border-radius:10px; align-items:center; margin-bottom:12px;">
-            <div style="width:36px; height:36px; border-radius:8px; background:#10B981; display:flex; align-items:center; justify-content:center; color:white;"><i data-lucide="check" style="width:18px;height:18px;"></i></div>
-            <div style="flex:1;"><div style="font-weight:600; font-size:14px;">Exotel</div><div style="font-size:12px; color:#6B7280;">Connected · Used for missed-call & SMS auto-link</div></div>
-            <button class="btn btn-secondary" style="padding:6px 12px; font-size:12px;">Configure</button>
-          </div>
-          <div style="display:flex; gap:12px; padding:14px; background:#F9FAFB; border-radius:10px; align-items:center;">
-            <div style="width:36px; height:36px; border-radius:8px; background:#F3F4F6; display:flex; align-items:center; justify-content:center; color:#6B7280;"><i data-lucide="plus" style="width:18px;height:18px;"></i></div>
-            <div style="flex:1;"><div style="font-weight:600; font-size:14px;">WhatsApp Business API</div><div style="font-size:12px; color:#6B7280;">Not connected</div></div>
-            <button class="btn btn-secondary" style="padding:6px 12px; font-size:12px;">Connect</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-</div>
-
-<!-- CREATE PROJECT MODAL -->
-<div class="modal-backdrop" id="createModal">
-  <div class="modal">
-    <div class="modal-head">
-      <h2 class="modal-title">Create New Project</h2>
-      <button class="close-btn" onclick="closeCreateModal()"><i data-lucide="x" style="width:16px;height:16px;"></i></button>
-    </div>
-
-    <div class="field">
-      <label class="label">Project Name</label>
-      <input class="input" placeholder="e.g., CCTV Installation - Hotel Sea View" value="AC Showroom Maintenance Contract">
-    </div>
-    <div class="grid-2">
-      <div class="field">
-        <label class="label">Cost Center</label>
-        <select class="select"><option>Calicut</option><option selected>Kollam</option><option>Ernakulam</option></select>
-      </div>
-      <div class="field">
-        <label class="label">Project Manager</label>
-        <select class="select"><option selected>Manoj Pillai</option><option>Deepa Krishnan</option></select>
-      </div>
-    </div>
-    <div class="field">
-      <label class="label">Assign Technicians</label>
-      <div style="display:flex; flex-wrap:wrap; gap:6px; padding:8px; border:1px solid #E5E7EB; border-radius:10px; min-height:46px;">
-        <span style="background:#EEF2FF; color:#4F46E5; padding:4px 10px; border-radius:999px; font-size:12px; font-weight:600; display:inline-flex; gap:4px; align-items:center;">Sajeev T. <i data-lucide="x" style="width:11px;height:11px;"></i></span>
-        <span style="background:#EEF2FF; color:#4F46E5; padding:4px 10px; border-radius:999px; font-size:12px; font-weight:600; display:inline-flex; gap:4px; align-items:center;">Vishnu R. <i data-lucide="x" style="width:11px;height:11px;"></i></span>
-        <input style="border:none; outline:none; font-size:13px; flex:1; min-width:80px;" placeholder="Add more...">
-      </div>
-    </div>
-    <div class="grid-2">
-      <div class="field">
-        <label class="label">Start Date</label>
-        <input class="input" type="text" value="May 15, 2026">
-      </div>
-      <div class="field">
-        <label class="label">Deadline</label>
-        <input class="input" type="text" value="June 28, 2026">
-      </div>
-    </div>
-    <div class="grid-2">
-      <div class="field">
-        <label class="label">Priority</label>
-        <select class="select"><option>Low</option><option>Medium</option><option selected>High</option><option>Urgent</option></select>
-      </div>
-      <div class="field">
-        <label class="label">Budget (₹)</label>
-        <input class="input" type="text" value="2,50,000">
-      </div>
-    </div>
-    <div class="field">
-      <label class="label">Description</label>
-      <textarea class="textarea" rows="3" style="resize:none;">3-month annual maintenance contract for AC units across showroom. Includes routine checkups, refrigerant refills, and emergency service.</textarea>
-    </div>
-
-    <div style="display:flex; gap:10px; margin-top:8px;">
-      <button class="btn btn-secondary flex-1" onclick="closeCreateModal()">Cancel</button>
-      <button class="btn btn-primary flex-1" onclick="closeCreateModal(); showView('projects', null);">Create Project</button>
-    </div>
-  </div>
-</div>
-
-<script>
-lucide.createIcons();
-
-function showView(name, el) {
-  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-  const view = document.getElementById('view-' + name);
-  if (view) view.classList.add('active');
-
-  if (el) {
-    document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
-    el.classList.add('active');
+    </div>`;
+  const bc = document.getElementById('barChart');
+  if (bc) { if (bar) bar.destroy();
+    bar = new Chart(bc, { type:'bar', data:{ labels:COST_CENTERS, datasets:[{ label:'Tickets', data:COST_CENTERS.map(c=>tasks.filter(t=>t.cc===c).length), backgroundColor:'#4F46E5', borderRadius:6 }] },
+      options:{ plugins:{ legend:{ display:false } }, scales:{ y:{ beginAtZero:true } } } });
   }
-  window.scrollTo(0, 0);
-  setTimeout(() => lucide.createIcons(), 50);
+  lucide.createIcons();
 }
 
-function openCreateModal() { document.getElementById('createModal').classList.add('show'); }
-function closeCreateModal() { document.getElementById('createModal').classList.remove('show'); }
+/* ============================ SETTINGS ============================ */
+function renderSettings() {
+  document.getElementById('view-settings').innerHTML = `
+    <div class="topbar" style="background:transparent; border:none; padding:0; margin:0 0 16px;"><h1>Settings</h1></div>
+    <div class="chart-card" style="max-width:640px;">
+      <h3 style="margin:0 0 4px;">Organization Profile</h3>
+      <p style="font-size:13px; color:#6B7280; margin:0 0 20px;">Company-wide configuration.</p>
+      <div class="grid-2">
+        <div class="field"><label class="label">Company</label><input class="input" value="ServiceHub Pvt Ltd"></div>
+        <div class="field"><label class="label">Admin</label><input class="input" value="Suresh Varma" disabled style="background:#F9FAFB;"></div>
+        <div class="field"><label class="label">Default Timezone</label><select class="select"><option selected>Asia/Kolkata (IST)</option></select></div>
+        <div class="field"><label class="label">Currency</label><select class="select"><option selected>₹ INR</option></select></div>
+      </div>
+      <div style="display:flex; gap:10px; margin-top:8px;"><button class="btn btn-primary" onclick="toast('Settings saved')">Save Changes</button><button class="btn btn-secondary">Cancel</button></div>
+    </div>`;
+  lucide.createIcons();
+}
 
-// ====== CHARTS ======
-window.addEventListener('load', () => {
-  // Donut
-  new Chart(document.getElementById('donutChart'), {
-    type: 'doughnut',
-    data: {
-      labels: ['Calicut', 'Kollam', 'Ernakulam'],
-      datasets: [{
-        data: [18, 21, 12],
-        backgroundColor: ['#4F46E5', '#10B981', '#F59E0B'],
-        borderWidth: 0,
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      cutout: '70%',
-      plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, padding: 12, font: { size: 12 } } } }
-    }
+/* ============================ NEW TICKET ============================ */
+function openTicketModal() {
+  document.getElementById('k_tech').innerHTML = `<option value="">— Unassigned —</option>` + technicians.filter(t=>t.status!=='leave').map(t=>`<option>${t.name}</option>`).join('');
+  document.getElementById('ticketModal').classList.add('show');
+  lucide.createIcons();
+}
+function closeTicketModal() {
+  document.getElementById('ticketModal').classList.remove('show');
+  ['k_title','k_customer','k_date'].forEach(id => { document.getElementById(id).classList.remove('err'); document.getElementById(id+'_err').classList.remove('show'); });
+}
+function createTicket() {
+  let ok = true, firstBad = null;
+  ['k_title','k_customer','k_date'].forEach(id => {
+    const el = document.getElementById(id), err = document.getElementById(id+'_err');
+    if (!el.value.trim()) { el.classList.add('err'); err.classList.add('show'); ok=false; if(!firstBad)firstBad=el; }
+    else { el.classList.remove('err'); err.classList.remove('show'); }
   });
+  if (!ok) { firstBad.focus(); return; }
+  const type = document.getElementById('k_type').value;
+  const prefix = type==='Project'?'PR':type==='Other'?'OT':'SR';
+  const id = `${prefix}-${seq++}`;
+  const tech = document.getElementById('k_tech').value;
+  const task = {
+    id, title: document.getElementById('k_title').value.trim(), customer: document.getElementById('k_customer').value.trim(),
+    cc: document.getElementById('k_cc').value, type, priority: document.getElementById('k_priority').value,
+    tech: tech || '', status: document.getElementById('k_status').value, created:'Just now',
+    desc: document.getElementById('k_desc').value.trim()
+  };
+  if (type==='Project') task.progress = {'New':15,'In Progress':50,'Done':100}[task.status] || 15;
+  tasks.unshift(task);
+  ['k_title','k_customer','k_desc'].forEach(id=>document.getElementById(id).value='');
+  closeTicketModal();
+  refreshAll();
+  showView('tickets', sidebarLink('tickets'));
+  toast(`Ticket #${id} created${tech?` · assigned to ${tech}`:''}`);
+}
 
-  // Line
-  new Chart(document.getElementById('lineChart'), {
-    type: 'line',
-    data: {
-      labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-      datasets: [
-        { label: 'New', data: [12, 18, 15, 22, 25, 14, 9], borderColor: '#4F46E5', backgroundColor: 'rgba(79,70,229,0.1)', tension: 0.4, fill: true, borderWidth: 2 },
-        { label: 'Closed', data: [10, 14, 16, 19, 21, 12, 8], borderColor: '#10B981', backgroundColor: 'rgba(16,185,129,0.1)', tension: 0.4, fill: true, borderWidth: 2 }
-      ]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, padding: 12, font: { size: 12 } } } },
-      scales: { y: { beginAtZero: true, grid: { color: '#F3F4F6' } }, x: { grid: { display: false } } }
-    }
-  });
+/* ============================ TOAST ============================ */
+function toast(msg) {
+  const t = document.getElementById('toast');
+  document.getElementById('toastMsg').textContent = msg;
+  t.classList.add('show');
+  clearTimeout(window.__tt); window.__tt = setTimeout(()=>t.classList.remove('show'), 3000);
+}
 
-  // Bar (reports)
-  new Chart(document.getElementById('barChart'), {
-    type: 'bar',
-    data: {
-      labels: ['Calicut', 'Kollam', 'Ernakulam'],
-      datasets: [
-        { label: 'Completed', data: [85, 92, 78], backgroundColor: '#10B981', borderRadius: 6 },
-        { label: 'In Progress', data: [12, 18, 14], backgroundColor: '#F59E0B', borderRadius: 6 },
-        { label: 'Overdue', data: [3, 2, 5], backgroundColor: '#EF4444', borderRadius: 6 }
-      ]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, padding: 12, font: { size: 12 } } } },
-      scales: { y: { beginAtZero: true, grid: { color: '#F3F4F6' } }, x: { grid: { display: false } } }
-    }
-  });
+/* ============================ VIEW SWITCHER ============================ */
+let currentView = 'dashboard';
+const RENDER = { dashboard:renderDashboard, tickets:renderTickets, projects:renderProjects, technicians:renderTechnicians, deployment:renderDeployment, managers:renderManagers, costcenters:renderCostCenters, reports:renderReports, settings:renderSettings };
+function renderView(name) { if (RENDER[name]) RENDER[name](); }
+function sidebarLink(name) { return document.querySelector(`.sidebar-link[onclick*="'${name}'"]`); }
 
-  // Cost Centers performance
-  new Chart(document.getElementById('ccBarChart'), {
-    type: 'bar',
-    data: {
-      labels: ['Tickets', 'Projects', 'Revenue (L)', 'Technicians', 'Avg Rating'],
-      datasets: [
-        { label: 'Calicut', data: [18, 5, 4.2, 4, 4.7], backgroundColor: '#4F46E5', borderRadius: 6 },
-        { label: 'Kollam', data: [21, 6, 5.8, 5, 4.8], backgroundColor: '#10B981', borderRadius: 6 },
-        { label: 'Ernakulam', data: [12, 3, 4.2, 3, 4.6], backgroundColor: '#F59E0B', borderRadius: 6 }
-      ]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, padding: 12, font: { size: 12 } } } },
-      scales: { y: { beginAtZero: true, grid: { color: '#F3F4F6' } }, x: { grid: { display: false } } }
-    }
-  });
-});
+function showView(name, el) {
+  document.querySelectorAll('.main > .view').forEach(v => v.classList.remove('active'));
+  const view = document.getElementById('view-' + name);
+  if (view) view.classList.add('active');
+  if (el) { document.querySelectorAll('.sidebar > .sidebar-link').forEach(l => l.classList.remove('active')); el.classList.add('active'); }
+  if (name !== 'detail') currentView = name;
+  renderView(name);
+  window.scrollTo(0, 0);
+  setTimeout(() => lucide.createIcons(), 40);
+}
+
+function refreshAll() {
+  // re-render whatever is visible + keep badges fresh
+  document.getElementById('ticketBadge').textContent = tasks.filter(t=>t.status==='New'||t.status==='Overdue').length;
+  renderView(currentView);
+}
+
+function signIn() { document.getElementById('loginGate').classList.add('hide'); }
+
+/* ============================ INIT ============================ */
+renderDashboard();
+document.getElementById('ticketBadge').textContent = tasks.filter(t=>t.status==='New'||t.status==='Overdue').length;
 </script>
 </body>
 </html>
