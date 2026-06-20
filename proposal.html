@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ServiceHub — Software Proposal</title>
+<style>
+  :root{
+    --ground:#F6F7FB;        /* cool paper */
+    --panel:#FFFFFF;
+    --text:#10162A;          /* ink navy */
+    --muted:#5B6478;
+    --line:#E2E5EE;
+    --accent:#4F46E5;        /* indigo (product brand) */
+    --accent-soft:#EEF0FE;
+    --signal:#D8842A;        /* warm ochre — used sparingly */
+    --signal-soft:#FBEFDD;
+    --ok:#0E9F6E;
+    --mono:ui-monospace,"SF Mono","Cascadia Code","Segoe UI Mono",Consolas,monospace;
+    --sans:"Segoe UI",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html{ -webkit-text-size-adjust:100%; }
+  body{
+    margin:0; background:var(--ground); color:var(--text);
+    font-family:var(--sans); line-height:1.6;
+    font-size:16px; letter-spacing:-0.005em;
+  }
+  .wrap{ max-width:880px; margin:0 auto; padding:0 28px; }
+
+  .eyebrow{ font-family:var(--mono); font-size:11.5px; letter-spacing:0.22em; text-transform:uppercase; color:var(--accent); font-weight:600; }
+  .eyebrow.sig{ color:var(--signal); }
+  h1{ font-size:clamp(34px,6vw,56px); line-height:1.03; font-weight:800; letter-spacing:-0.03em; margin:14px 0 0; }
+  h2{ font-size:clamp(22px,3.4vw,30px); line-height:1.1; font-weight:800; letter-spacing:-0.02em; margin:0; }
+  h3{ font-size:17px; font-weight:700; margin:0 0 4px; letter-spacing:-0.01em; }
+  p{ margin:0 0 14px; color:#27304a; }
+  .lead{ font-size:19px; color:#2a3350; }
+  .muted{ color:var(--muted); }
+  .mono{ font-family:var(--mono); }
+
+  section{ padding:46px 0; border-top:1px solid var(--line); }
+  .sec-head{ display:flex; align-items:baseline; gap:14px; margin-bottom:26px; }
+  .sec-no{ font-family:var(--mono); font-size:13px; color:var(--accent); font-weight:600; padding-top:4px; }
+
+  .hero{ padding:64px 0 40px; border-top:none; }
+  .meta{ display:flex; flex-wrap:wrap; gap:26px 44px; margin-top:30px; padding-top:22px; border-top:1px solid var(--line); }
+  .meta .k{ font-family:var(--mono); font-size:10.5px; letter-spacing:0.18em; text-transform:uppercase; color:var(--muted); margin-bottom:3px; }
+  .meta .v{ font-size:14.5px; font-weight:600; }
+
+  .pipe{ display:flex; align-items:center; flex-wrap:wrap; gap:8px; margin:30px 0 4px; padding:18px; background:var(--panel); border:1px solid var(--line); border-radius:14px; }
+  .chip{ font-family:var(--mono); font-size:12px; font-weight:600; padding:7px 12px; border-radius:8px; background:var(--accent-soft); color:var(--accent); white-space:nowrap;
+    opacity:0; transform:translateY(6px); animation:rise .5s ease forwards; }
+  .chip.end{ background:var(--signal-soft); color:var(--signal); }
+  .arrow{ color:var(--muted); font-size:13px; }
+  .chip:nth-child(1){animation-delay:.05s}.chip:nth-child(3){animation-delay:.12s}
+  .chip:nth-child(5){animation-delay:.19s}.chip:nth-child(7){animation-delay:.26s}
+  .chip:nth-child(9){animation-delay:.33s}.chip:nth-child(11){animation-delay:.40s}
+  @keyframes rise{ to{opacity:1; transform:none;} }
+  @media (prefers-reduced-motion:reduce){ .chip{ animation:none; opacity:1; transform:none; } }
+
+  .grid{ display:grid; gap:14px; }
+  .g2{ grid-template-columns:1fr 1fr; }
+  .g4{ grid-template-columns:1fr 1fr; }
+  .card{ background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:20px; }
+  .card .tag{ font-family:var(--mono); font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:var(--muted); }
+
+  ul.clean{ list-style:none; margin:0; padding:0; }
+  ul.clean li{ position:relative; padding:7px 0 7px 24px; border-bottom:1px solid var(--line); font-size:14.5px; }
+  ul.clean li:last-child{ border-bottom:none; }
+  ul.clean li::before{ content:"\2192"; position:absolute; left:0; top:7px; color:var(--accent); font-family:var(--mono); }
+
+  .phase{ background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:24px; }
+  .phase.live{ border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft); }
+  .phase-top{ display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:14px; }
+  .pill{ font-family:var(--mono); font-size:11px; font-weight:600; padding:4px 10px; border-radius:999px; }
+  .pill.now{ background:var(--accent); color:#fff; }
+  .pill.next{ background:var(--signal-soft); color:var(--signal); }
+
+  .price-table{ width:100%; border-collapse:collapse; background:var(--panel); border:1px solid var(--line); border-radius:14px; overflow:hidden; }
+  .price-table td,.price-table th{ padding:15px 18px; text-align:left; border-bottom:1px solid var(--line); font-size:15px; }
+  .price-table th{ font-family:var(--mono); font-size:11px; letter-spacing:0.14em; text-transform:uppercase; color:var(--muted); font-weight:600; }
+  .price-table .amt{ text-align:right; font-family:var(--mono); font-weight:600; white-space:nowrap; }
+  .price-table tr.total td{ background:var(--text); color:#fff; border-bottom:none; font-weight:700; font-size:17px; }
+  .price-table tr.total .amt{ color:#fff; }
+  .bignum{ font-family:var(--mono); font-size:clamp(40px,7vw,64px); font-weight:700; letter-spacing:-0.03em; color:var(--text); }
+
+  .note{ font-size:13px; color:var(--muted); }
+  .steps{ counter-reset:s; list-style:none; margin:0; padding:0; }
+  .steps li{ counter-increment:s; position:relative; padding:12px 0 12px 44px; border-bottom:1px solid var(--line); }
+  .steps li::before{ content:counter(s,decimal-leading-zero); position:absolute; left:0; top:11px; font-family:var(--mono); font-size:13px; color:var(--accent); font-weight:600; }
+  .steps li:last-child{ border-bottom:none; }
+
+  .sign{ display:grid; grid-template-columns:1fr 1fr; gap:40px; margin-top:30px; }
+  .sign .line{ border-top:1.5px solid var(--text); padding-top:8px; font-size:13px; color:var(--muted); margin-top:46px; }
+
+  footer{ border-top:1px solid var(--line); padding:30px 0 50px; color:var(--muted); font-size:13px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; }
+
+  .printbar{ position:sticky; top:0; z-index:5; background:var(--text); color:#fff; display:flex; justify-content:space-between; align-items:center; padding:10px 18px; font-size:13px; }
+  .printbar button{ font-family:var(--sans); font-size:13px; font-weight:600; background:#fff; color:var(--text); border:none; border-radius:8px; padding:8px 14px; cursor:pointer; }
+
+  @media (max-width:680px){
+    .g2,.g4{ grid-template-columns:1fr; }
+    .sign{ grid-template-columns:1fr; }
+  }
+  @media print{
+    body{ background:#fff; font-size:12.5px; }
+    .wrap{ max-width:100%; }
+    .printbar{ display:none; }
+    section,.hero{ padding:22px 0; }
+    .phase,.card,.pipe,.price-table{ box-shadow:none; }
+    section,.phase,.card,.price-table,.pipe{ page-break-inside:avoid; }
+    .chip{ animation:none; opacity:1; transform:none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="printbar">
+  <span class="mono">ServiceHub Proposal · № SH-2026-001</span>
+  <button onclick="window.print()">Save as PDF / Print</button>
+</div>
+
+<div class="wrap">
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="eyebrow">Software Development Proposal · № SH-2026-001</div>
+    <h1>ServiceHub</h1>
+    <p class="lead" style="margin-top:14px; max-width:60ch;">A field-service &amp; project-management platform that turns every customer call into a tracked job — from first ring to signed-off closure — across all your branches.</p>
+
+    <div class="pipe" aria-label="Work lifecycle">
+      <span class="chip">Customer call</span><span class="arrow">&#8594;</span>
+      <span class="chip">Ticket</span><span class="arrow">&#8594;</span>
+      <span class="chip">Assign</span><span class="arrow">&#8594;</span>
+      <span class="chip">Activity report</span><span class="arrow">&#8594;</span>
+      <span class="chip">Approve</span><span class="arrow">&#8594;</span>
+      <span class="chip end">Closed</span>
+    </div>
+
+    <div class="meta">
+      <div><div class="k">Prepared for</div><div class="v">[Client Company Name]</div></div>
+      <div><div class="k">Prepared by</div><div class="v">[Your Company] · Calicut, Kerala</div></div>
+      <div><div class="k">Date</div><div class="v">19 June 2026</div></div>
+      <div><div class="k">Valid for</div><div class="v">30 days</div></div>
+    </div>
+  </header>
+
+  <!-- 01 SUMMARY -->
+  <section>
+    <div class="sec-head"><div class="sec-no">01</div><h2>Executive summary</h2></div>
+    <p class="lead">Today your service requests arrive by phone and live in people's heads, notebooks, and chat groups. There's no single place to see who's doing what, where, and whether it's actually done.</p>
+    <p>ServiceHub replaces that with one connected system across four roles — <strong>Customer, Technician, Project Manager, and Admin</strong>. A missed call becomes a ticket; the manager assigns it; the technician does the work and files a mandatory activity report with photos; the manager approves and closes it. Every job is tracked across your Calicut, Kollam and Ernakulam cost centers, with proof of work on record.</p>
+    <p>We propose to build this in two phases — a working core first, then a fully customized version shaped by your feedback — for a total of <strong>&#8377;3,25,000</strong>.</p>
+  </section>
+
+  <!-- 02 THE OPPORTUNITY -->
+  <section>
+    <div class="sec-head"><div class="sec-no">02</div><h2>What this fixes</h2></div>
+    <div class="grid g2">
+      <div class="card"><div class="tag">Today</div><h3 style="margin-top:8px;">Calls get lost</h3><p class="muted" style="margin:0;">Missed calls and walk-in requests slip through. No record, no follow-up.</p></div>
+      <div class="card"><div class="tag">With ServiceHub</div><h3 style="margin-top:8px;">Every call &#8594; a ticket</h3><p class="muted" style="margin:0;">A missed call auto-sends a form link; the request becomes a tracked ticket.</p></div>
+      <div class="card"><div class="tag">Today</div><h3 style="margin-top:8px;">No proof of work</h3><p class="muted" style="margin:0;">"Is it done?" depends on a phone call. No photos, no materials record.</p></div>
+      <div class="card"><div class="tag">With ServiceHub</div><h3 style="margin-top:8px;">Mandatory activity report</h3><p class="muted" style="margin:0;">Technicians submit a full report + site photos before a job can be closed.</p></div>
+      <div class="card"><div class="tag">Today</div><h3 style="margin-top:8px;">No branch visibility</h3><p class="muted" style="margin:0;">Each cost center runs blind to the others; balancing staff is guesswork.</p></div>
+      <div class="card"><div class="tag">With ServiceHub</div><h3 style="margin-top:8px;">One view across branches</h3><p class="muted" style="margin:0;">See who's free, who's overloaded, and move technicians where they're needed.</p></div>
+    </div>
+  </section>
+
+  <!-- 03 SOLUTION -->
+  <section>
+    <div class="sec-head"><div class="sec-no">03</div><h2>The four roles</h2></div>
+    <div class="grid g4">
+      <div class="card"><div class="tag">Customer</div><h3 style="margin-top:6px;">Raise a request</h3><p class="muted" style="margin:0;">Missed call &#8594; SMS link &#8594; simple form &#8594; instant ticket confirmation.</p></div>
+      <div class="card"><div class="tag">Technician · mobile</div><h3 style="margin-top:6px;">Do the work</h3><p class="muted" style="margin:0;">See today's jobs, start a task, file the activity report with photos.</p></div>
+      <div class="card"><div class="tag">Project Manager</div><h3 style="margin-top:6px;">Assign &amp; approve</h3><p class="muted" style="margin:0;">Assign jobs, track progress, approve or send work back for fixes.</p></div>
+      <div class="card"><div class="tag">Admin</div><h3 style="margin-top:6px;">Run the operation</h3><p class="muted" style="margin:0;">All branches, all people — relocate staff, set availability, see reports.</p></div>
+    </div>
+  </section>
+
+  <!-- 04 SCOPE / PHASES -->
+  <section>
+    <div class="sec-head"><div class="sec-no">04</div><h2>Scope, in two phases</h2></div>
+    <div class="grid g2">
+      <div class="phase live">
+        <div class="phase-top"><div><div class="eyebrow">Phase 01</div><h3 style="font-size:20px; margin-top:6px;">Core Workflow Platform</h3></div><span class="pill now">Build first</span></div>
+        <p class="muted" style="margin-top:0;">The working spine — live and usable, end to end.</p>
+        <ul class="clean">
+          <li>Secure login &amp; roles (Customer / Technician / PM / Admin)</li>
+          <li>Ticket creation, classification &amp; assignment</li>
+          <li>Technician app (web/mobile) — today's tasks &amp; status</li>
+          <li>Daily Activity Report + site photo upload</li>
+          <li>PM approvals — approve or request changes</li>
+          <li>Admin console — tickets, technicians, cost centers</li>
+          <li>Availability &amp; cross-branch deployment view</li>
+          <li>Deployed to the cloud on your domain</li>
+        </ul>
+      </div>
+      <div class="phase">
+        <div class="phase-top"><div><div class="eyebrow sig">Phase 02</div><h3 style="font-size:20px; margin-top:6px;">Full Customized Version</h3></div><span class="pill next">After feedback</span></div>
+        <p class="muted" style="margin-top:0;">Shaped by how your team actually uses Phase 1.</p>
+        <ul class="clean">
+          <li>Missed-call &#8594; automatic ticket &amp; SMS link</li>
+          <li>Notifications — SMS, push &amp; email alerts</li>
+          <li>Full project tracking — milestones &amp; progress</li>
+          <li>Customization to your exact process &amp; forms</li>
+          <li>Reports &amp; analytics dashboards</li>
+          <li>Native mobile app (Play Store / App Store)</li>
+          <li>Offline support for field technicians</li>
+          <li>Security hardening, training &amp; handover</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 TIMELINE -->
+  <section>
+    <div class="sec-head"><div class="sec-no">05</div><h2>Timeline</h2></div>
+    <table class="price-table">
+      <tr><th>Stage</th><th>What happens</th><th style="text-align:right;">Window</th></tr>
+      <tr><td><strong>Phase 1 — Core</strong></td><td class="muted">Foundation, workflow, technician app, PM &amp; Admin consoles, go-live</td><td class="amt">Month 1–3</td></tr>
+      <tr><td><strong>Feedback</strong></td><td class="muted">Your team uses it; we gather change requests</td><td class="amt">~2 weeks</td></tr>
+      <tr><td><strong>Phase 2 — Full</strong></td><td class="muted">Integrations, tracking, customization, native app, hardening</td><td class="amt">Month 4–6</td></tr>
+      <tr class="total"><td colspan="2">Total delivery</td><td class="amt">~6 months</td></tr>
+    </table>
+    <p class="note" style="margin-top:12px;">Phase 1 is delivered and usable on its own at ~3 months. Phase 2 begins after a short feedback window, so the final product fits how your team actually works.</p>
+  </section>
+
+  <!-- 06 COMMERCIALS -->
+  <section>
+    <div class="sec-head"><div class="sec-no">06</div><h2>Investment</h2></div>
+    <div class="bignum">&#8377;3,25,000</div>
+    <p class="muted" style="margin-top:-2px;">one-time development cost · split across two phases</p>
+
+    <table class="price-table" style="margin-top:18px;">
+      <tr><th>Item</th><th>Scope</th><th style="text-align:right;">Amount</th></tr>
+      <tr><td><strong>Phase 1</strong></td><td class="muted">Core Workflow Platform</td><td class="amt">&#8377;1,75,000</td></tr>
+      <tr><td><strong>Phase 2</strong></td><td class="muted">Full Customized Version</td><td class="amt">&#8377;1,50,000</td></tr>
+      <tr class="total"><td colspan="2">Total</td><td class="amt">&#8377;3,25,000</td></tr>
+    </table>
+
+    <h3 style="margin:28px 0 12px;">Payment schedule</h3>
+    <table class="price-table">
+      <tr><th>Milestone</th><th style="text-align:right;">%</th><th style="text-align:right;">Amount</th></tr>
+      <tr><td>On proposal sign-off (advance)</td><td class="amt">25%</td><td class="amt">&#8377;81,250</td></tr>
+      <tr><td>Phase 1 delivery &amp; go-live</td><td class="amt">30%</td><td class="amt">&#8377;97,500</td></tr>
+      <tr><td>Phase 2 start (after feedback)</td><td class="amt">25%</td><td class="amt">&#8377;81,250</td></tr>
+      <tr><td>Final handover</td><td class="amt">20%</td><td class="amt">&#8377;65,000</td></tr>
+    </table>
+
+    <h3 style="margin:28px 0 10px;">Monthly running costs <span class="note">(paid directly by you, at actuals)</span></h3>
+    <p class="muted" style="margin-top:0;">Cloud hosting, database, image storage, SMS/OTP, missed-call line and domain — typically <strong>&#8377;9,000–&#8377;22,000 / month</strong> at early scale. Native app store accounts (one-time): Apple &#8377;8,500/yr, Google &#8377;2,000 once.</p>
+  </section>
+
+  <!-- 07 DELIVERABLES -->
+  <section>
+    <div class="sec-head"><div class="sec-no">07</div><h2>What you receive</h2></div>
+    <div class="grid g2">
+      <ul class="clean">
+        <li>Live web platform — all four role consoles</li>
+        <li>Technician mobile app</li>
+        <li>Hosted on your own domain</li>
+        <li>Full source code &amp; ownership</li>
+      </ul>
+      <ul class="clean">
+        <li>Admin &amp; staff training</li>
+        <li>User documentation</li>
+        <li>30 days post-launch support per phase</li>
+        <li>Secure, role-based access &amp; backups</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 08 ASSUMPTIONS -->
+  <section>
+    <div class="sec-head"><div class="sec-no">08</div><h2>Assumptions &amp; exclusions</h2></div>
+    <ul class="clean">
+      <li>Business content, branding and existing data are provided by [Client Company Name].</li>
+      <li>Third-party charges (cloud, SMS, telephony, app stores) are billed at actuals to the client.</li>
+      <li>Work outside the listed scope is handled via a simple written change request.</li>
+      <li>Timely feedback &amp; approvals at each milestone keep the timeline on track.</li>
+    </ul>
+  </section>
+
+  <!-- 09 NEXT STEPS -->
+  <section>
+    <div class="sec-head"><div class="sec-no">09</div><h2>Next steps</h2></div>
+    <ol class="steps">
+      <li>Approve this proposal and confirm the Phase 1 scope.</li>
+      <li>Pay the 25% advance to kick off.</li>
+      <li>Discovery call — we lock the details &amp; start building.</li>
+      <li>Phase 1 go-live at ~3 months; then feedback &#8594; Phase 2.</li>
+    </ol>
+
+    <div class="sign">
+      <div><div class="line">Accepted for [Client Company Name] — name, signature &amp; date</div></div>
+      <div><div class="line">[Your Company] — name, signature &amp; date</div></div>
+    </div>
+  </section>
+
+  <footer>
+    <span>ServiceHub Proposal · № SH-2026-001</span>
+    <span class="mono">[Your Company] · Calicut · [email] · [phone]</span>
+  </footer>
+
+</div>
+</body>
+</html>
